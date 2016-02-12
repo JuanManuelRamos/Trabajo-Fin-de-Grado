@@ -248,7 +248,7 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Modificar_clicked()
 {
-    ACTION A = controllSelectedING();
+    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);
 
     if(A == ACCEPT)
     {
@@ -262,7 +262,7 @@ void MainWindowMenuPlan::on_pushButton_Modificar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
 {
-    ACTION A = controllSelectedING();
+    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);
 
     if(A == ACCEPT)
     {
@@ -316,9 +316,10 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     enableAMEIngredientesButtons();
     disableGCIngredientesButtons();
     disableIngredientesTextBox();
-    ACTION A = controllDataTextBox();
+    ACTION A = controllDataTextBoxName(*ui->lineEdit_INGnombre);
+    ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento);
 
-    if(A == ACCEPT)
+    if(A == ACCEPT && B == ACCEPT)
     {
         if(Q == MODIFICARING)
         {
@@ -333,7 +334,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     }
     clearIngredientesTextBox();
 
-    ui->label_InfoQuerys->setText("");      //Label informativo
+    ui->label_InfoQuerys->setText("");                          //Label informativo
+    ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
@@ -342,7 +344,9 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
     disableGCIngredientesButtons();
     disableIngredientesTextBox();
     clearIngredientesTextBox();
-    ui->label_InfoQuerys->setText("");
+
+    ui->label_InfoQuerys->setText("");   
+    ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 /*--------------------------------------------------------- GC PLATOS ------------------------------------------------------------*/
@@ -372,11 +376,13 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
 
 void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
 {
-    const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
+    ACTION A = controllSelectionElement(*ui->listView_Ingredientes_PLA);
 
-    if(index.size() == 1)
+    //const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
+
+    if(A == ACCEPT)                                       //___Comprobar si se ha seleccionado un ingrediente
     {
-        if(ui->lineEdit_PLAING_cantidad->text() == "")      //___Comprobar si se ha seleccionado un ingrediente
+        if(ui->lineEdit_PLAING_cantidad->text() == "")          //___Comprobar si se ha añadido una cantidad en gramos
         {
             QMessageBox::information(this,"Información","Debe añadir una cantidad en gramos al ingrediente seleccionado.");
         }
@@ -400,10 +406,6 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
 
             }
         }
-    }
-    else
-    {
-        QMessageBox::information(this,"Información","Debe seleccionar un ingrediente para añadirlo.");
     }
 }
 
@@ -602,19 +604,30 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
 
 
 
-    //___Controlar que los campos numericos en los textbox no superen los seis digitos
+    //___Controlar que los campos numericos en los textbox no superen los maxNumSize digitos
 
     QString str;
+    ACTION AC = ACCEPT;
 
     for(int i = 0; i < alltextbox.size(); i++)
     {
         str = alltextbox.at(i)->text();
+        AC = ACCEPT;
 
-        if(str.size() > 6)
+        if(str.size() > maxNumSize)
         {
-            if(str.at(0) >= 48 && str.at(0) <= 57)
+            for(int j = 0; j < str.size(); j++)                 //Controlar que el textbox no corresponda a un textbox no numerico
             {
-                str.remove(6, (str.size()-6));
+                if((str.at(j) < 48 || str.at(j) > 57) && str.at(j) != '.')
+                {
+                    AC = DENY;
+                    break;
+                }
+            }
+
+            if(AC == ACCEPT)                                    //En caso de que el textbox sea numerico y superior a maxNumSize
+            {
+                str.remove(maxNumSize, (str.size()-maxNumSize));
                 alltextbox.at(i)->setText(str);
             }
         }
@@ -667,21 +680,32 @@ QStringList MainWindowMenuPlan::captureTextBoxText()
 
 
 /*-------------------------------------------------------------------------*/
-/*-------------- CONTROL DE DATOS MODIFICADOS POR EL USUARIO --------------*/
+/*---------- CONTROL DEL CAMPO NOMBRE PARA INGREDIENTES O PLATOS ----------*/
 /*-------------------------------------------------------------------------*/
 
-ACTION MainWindowMenuPlan::controllDataTextBox()
+ACTION MainWindowMenuPlan::controllDataTextBoxName(QLineEdit &le)
 {
-    ACTION A;
+    ACTION A = ACCEPT;
 
-    if(ui->lineEdit_INGnombre->text() == "")            //Controla si el nombre esta vacio
+    if(le.text() == "")             //Controla si el nombre esta vacio
     {
         QMessageBox::critical(this, "Error", "El campo \"Nombre\" es obligatorio.");
         A = DENY;
-        return A;
     }
 
-    QList<QLineEdit *> alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
+    return A;
+}
+
+
+/*-------------------------------------------------------------------------*/
+/*-------- CONTROL DE DATOS NUMERICOS INTRODUCIDOS O MODIFICADOS ----------*/
+/*-------------------------------------------------------------------------*/
+
+ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb)
+{
+    ACTION A;
+
+    QList<QLineEdit *> alltextbox = gb.findChildren<QLineEdit *>();
     QString str;
 
     for(int i = 1; i < alltextbox.size(); i++)          //____Empieza en 1 para no contar el textbox referente al nombre
@@ -693,9 +717,12 @@ ACTION MainWindowMenuPlan::controllDataTextBox()
             A = DENY;
             return A;
         }
-        else if(str.size() > 6)
+        else if(str.size() > maxNumSize)                //____Controlar que el campo numerico no sea superior a MaxNumSize digitos
         {
-            QMessageBox::information(this,"Información","Los campos numéricos no aceptan más de seis dígitos.");
+            QString str2 = "Los campos numericos no aceptan mas de ";
+            str2.append(QString::number(maxNumSize));
+            str2.append(" dígitos.");
+            QMessageBox::information(this,"Información",str2);
         }
 
         for(int j = 0; j < str.size(); j++)             //____Se controla que el textbox numerico no contenga otro caracter que no sea digito o punto
@@ -721,17 +748,21 @@ ACTION MainWindowMenuPlan::controllDataTextBox()
 
 
 /*-------------------------------------------------------------------------*/
-/*--------- CONTROL DE SELECCION DE DATOS AL MODIFICAR Y ELIMINAR ---------*/
+/*-------------------- CONTROL DE SELECCION DE DATOS ----------------------*/
 /*-------------------------------------------------------------------------*/
 
-ACTION MainWindowMenuPlan::controllSelectedING()
+ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 {
     ACTION A = ACCEPT;
-    if(ui->label_INGid->text() == "")               //Controla si al querer modificar o eliminar hay un ingrediente seleccionado
+
+    const QModelIndexList index = lv.selectionModel()->selectedIndexes();       //Captura la seleccion del listview
+
+    if(index.size() != 1)                   //Controla si se ha seleccionado en elemento del listview
     {
-        QMessageBox::information(this,"Información","Debe seleccionar un ingrediente para poder modificar o eliminar.");
         A = DENY;
+        QMessageBox::information(this,"Información","Debe seleccionar un elemento de la lista.");
     }
+
     return A;
 }
 

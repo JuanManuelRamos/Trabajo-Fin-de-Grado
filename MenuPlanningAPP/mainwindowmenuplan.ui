@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -790,7 +790,7 @@
           <rect>
            <x>10</x>
            <y>180</y>
-           <width>211</width>
+           <width>239</width>
            <height>81</height>
           </rect>
          </property>

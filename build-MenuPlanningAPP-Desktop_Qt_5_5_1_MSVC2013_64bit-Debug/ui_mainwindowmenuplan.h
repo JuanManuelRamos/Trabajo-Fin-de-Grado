@@ -724,7 +724,7 @@ public:
         label_PLAING->setGeometry(QRect(10, 160, 211, 20));
         gridLayoutWidget_8 = new QWidget(groupBox_PLAING);
         gridLayoutWidget_8->setObjectName(QStringLiteral("gridLayoutWidget_8"));
-        gridLayoutWidget_8->setGeometry(QRect(10, 180, 211, 81));
+        gridLayoutWidget_8->setGeometry(QRect(10, 180, 239, 81));
         gridLayout_8 = new QGridLayout(gridLayoutWidget_8);
         gridLayout_8->setSpacing(6);
         gridLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -1390,7 +1390,7 @@ public:
 
         retranslateUi(MainWindowMenuPlan);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindowMenuPlan);

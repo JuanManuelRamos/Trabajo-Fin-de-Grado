@@ -152,6 +152,7 @@ void database::queryEliminarIngrediente(QString &str, QString &strID)
     str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE AlimentosTAB_id=";
     str.append(strID);
     str.append("; DELETE FROM AlimentosTAB WHERE id_AlimentosTAB=");
+    str.append(strID);
     str.append(";");
 }
 
