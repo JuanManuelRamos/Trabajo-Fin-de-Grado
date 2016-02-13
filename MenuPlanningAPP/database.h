@@ -37,7 +37,10 @@ class database
         QSqlQueryModel * queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);//Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
 
         QSqlQueryModel * modINGQuerys(QStringList &strl);                               //Consulta para modificar los datos de un ingrediente
-        QSqlQueryModel * addINGQuerys(QStringList &strl);                               //Consolta para crear un nuevo ingrediente
+        QSqlQueryModel * addINGQuerys(QStringList &strl);                               //Consulta para crear un nuevo ingrediente
+        QSqlQueryModel * modPLAQuerys(QStringList &strl);                               //Consulta para modificar los datos de un plato
+        QSqlQueryModel * addPLAQuerys(QStringList &strl);                               //Consulta para crear un nuevo plato
+        QSqlQueryModel * addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);        //Consulta para añadir un ingrediente a un plato
 
         void finishQuery();                                                             //Funcion para liberar la memoria correspondiente a las variables *qry y *model
 };

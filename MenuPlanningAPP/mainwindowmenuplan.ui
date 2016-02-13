@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -784,17 +784,23 @@
          <property name="text">
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ingrediente a añadir&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
+         <property name="textFormat">
+          <enum>Qt::AutoText</enum>
+         </property>
         </widget>
         <widget class="QWidget" name="gridLayoutWidget_8">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>180</y>
-           <width>239</width>
+           <width>211</width>
            <height>81</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetNoConstraint</enum>
+          </property>
           <item row="0" column="1">
            <widget class="QLabel" name="label_123">
             <property name="text">

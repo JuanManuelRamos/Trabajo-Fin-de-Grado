@@ -297,6 +297,10 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
 
     disableAMEINGPLAButtons();
     ui->lineEdit_PLAING_cantidad->setEnabled(false);
+
+    Q = ANIADIRPLA;
+    AC = CREARPLATO;
+    ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
 }
 
 void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
@@ -323,12 +327,12 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     {
         if(Q == MODIFICARING)
         {
-            ui->listView_Ingredientes->setModel(db1->modINGQuerys(captureTextBoxText()));
+            ui->listView_Ingredientes->setModel(db1->modINGQuerys(captureTextBoxText(INGREDIENTES)));
             ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
         }
         else if(Q == ANIADIRING)
         {
-            ui->listView_Ingredientes->setModel(db1->addINGQuerys(captureTextBoxText()));
+            ui->listView_Ingredientes->setModel(db1->addINGQuerys(captureTextBoxText(INGREDIENTES)));
             ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
         }
     }
@@ -353,7 +357,70 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 {
-    ui->listView_Platos->setEnabled("true");
+    switch(AC)
+    {
+        case CREARPLATO:
+        {
+            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
+            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato);
+
+            if(A == ACCEPT && B == ACCEPT)
+            {
+                if(Q == ANIADIRPLA)
+                {
+                    ui->listView_Platos->setModel(db1->addPLAQuerys(captureTextBoxText(PLATOS)));
+                    ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
+                    QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
+                    fillIngPlaTextBox(model, PLATOS);
+                }
+            }
+
+            QMessageBox msgBox;
+            msgBox.setText("Un plato ha sido añadido a la base de datos.");
+            msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
+            QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
+            msgBox.setStandardButtons(QMessageBox::No);
+            msgBox.setDefaultButton(QMessageBox::No);
+            msgBox.exec();
+
+            if(msgBox.clickedButton() == myYesButton)
+            {
+                AC = CREARINGDEPLATO;
+                disablePlatosTextBox();
+                ui->lineEdit_PLAING_cantidad->setEnabled(true);
+                ui->pushButton_PLAING_aniadir->setEnabled(true);
+                ui->listView_Ingredientes_PLA->setEnabled(true);
+                ui->pushButton_Cancelar_PLA->setEnabled(false);
+            }
+            else
+            {
+                enableAMEPlatosButtons();
+                disableGCPlatosButtons();
+                disablePlatosTextBox();
+                clearPlatosTextBox();
+
+                ui->listView_Platos->setEnabled(true);
+                ui->listView_Platos->clearSelection();                        //Desselecciona el posible ingrediente seleccionado en el listview
+            }
+        }
+        break;
+
+        case CREARINGDEPLATO:
+            enableAMEPlatosButtons();
+            disableGCPlatosButtons();
+            disableAMEINGPLAButtons();
+
+            disablePlatosTextBox();
+            clearPlatosTextBox();
+            cleanListViewING_de_PLA();
+
+            ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
+            ui->listView_Platos->setEnabled("true");
+        break;
+    }
+
+    ui->label_InfoQuerys_2->setText("");                          //Label informativo
+    ui->lineEdit_PLAING_cantidad->setText("");
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
@@ -380,7 +447,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
 
     //const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
 
-    if(A == ACCEPT)                                       //___Comprobar si se ha seleccionado un ingrediente
+    if(A == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
     {
         if(ui->lineEdit_PLAING_cantidad->text() == "")          //___Comprobar si se ha añadido una cantidad en gramos
         {
@@ -391,7 +458,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
             QString str = ui->lineEdit_PLAING_cantidad->text();
             bool accept = true;
 
-            for(int i = 0; i < str.size(); i++)             //___Si se ha seleccionado, comprobar que la cantidad esta escrita correctamente
+            for(int i = 0; i < str.size(); i++)                 //___Si se ha seleccionado, comprobar que la cantidad esta escrita correctamente
             {
                 if(str.at(i) < 48 || str.at(i) > 57)
                 {
@@ -400,10 +467,14 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
                     break;
                 }
             }
-            if(accept)                                      //___Ingrediente seleccionado y cantidad escrita correctamente
+            if(accept)                                          //___Ingrediente seleccionado y cantidad escrita correctamente
             {
+                const QModelIndexList indexL = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
+                const QModelIndex index = indexL.at(0);
 
-
+                ui->listView_INGPLA->setModel(db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
+                ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
+                ui->lineEdit_PLAING_cantidad->setText("");
             }
         }
     }
@@ -492,6 +563,7 @@ void MainWindowMenuPlan::on_listView_Platos_clicked(const QModelIndex &index)
     fillIngPlaTextBox(model, PLATOS);
 
     ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
+    ui->lineEdit_PLAING_cantidad->setText("");
 
     delete model;
 }
@@ -506,6 +578,7 @@ void MainWindowMenuPlan::on_listView_Ingredientes_PLA_clicked(const QModelIndex 
     str.append(index.data(Qt::DisplayRole).toString());                                         //____Elemento del listview al que se ha hecho click
     str.append("</span></p></body></html>");
     ui->label_PLAING->setText(str);
+    ui->lineEdit_PLAING_cantidad->setText("");
 }
 
 /*-------------------------------------------------------------------------*/
@@ -639,37 +712,71 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
 /*------------ CAPTURAR LOS DATOS DE TEXTBOX DE INGREDIENTES --------------*/
 /*-------------------------------------------------------------------------*/
 
-QStringList MainWindowMenuPlan::captureTextBoxText()
+QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
 {
     QStringList dataTextBox;
 
-    dataTextBox << ui->label_INGid->text()
-    << ui->lineEdit_INGnombre->text()
-    << ui->lineEdit_INGcantidad->text()
-    << ui->lineEdit_INGcantporprecio->text()
-    << ui->lineEdit_INGprecio->text()
-    << ui->lineEdit_INGpreciotemp->text()
-    << ui->lineEdit_INGacidofol->text()
-    << ui->lineEdit_INGcalcio->text()
-    << ui->lineEdit_INGenergia->text()
-    << ui->lineEdit_INGfosforo->text()
-    << ui->lineEdit_INGgrasa->text()
-    << ui->lineEdit_INGhierro->text()
-    << ui->lineEdit_INGmagnesio->text()
-    << ui->lineEdit_INGpotasio->text()
-    << ui->lineEdit_INGproteinas->text()
-    << ui->lineEdit_INGselenio->text()
-    << ui->lineEdit_INGsodio->text()
-    << ui->lineEdit_INGvita->text()
-    << ui->lineEdit_INGvitb1->text()
-    << ui->lineEdit_INGvitb2->text()
-    << ui->lineEdit_INGvitb6->text()
-    << ui->lineEdit_INGvitb12->text()
-    << ui->lineEdit_INGvitc->text()
-    << ui->lineEdit_INGvitd->text()
-    << ui->lineEdit_INGvite->text()
-    << ui->lineEdit_INGyodo->text()
-    << ui->lineEdit_INGzinc->text();
+    switch(AP)
+    {
+        case INGREDIENTES:
+            dataTextBox << ui->label_INGid->text()
+            << ui->lineEdit_INGnombre->text()
+            << ui->lineEdit_INGcantidad->text()
+            << ui->lineEdit_INGcantporprecio->text()
+            << ui->lineEdit_INGprecio->text()
+            << ui->lineEdit_INGpreciotemp->text()
+            << ui->lineEdit_INGacidofol->text()
+            << ui->lineEdit_INGcalcio->text()
+            << ui->lineEdit_INGenergia->text()
+            << ui->lineEdit_INGfosforo->text()
+            << ui->lineEdit_INGgrasa->text()
+            << ui->lineEdit_INGhierro->text()
+            << ui->lineEdit_INGmagnesio->text()
+            << ui->lineEdit_INGpotasio->text()
+            << ui->lineEdit_INGproteinas->text()
+            << ui->lineEdit_INGselenio->text()
+            << ui->lineEdit_INGsodio->text()
+            << ui->lineEdit_INGvita->text()
+            << ui->lineEdit_INGvitb1->text()
+            << ui->lineEdit_INGvitb2->text()
+            << ui->lineEdit_INGvitb6->text()
+            << ui->lineEdit_INGvitb12->text()
+            << ui->lineEdit_INGvitc->text()
+            << ui->lineEdit_INGvitd->text()
+            << ui->lineEdit_INGvite->text()
+            << ui->lineEdit_INGyodo->text()
+            << ui->lineEdit_INGzinc->text();
+        break;
+
+        case PLATOS:
+            dataTextBox << ui->label_PLAid->text()
+            << ui->lineEdit_PLAnombre->text()
+            << ui->textEdit_PLAdescripcion->toPlainText()
+            << ui->lineEdit_PLAprecio->text()
+            << ui->lineEdit_PLAcantidad->text()
+            << ui->lineEdit_PLAacidofol->text()
+            << ui->lineEdit_PLAcalcio->text()
+            << ui->lineEdit_PLAenergia->text()
+            << ui->lineEdit_PLAfosforo->text()
+            << ui->lineEdit_PLAgrasa->text()
+            << ui->lineEdit_PLAhierro->text()
+            << ui->lineEdit_PLAmagnesio->text()
+            << ui->lineEdit_PLApotasio->text()
+            << ui->lineEdit_PLAproteinas->text()
+            << ui->lineEdit_PLAselenio->text()
+            << ui->lineEdit_PLAsodio->text()
+            << ui->lineEdit_PLAvita->text()
+            << ui->lineEdit_PLAvitb1->text()
+            << ui->lineEdit_PLAvitb2->text()
+            << ui->lineEdit_PLAvitb6->text()
+            << ui->lineEdit_PLAvitb12->text()
+            << ui->lineEdit_PLAvitc->text()
+            << ui->lineEdit_PLAvitd->text()
+            << ui->lineEdit_PLAvite->text()
+            << ui->lineEdit_PLAyodo->text()
+            << ui->lineEdit_PLAzinc->text();
+        break;
+    }
 
     /*for (int i = 0; i < dataTextBox.size(); ++i)
     {
