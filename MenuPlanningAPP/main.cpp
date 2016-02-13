@@ -7,12 +7,5 @@ int main(int argc, char *argv[])
     MainWindowMenuPlan w;
     w.show();
 
-
-
-
-
-
-
-
     return a.exec();
 }

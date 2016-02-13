@@ -40,7 +40,7 @@ class MainWindowMenuPlan : public QMainWindow
         void enableAMEPlatosButtons();                          //habilitar los botones Añadir, Modificar y Eliminar del apartado Platos
         void disableAMEPlatosButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Platos
 
-        //void enableAMEINGPLAButtons();                          //habilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
+        void enableAMEINGPLAButtons();                          //habilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
         void disableAMEINGPLAButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
 
         void cleanListViewING();                                //Limpia de contenido el list view de Ingredientes
@@ -110,7 +110,6 @@ private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;
         QUERYS Q;
-        ACTION AC;                          //Se usa unicamente para las variables CREARPLATO y CREARINGDEPLATO
         const int maxNumSize = 6;
 };
 

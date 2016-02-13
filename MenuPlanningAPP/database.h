@@ -35,12 +35,15 @@ class database
         void queryMostrarInfoPlatos(QString &str, QString &strID);                      //Consulta para mostrar la informacion de un plato
         void queryMostrarIngredientesPlatos(QString &str, QString &strID);              //Consulta para mostrar los ingredientes de un plato
         QSqlQueryModel * queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);//Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
+        void queryEliminarPlato(QString &str, QString &strID);                          //Consulta para eliminar un plato
 
         QSqlQueryModel * modINGQuerys(QStringList &strl);                               //Consulta para modificar los datos de un ingrediente
         QSqlQueryModel * addINGQuerys(QStringList &strl);                               //Consulta para crear un nuevo ingrediente
         QSqlQueryModel * modPLAQuerys(QStringList &strl);                               //Consulta para modificar los datos de un plato
         QSqlQueryModel * addPLAQuerys(QStringList &strl);                               //Consulta para crear un nuevo plato
         QSqlQueryModel * addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);        //Consulta para añadir un ingrediente a un plato
+        QSqlQueryModel * modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);        //Consulta para modificar un ingrediente a un plato
+        QSqlQueryModel * removeINGtoPLAQuery(QString &strIDPLA, QString &nombre);                        //Consulta para eliminar un ingrediente a un plato
 
         void finishQuery();                                                             //Funcion para liberar la memoria correspondiente a las variables *qry y *model
 };

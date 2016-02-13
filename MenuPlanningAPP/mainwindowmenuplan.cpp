@@ -110,13 +110,13 @@ void MainWindowMenuPlan::disableAMEPlatosButtons()          //deshabilitar los b
 }
 
 /*---------------------------------------------------------------------------------------------------------------------*/
-/*
+
 void MainWindowMenuPlan::enableAMEINGPLAButtons()           //habilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
 {
     ui->pushButton_PLAING_aniadir->setEnabled(true);
     ui->pushButton_PLAING_modificar->setEnabled(true);
     ui->pushButton_PLAING_eliminar->setEnabled(true);
-}*/
+}
 
 void MainWindowMenuPlan::disableAMEINGPLAButtons()          //deshabilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
 {
@@ -299,18 +299,49 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
     ui->lineEdit_PLAING_cantidad->setEnabled(false);
 
     Q = ANIADIRPLA;
-    AC = CREARPLATO;
+    //AC = CREARPLATO;
     ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
 }
 
 void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
 {
+    ACTION A = controllSelectionElement(*ui->listView_Platos);
 
+    if(A == ACCEPT)
+    {
+        enableGCPlatosButtons();
+        disableAMEPlatosButtons();
+        enablePlatosTextBox();
+        enableAMEINGPLAButtons();
+        ui->listView_Ingredientes_PLA->setEnabled(true);
+
+        Q = MODIFICARPLA;
+        ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo numérico vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
+    }
 }
 
 void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
 {
+    ACTION A = controllSelectionElement(*ui->listView_Platos);
 
+    if(A == ACCEPT)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Un plato va a ser eliminado.");
+        msgBox.setInformativeText("¿Está seguro de que quiere eliminar este plato de forma permanente?");
+        QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
+        msgBox.setStandardButtons(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        msgBox.exec();
+
+        if(msgBox.clickedButton() == myYesButton)
+        {
+            ui->listView_Platos->setModel(db1->makeQuerys(ELIMINARPLA, ui->label_PLAid->text()));
+            ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
+            clearPlatosTextBox();
+            cleanListViewING_de_PLA();
+        }
+    }
 }
 
 /*--------------------------------------------------------- GC INGREDIENTES ------------------------------------------------------------*/
@@ -357,55 +388,52 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 {
-    switch(AC)
+    switch(Q)
     {
-        case CREARPLATO:
+        case ANIADIRPLA:
         {
             ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
             ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato);
 
             if(A == ACCEPT && B == ACCEPT)
             {
-                if(Q == ANIADIRPLA)
+                ui->listView_Platos->setModel(db1->addPLAQuerys(captureTextBoxText(PLATOS)));
+                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
+                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
+                fillIngPlaTextBox(model, PLATOS);
+
+                QMessageBox msgBox;
+                msgBox.setText("Un plato ha sido añadido a la base de datos.");
+                msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
+                QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
+                msgBox.setStandardButtons(QMessageBox::No);
+                msgBox.setDefaultButton(QMessageBox::No);
+                msgBox.exec();
+
+                if(msgBox.clickedButton() == myYesButton)
                 {
-                    ui->listView_Platos->setModel(db1->addPLAQuerys(captureTextBoxText(PLATOS)));
-                    ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
-                    QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
-                    fillIngPlaTextBox(model, PLATOS);
+                    Q = ANIADIRINGPLA;
+                    disablePlatosTextBox();
+                    ui->lineEdit_PLAING_cantidad->setEnabled(true);
+                    ui->pushButton_PLAING_aniadir->setEnabled(true);
+                    ui->listView_Ingredientes_PLA->setEnabled(true);
+                    ui->pushButton_Cancelar_PLA->setEnabled(false);
                 }
-            }
+                else
+                {
+                    enableAMEPlatosButtons();
+                    disableGCPlatosButtons();
+                    disablePlatosTextBox();
+                    clearPlatosTextBox();
 
-            QMessageBox msgBox;
-            msgBox.setText("Un plato ha sido añadido a la base de datos.");
-            msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
-            QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
-            msgBox.setStandardButtons(QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::No);
-            msgBox.exec();
-
-            if(msgBox.clickedButton() == myYesButton)
-            {
-                AC = CREARINGDEPLATO;
-                disablePlatosTextBox();
-                ui->lineEdit_PLAING_cantidad->setEnabled(true);
-                ui->pushButton_PLAING_aniadir->setEnabled(true);
-                ui->listView_Ingredientes_PLA->setEnabled(true);
-                ui->pushButton_Cancelar_PLA->setEnabled(false);
-            }
-            else
-            {
-                enableAMEPlatosButtons();
-                disableGCPlatosButtons();
-                disablePlatosTextBox();
-                clearPlatosTextBox();
-
-                ui->listView_Platos->setEnabled(true);
-                ui->listView_Platos->clearSelection();                        //Desselecciona el posible ingrediente seleccionado en el listview
+                    ui->listView_Platos->setEnabled(true);
+                    ui->listView_Platos->clearSelection();                        //Desselecciona el posible ingrediente seleccionado en el listview
+                }
             }
         }
         break;
 
-        case CREARINGDEPLATO:
+        case ANIADIRINGPLA:
             enableAMEPlatosButtons();
             disableGCPlatosButtons();
             disableAMEINGPLAButtons();
@@ -421,6 +449,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 
     ui->label_InfoQuerys_2->setText("");                          //Label informativo
     ui->lineEdit_PLAING_cantidad->setText("");
+    ui->listView_Platos->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
@@ -436,6 +465,9 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
 
     ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
     ui->listView_Platos->setEnabled("true");
+    ui->label_InfoQuerys_2->setText("");                          //Label informativo
+    ui->lineEdit_PLAING_cantidad->setText("");
+    ui->listView_Platos->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 
@@ -487,7 +519,28 @@ void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
 {
+    ACTION A = controllSelectionElement(*ui->listView_INGPLA);
 
+    if(A == ACCEPT)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Un ingrediente del plato va a ser eliminado.");
+        msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
+        QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
+        msgBox.setStandardButtons(QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        msgBox.exec();
+
+        if(msgBox.clickedButton() == myYesButton)
+        {
+            const QModelIndexList indexL = ui->listView_INGPLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
+            const QModelIndex index = indexL.at(0);
+
+            ui->listView_INGPLA->setModel(db1->removeINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString()));
+            ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));
+            ui->lineEdit_PLAING_cantidad->setText("");
+        }
+    }
 }
 
 

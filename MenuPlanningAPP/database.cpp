@@ -82,6 +82,10 @@ QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
         case MOSTRARINGPLA:
             queryMostrarIngredientesPlatos(str, strID);
         break;
+
+        case ELIMINARPLA:
+            queryEliminarPlato(str, strID);
+        break;
     }
 
     //qDebug() << str;
@@ -409,6 +413,19 @@ QSqlQueryModel * database::modPLAQuerys(QStringList &strl)
 
 
 /*-------------------------------------------------------------------------------------*/
+/*----------------------------- ELIMINAR UN PLATO -------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryEliminarPlato(QString &str, QString &strID)
+{
+    str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE PlatosTAB_id=";
+    str.append(strID);
+    str.append("; DELETE FROM PlatosTAB WHERE id_PlatosTAB=");
+    str.append(strID);
+    str.append(";");
+}
+
+
+/*-------------------------------------------------------------------------------------*/
 /*------------------------ AÑADIR UN INGREDIENTE A UN PLATO ---------------------------*/
 /*-------------------------------------------------------------------------------------*/
 QSqlQueryModel * database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad)
@@ -431,4 +448,49 @@ QSqlQueryModel * database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, 
     return model;
 }
 
+/*-------------------------------------------------------------------------------------*/
+/*--------------------- MODIFICAR UN INGREDIENTE DE UN PLATO --------------------------*/
+/*-------------------------------------------------------------------------------------*/
+QSqlQueryModel * database::modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad)
+{
+    QString str = "INSERT INTO IngredientesTAB (cantidad_gramos, alimentostab_id, platostab_id) VALUES (";
+    str.append(cantidad);
+    str.append(",(SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
+    str.append(nombre);
+    str.append("'),");
+    str.append(strIDPLA);
+    str.append(")");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    return model;
+}
+
+/*-------------------------------------------------------------------------------------*/
+/*--------------------- ELIMINAR UN INGREDIENTE DE UN PLATO ---------------------------*/
+/*-------------------------------------------------------------------------------------*/
+QSqlQueryModel * database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
+{
+    QString str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE PlatosTAB_id=";
+    str.append(strIDPLA);
+    str.append(" AND AlimentosTAB_id= (SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
+    str.append(nombre);
+    str.append("')");
+
+    qDebug() << str;
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    return model;
+}
 
