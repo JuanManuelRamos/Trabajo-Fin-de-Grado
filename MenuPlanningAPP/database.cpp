@@ -399,7 +399,58 @@ QSqlQueryModel * database::addPLAQuerys(QStringList &strl)
 /*-------------------------------------------------------------------------------------*/
 QSqlQueryModel * database::modPLAQuerys(QStringList &strl)
 {
-    QString str = "";
+    QString str = "UPDATE PlatosTAB SET nombre='";
+    str.append(strl.at(1));
+    str.append("',descripcion='");
+    str.append(strl.at(2));
+    str.append("',precio=");
+    str.append(strl.at(3));
+    str.append(",cantidad_gramos=");
+    str.append(strl.at(4));
+    str.append(",acido_folico_ug=");
+    str.append(strl.at(5));
+    str.append(",calcio_mg=");
+    str.append(strl.at(6));
+    str.append(",energia_kcal=");
+    str.append(strl.at(7));
+    str.append(",fosforo_mg=");
+    str.append(strl.at(8));
+    str.append(",grasa_total_g=");
+    str.append(strl.at(9));
+    str.append(",hierro_mg=");
+    str.append(strl.at(10));
+    str.append(",magnesio_mg=");
+    str.append(strl.at(11));
+    str.append(",potasio_mg=");
+    str.append(strl.at(12));
+    str.append(",proteinas_g=");
+    str.append(strl.at(13));
+    str.append(",selenio_ug=");
+    str.append(strl.at(14));
+    str.append(",sodio_mg=");
+    str.append(strl.at(15));
+    str.append(",vit_a_ug=");
+    str.append(strl.at(16));
+    str.append(",vit_b1_mg=");
+    str.append(strl.at(17));
+    str.append(",vit_b2_mg=");
+    str.append(strl.at(18));
+    str.append(",vit_b6_mg=");
+    str.append(strl.at(19));
+    str.append(",vit_b12_ug=");
+    str.append(strl.at(20));
+    str.append(",vit_c_mg=");
+    str.append(strl.at(21));
+    str.append(",vit_d_ug=");
+    str.append(strl.at(22));
+    str.append(",vit_e_mg=");
+    str.append(strl.at(23));
+    str.append(",yodo_ug=");
+    str.append(strl.at(24));
+    str.append(",zinc_mg=");
+    str.append(strl.at(25));
+    str.append(" WHERE id_PlatosTAB=");
+    str.append(strl.at(0));
 
     qry = new QSqlQuery();
     model = new QSqlQueryModel();
@@ -453,13 +504,12 @@ QSqlQueryModel * database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, 
 /*-------------------------------------------------------------------------------------*/
 QSqlQueryModel * database::modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad)
 {
-    QString str = "INSERT INTO IngredientesTAB (cantidad_gramos, alimentostab_id, platostab_id) VALUES (";
+    QString str = "UPDATE IngredientesTAB SET cantidad_gramos=";
     str.append(cantidad);
-    str.append(",(SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
+    str.append(" WHERE AlimentosTAB_id=(SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
     str.append(nombre);
-    str.append("'),");
+    str.append("') AND PlatosTAB_id=");
     str.append(strIDPLA);
-    str.append(")");
 
     qry = new QSqlQuery();
     model = new QSqlQueryModel();
@@ -481,8 +531,6 @@ QSqlQueryModel * database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombr
     str.append(" AND AlimentosTAB_id= (SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
     str.append(nombre);
     str.append("')");
-
-    qDebug() << str;
 
     qry = new QSqlQuery();
     model = new QSqlQueryModel();

@@ -352,7 +352,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     disableGCIngredientesButtons();
     disableIngredientesTextBox();
     ACTION A = controllDataTextBoxName(*ui->lineEdit_INGnombre);
-    ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento);
+    ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento, 1);
 
     if(A == ACCEPT && B == ACCEPT)
     {
@@ -393,7 +393,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
         case ANIADIRPLA:
         {
             ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
-            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato);
+            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
 
             if(A == ACCEPT && B == ACCEPT)
             {
@@ -427,7 +427,6 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                     clearPlatosTextBox();
 
                     ui->listView_Platos->setEnabled(true);
-                    ui->listView_Platos->clearSelection();                        //Desselecciona el posible ingrediente seleccionado en el listview
                 }
             }
         }
@@ -445,11 +444,33 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
             ui->listView_Platos->setEnabled("true");
         break;
+
+        case MODIFICARPLA:
+            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
+            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
+
+            if(A == ACCEPT && B == ACCEPT)
+            {
+                ui->listView_Platos->setModel(db1->modPLAQuerys(captureTextBoxText(PLATOS)));
+                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
+                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
+                fillIngPlaTextBox(model, PLATOS);
+
+                enableAMEPlatosButtons();
+                disableGCPlatosButtons();
+                disableAMEINGPLAButtons();
+                disablePlatosTextBox();
+                clearPlatosTextBox();
+
+                ui->listView_Platos->setEnabled(true);
+            }
+        break;
     }
 
     ui->label_InfoQuerys_2->setText("");                          //Label informativo
     ui->lineEdit_PLAING_cantidad->setText("");
     ui->listView_Platos->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
+    ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
@@ -458,16 +479,16 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
     disableGCPlatosButtons();
     disableAMEINGPLAButtons();
 
-
     disablePlatosTextBox();
     clearPlatosTextBox();
     cleanListViewING_de_PLA();
 
     ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
+    ui->listView_Platos->clearSelection();                      //Desselecciona el posible ingrediente seleccionado en el listview
+
     ui->listView_Platos->setEnabled("true");
     ui->label_InfoQuerys_2->setText("");                          //Label informativo
     ui->lineEdit_PLAING_cantidad->setText("");
-    ui->listView_Platos->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 
@@ -476,45 +497,34 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
 void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
 {
     ACTION A = controllSelectionElement(*ui->listView_Ingredientes_PLA);
+    ACTION B = controllDataTextBoxNum(*ui->groupBox_PLAING, 0);
 
     //const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
 
-    if(A == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
+    if(A == ACCEPT && B == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
     {
-        if(ui->lineEdit_PLAING_cantidad->text() == "")          //___Comprobar si se ha añadido una cantidad en gramos
-        {
-            QMessageBox::information(this,"Información","Debe añadir una cantidad en gramos al ingrediente seleccionado.");
-        }
-        else
-        {
-            QString str = ui->lineEdit_PLAING_cantidad->text();
-            bool accept = true;
+        const QModelIndexList indexL = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
+        const QModelIndex index = indexL.at(0);
 
-            for(int i = 0; i < str.size(); i++)                 //___Si se ha seleccionado, comprobar que la cantidad esta escrita correctamente
-            {
-                if(str.at(i) < 48 || str.at(i) > 57)
-                {
-                    QMessageBox::information(this,"Información","La cantidad del ingrediente debe ser numérica.");
-                    accept = false;
-                    break;
-                }
-            }
-            if(accept)                                          //___Ingrediente seleccionado y cantidad escrita correctamente
-            {
-                const QModelIndexList indexL = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
-                const QModelIndex index = indexL.at(0);
-
-                ui->listView_INGPLA->setModel(db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
-                ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
-                ui->lineEdit_PLAING_cantidad->setText("");
-            }
-        }
+        ui->listView_INGPLA->setModel(db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
+        ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
+        ui->lineEdit_PLAING_cantidad->setText("");
     }
 }
 
 void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
 {
+    ACTION A = controllSelectionElement(*ui->listView_INGPLA);
+    ACTION B = controllDataTextBoxNum(*ui->groupBox_PLAING, 0);
 
+    if(A == ACCEPT && B == ACCEPT)
+    {
+        const QModelIndexList indexL = ui->listView_INGPLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
+        const QModelIndex index = indexL.at(0);
+
+        ui->listView_INGPLA->setModel(db1->modINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
+        ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
+    }
 }
 
 void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
@@ -861,14 +871,14 @@ ACTION MainWindowMenuPlan::controllDataTextBoxName(QLineEdit &le)
 /*-------- CONTROL DE DATOS NUMERICOS INTRODUCIDOS O MODIFICADOS ----------*/
 /*-------------------------------------------------------------------------*/
 
-ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb)
+ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb, int indexFor)
 {
     ACTION A;
 
     QList<QLineEdit *> alltextbox = gb.findChildren<QLineEdit *>();
     QString str;
 
-    for(int i = 1; i < alltextbox.size(); i++)          //____Empieza en 1 para no contar el textbox referente al nombre
+    for(int i = indexFor; i < alltextbox.size(); i++)          //____Empieza en 1 para no contar el textbox referente al nombre
     {
         str = alltextbox.at(i)->text();
         if(str.size() == 1 && str == ".")               //____Controlar que el textbox no se rellene solo con una coma
@@ -883,6 +893,9 @@ ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb)
             str2.append(QString::number(maxNumSize));
             str2.append(" dígitos.");
             QMessageBox::information(this,"Información",str2);
+
+            str.remove(maxNumSize, (str.size()-maxNumSize));
+            alltextbox.at(i)->setText(str);
         }
 
         for(int j = 0; j < str.size(); j++)             //____Se controla que el textbox numerico no contenga otro caracter que no sea digito o punto

@@ -60,7 +60,7 @@ class MainWindowMenuPlan : public QMainWindow
         void fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A);             //Rellena los textbox con los datos de cada ingrediente o plato
         QStringList captureTextBoxText(APARTADOS AP);                           //Captura los datos escritos en los textbox
         ACTION controllDataTextBoxName(QLineEdit &le);                          //Controla si el campo "nombre" de un ingrediente o plato esta vacio o no
-        ACTION controllDataTextBoxNum(QGroupBox &gb);                           //Controla que los datos numericos introducidos o modificados por el usuario sean validos
+        ACTION controllDataTextBoxNum(QGroupBox &gb, int indexFor);             //Controla que los datos numericos introducidos o modificados por el usuario sean validos
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
 
 
