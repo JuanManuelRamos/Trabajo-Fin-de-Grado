@@ -51,7 +51,7 @@ class database
         //Calculo de la informacion nutricional de un plato
         QString queryMostrarCantidadING(QString &nombre);
         QSqlQueryModel * queryMostrarInfoNING(QString &nombre);
-
+        void queryUpdateInfoNING(QStringList &strl, QString &id);
 
 
 
