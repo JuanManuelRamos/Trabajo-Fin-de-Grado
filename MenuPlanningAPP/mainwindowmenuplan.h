@@ -64,6 +64,7 @@ class MainWindowMenuPlan : public QMainWindow
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
 
 
+        void nutricionalInfo();
 
     private slots:
 

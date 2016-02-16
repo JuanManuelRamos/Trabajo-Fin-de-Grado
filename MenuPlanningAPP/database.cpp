@@ -153,7 +153,7 @@ void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
 /*-------------------------------------------------------------------------------------*/
 /*----------- MOSTRAR LA CANTIDAD EN GRAMOS DEL INGREDIENTE DE UN PLATO ---------------*/
 /*-------------------------------------------------------------------------------------*/
-QSqlQueryModel * database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
+QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
 {
     QString str = "SELECT cantidad_gramos FROM IngredientesTAB WHERE platostab_id=";
     str.append(strID);
@@ -168,7 +168,12 @@ QSqlQueryModel * database::queryMostrarCantidadInGPlatos(QString &strID, QString
     qry->exec();
     model->setQuery(*qry);
 
-    return model;
+    QString resultado = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return resultado;
 }
 
 
@@ -588,6 +593,9 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
 
     result = model->record(0).value(0).toString();
 
+    delete model;
+    delete qry;
+
     switch(Q)
     {
         case ANIADIRING:
@@ -633,3 +641,46 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
     }
 }
 
+
+
+/*-------------------------------------------------------------------------------------*/
+/*----------------------- CALCULO DE INFORMACION NUTRICIONAL --------------------------*/
+/*-------------------------------------------------------------------------------------*/
+
+
+QString database::queryMostrarCantidadING(QString &nombre)
+{
+    QString query = "SELECT cantidad_gramos FROM AlimentosTAB WHERE nombre='";
+    query.append(nombre);
+    query.append("'");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(query);
+    qry->exec();
+    model->setQuery(*qry);
+
+    QString resultado = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return resultado;
+}
+
+QSqlQueryModel * database::queryMostrarInfoNING(QString &nombre)
+{
+    QString query = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, proteinas_g, potasio_mg, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
+    query.append(nombre);
+    query.append("'");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(query);
+    qry->exec();
+    model->setQuery(*qry);
+
+    return model;
+}

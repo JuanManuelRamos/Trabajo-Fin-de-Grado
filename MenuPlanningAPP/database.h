@@ -34,7 +34,7 @@ class database
         void queryMostrarPlatos(QString &str);                                          //Consulta para mostrar los platos disponibles en la base de datos
         void queryMostrarInfoPlatos(QString &str, QString &strID);                      //Consulta para mostrar la informacion de un plato
         void queryMostrarIngredientesPlatos(QString &str, QString &strID);              //Consulta para mostrar los ingredientes de un plato
-        QSqlQueryModel * queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);//Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
+        QString queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);         //Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
         void queryEliminarPlato(QString &str, QString &strID);                          //Consulta para eliminar un plato
 
         QSqlQueryModel * modINGQuerys(QStringList &strl);                               //Consulta para modificar los datos de un ingrediente
@@ -46,6 +46,14 @@ class database
         QSqlQueryModel * removeINGtoPLAQuery(QString &strIDPLA, QString &nombre);                        //Consulta para eliminar un ingrediente a un plato
 
         ACTION controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2=NULL);
+
+
+        //Calculo de la informacion nutricional de un plato
+        QString queryMostrarCantidadING(QString &nombre);
+        QSqlQueryModel * queryMostrarInfoNING(QString &nombre);
+
+
+
 
         void finishQuery();                                                             //Funcion para liberar la memoria correspondiente a las variables *qry y *model
 };

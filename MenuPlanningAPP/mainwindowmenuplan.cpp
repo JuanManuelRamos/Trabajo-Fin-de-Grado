@@ -655,6 +655,8 @@ void MainWindowMenuPlan::on_listView_Platos_clicked(const QModelIndex &index)
     ui->lineEdit_PLAING_cantidad->setText("");
 
     delete model;
+
+    nutricionalInfo();
 }
 
 /*-------------------------------------------------------------------------*/
@@ -676,10 +678,7 @@ void MainWindowMenuPlan::on_listView_Ingredientes_PLA_clicked(const QModelIndex 
 
 void MainWindowMenuPlan::on_listView_INGPLA_clicked(const QModelIndex &index)
 {
-    QSqlQueryModel *model = db1->queryMostrarCantidadInGPlatos(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString());
-
-    ui->lineEdit_PLAING_cantidad->setText(model->index(0,0).data(Qt::DisplayRole).toString());
-    delete model;
+    ui->lineEdit_PLAING_cantidad->setText(db1->queryMostrarCantidadInGPlatos(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString()));
 }
 
 
@@ -967,5 +966,82 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 
 
 
+/*-------------------------------------------------------------------------*/
+/*------------- CALCULAR INFORMACION NUTRICIONAL DE PLATOS ----------------*/
+/*-------------------------------------------------------------------------*/
+void MainWindowMenuPlan::nutricionalInfo()
+{
+    /*
+    QStringList infoN;
+    infoN << ui->lineEdit_PLAacidofol->text()
+    << ui->lineEdit_PLAcalcio->text()
+    << ui->lineEdit_PLAenergia->text()
+    << ui->lineEdit_PLAfosforo->text()
+    << ui->lineEdit_PLAgrasa->text()
+    << ui->lineEdit_PLAhierro->text()
+    << ui->lineEdit_PLAmagnesio->text()
+    << ui->lineEdit_PLApotasio->text()
+    << ui->lineEdit_PLAproteinas->text()
+    << ui->lineEdit_PLAselenio->text()
+    << ui->lineEdit_PLAsodio->text()
+    << ui->lineEdit_PLAvita->text()
+    << ui->lineEdit_PLAvitb1->text()
+    << ui->lineEdit_PLAvitb2->text()
+    << ui->lineEdit_PLAvitb6->text()
+    << ui->lineEdit_PLAvitb12->text()
+    << ui->lineEdit_PLAvitc->text()
+    << ui->lineEdit_PLAvitd->text()
+    << ui->lineEdit_PLAvite->text()
+    << ui->lineEdit_PLAyodo->text()
+    << ui->lineEdit_PLAzinc->text();*/
 
+    //----------------------------
+    QAbstractItemModel *model = ui->listView_INGPLA->model();
+    QString ing;
+    float cantidadIngPlato = 0;
+    float cantidadIngBD = 0;
+
+    for(int i = 0; i < model->rowCount(); i++)
+    {
+        ing = ui->listView_INGPLA->model()->index(i,0).data(Qt::DisplayRole).toString();
+        cantidadIngPlato = db1->queryMostrarCantidadInGPlatos(ui->label_PLAid->text(), ing).toFloat();
+        cantidadIngBD = db1->queryMostrarCantidadING(ing).toFloat();
+        qDebug() << ing << " " << cantidadIngPlato << " " << cantidadIngBD;
+
+        QSqlQueryModel * model = db1->queryMostrarInfoNING(ing);
+        QStringList infoN;
+
+        infoN << model->index(0,0).data(Qt::DisplayRole).toString()
+        << model->index(0,1).data(Qt::DisplayRole).toString()
+        << model->index(0,2).data(Qt::DisplayRole).toString()
+        << model->index(0,3).data(Qt::DisplayRole).toString()
+        << model->index(0,4).data(Qt::DisplayRole).toString()
+        << model->index(0,5).data(Qt::DisplayRole).toString()
+        << model->index(0,6).data(Qt::DisplayRole).toString()
+        << model->index(0,7).data(Qt::DisplayRole).toString()
+        << model->index(0,8).data(Qt::DisplayRole).toString()
+        << model->index(0,9).data(Qt::DisplayRole).toString()
+        << model->index(0,10).data(Qt::DisplayRole).toString()
+        << model->index(0,11).data(Qt::DisplayRole).toString()
+        << model->index(0,12).data(Qt::DisplayRole).toString()
+        << model->index(0,13).data(Qt::DisplayRole).toString()
+        << model->index(0,14).data(Qt::DisplayRole).toString()
+        << model->index(0,15).data(Qt::DisplayRole).toString()
+        << model->index(0,16).data(Qt::DisplayRole).toString()
+        << model->index(0,17).data(Qt::DisplayRole).toString()
+        << model->index(0,18).data(Qt::DisplayRole).toString()
+        << model->index(0,19).data(Qt::DisplayRole).toString()
+        << model->index(0,20).data(Qt::DisplayRole).toString();
+
+        delete model;
+
+        for(int i = 0; i < infoN.size(); i++)
+        {
+            infoN[i] = QString::number((cantidadIngPlato * infoN[i].toFloat()) / cantidadIngBD);
+            qDebug() << infoN[i];
+        }
+    }
+
+
+}
 
