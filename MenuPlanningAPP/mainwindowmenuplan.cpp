@@ -314,6 +314,8 @@ void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
         enablePlatosTextBox();
         enableAMEINGPLAButtons();
         ui->listView_Ingredientes_PLA->setEnabled(true);
+        ui->listView_Platos->setEnabled(false);
+        ui->listView_Platos->clearSelection();
 
         Q = MODIFICARPLA;
         ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo numérico vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
@@ -353,8 +355,9 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     disableIngredientesTextBox();
     ACTION A = controllDataTextBoxName(*ui->lineEdit_INGnombre);
     ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento, 1);
+    ACTION C = db1->controllQuerys(Q, INGREDIENTES, ui->lineEdit_INGnombre->text(), ui->label_INGid->text());
 
-    if(A == ACCEPT && B == ACCEPT)
+    if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
     {
         if(Q == MODIFICARING)
         {
@@ -394,8 +397,9 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
         {
             ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
             ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
+            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());
 
-            if(A == ACCEPT && B == ACCEPT)
+            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
             {
                 ui->listView_Platos->setModel(db1->addPLAQuerys(captureTextBoxText(PLATOS)));
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
@@ -429,6 +433,15 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                     ui->listView_Platos->setEnabled(true);
                 }
             }
+            else
+            {
+                enableAMEPlatosButtons();
+                disableGCPlatosButtons();
+                disablePlatosTextBox();
+                clearPlatosTextBox();
+
+                ui->listView_Platos->setEnabled(true);
+            }
         }
         break;
 
@@ -448,8 +461,9 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
         case MODIFICARPLA:
             ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
             ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
+            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());
 
-            if(A == ACCEPT && B == ACCEPT)
+            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
             {
                 ui->listView_Platos->setModel(db1->modPLAQuerys(captureTextBoxText(PLATOS)));
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
@@ -464,12 +478,22 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 
                 ui->listView_Platos->setEnabled(true);
             }
+            else
+            {
+                enableAMEPlatosButtons();
+                disableGCPlatosButtons();
+                disablePlatosTextBox();
+                disableAMEINGPLAButtons();
+                clearPlatosTextBox();
+
+                ui->listView_Platos->setEnabled(true);
+            }
         break;
     }
 
     ui->label_InfoQuerys_2->setText("");                          //Label informativo
     ui->lineEdit_PLAING_cantidad->setText("");
-    ui->listView_Platos->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
+    ui->listView_Platos->clearSelection();                      //Desselecciona el posible ingrediente seleccionado en el listview
     ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
@@ -499,13 +523,15 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
     ACTION A = controllSelectionElement(*ui->listView_Ingredientes_PLA);
     ACTION B = controllDataTextBoxNum(*ui->groupBox_PLAING, 0);
 
+    const QModelIndexList indexL = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
+    const QModelIndex index = indexL.at(0);
+
+    ACTION C = db1->controllQuerys(ANIADIRINGPLA, INGDEPLATO, index.data(Qt::DisplayRole).toString(), ui->label_PLAid->text());
+
     //const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
 
-    if(A == ACCEPT && B == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
+    if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
     {
-        const QModelIndexList indexL = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
-        const QModelIndex index = indexL.at(0);
-
         ui->listView_INGPLA->setModel(db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
         ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
         ui->lineEdit_PLAING_cantidad->setText("");

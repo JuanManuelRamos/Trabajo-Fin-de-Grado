@@ -542,3 +542,94 @@ QSqlQueryModel * database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombr
     return model;
 }
 
+
+/*-------------------------------------------------------------------------------------*/
+/*--------------- CONTROLAR LA REPETICIÓN DE INGREDIENTES O PLATOS --------------------*/
+/*-------------------------------------------------------------------------------------*/
+ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2)
+{
+    QString result = NULL;
+    QString query;
+    QString info = "Ya existe un ";
+    ACTION AC = ACCEPT;
+
+    switch(AP)
+    {
+        case INGREDIENTES:
+            query = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE nombre ='";
+            query.append(strID1);
+            query.append("'");
+            info.append("ingrediente");
+        break;
+
+        case PLATOS:
+            query = "SELECT id_PlatosTAB FROM PlatosTAB WHERE nombre ='";
+            query.append(strID1);
+            query.append("'");
+            info.append("plato");
+        break;
+
+        case INGDEPLATO:
+            query = "SELECT id_IngredientesTAB FROM IngredientesTAB WHERE AlimentosTAB_id = (SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='";
+            query.append(strID1);
+            query.append("') AND PlatosTAB_id =");
+            query.append(strID2);
+            info.append("ingrediente para este plato");
+        break;
+    }
+
+    info.append(" con este nombre en la base de datos.");
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(query);
+    qry->exec();
+    model->setQuery(*qry);
+
+    result = model->record(0).value(0).toString();
+
+    switch(Q)
+    {
+        case ANIADIRING:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+
+        case ANIADIRPLA:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+
+        case MODIFICARING:
+            if((result != "" || result != NULL) && result != strID2)
+                AC = DENY;
+        break;
+
+        case MODIFICARPLA:
+            if((result != "" || result != NULL) && result != strID2)
+                AC = DENY;
+        break;
+
+        case ANIADIRINGPLA:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+    }
+
+    if(AC == DENY)
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("Información");
+        msgBox.setInformativeText(info);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return DENY;
+    }
+    else
+    {
+        return ACCEPT;
+    }
+}
+

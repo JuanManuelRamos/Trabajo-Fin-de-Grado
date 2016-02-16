@@ -45,6 +45,8 @@ class database
         QSqlQueryModel * modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);        //Consulta para modificar un ingrediente a un plato
         QSqlQueryModel * removeINGtoPLAQuery(QString &strIDPLA, QString &nombre);                        //Consulta para eliminar un ingrediente a un plato
 
+        ACTION controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2=NULL);
+
         void finishQuery();                                                             //Funcion para liberar la memoria correspondiente a las variables *qry y *model
 };
 
