@@ -11,7 +11,7 @@
 #include "database.h"
 #include "enums.h"
 #include <QGroupBox>
-//#pragma once
+
 
 using namespace std;
 
@@ -65,6 +65,8 @@ class MainWindowMenuPlan : public QMainWindow
 
 
         void nutricionalInfo();
+        void initializeInfoN(QStringList &infoN);
+        void showInfoN(QStringList &infoN);
 
     private slots:
 
@@ -83,7 +85,6 @@ class MainWindowMenuPlan : public QMainWindow
         void on_pushButton_ConectarBD_clicked();
 
         void on_listView_Ingredientes_clicked(const QModelIndex &index);
-
 
         void on_listView_Platos_clicked(const QModelIndex &index);
 
@@ -112,6 +113,7 @@ private:
         database *db1;
         QUERYS Q;
         const int maxNumSize = 6;
+        const int NumInfN = 21;
 };
 
 #endif // MAINWINDOWMENUPLAN_H

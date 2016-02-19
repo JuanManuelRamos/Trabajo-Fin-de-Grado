@@ -19,11 +19,8 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     disableGCPlatosButtons();
     disableAMEPlatosButtons();
     disableAMEINGPLAButtons();
-
-
     //Deshabilitar los textbox (lineedit) de Ingredientes al arranque de la aplicacion
     disableIngredientesTextBox();
-
     //Deshabilitar los textbox (lineedit) de Platos al arranque de la aplicacion
     disablePlatosTextBox();
 }
@@ -222,7 +219,7 @@ void MainWindowMenuPlan::cleanListViewPlatos()              //Se borra el listvi
     delete model;
 }
 
-void MainWindowMenuPlan::cleanListViewING_de_PLA()
+void MainWindowMenuPlan::cleanListViewING_de_PLA()          //Se borra el listview con los ingredientes correspondientes a un plato
 {
     QStringListModel *model = new QStringListModel();
     model->removeRows(0, model->rowCount());
@@ -267,6 +264,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Un ingrediente va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -299,7 +297,6 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
     ui->lineEdit_PLAING_cantidad->setEnabled(false);
 
     Q = ANIADIRPLA;
-    //AC = CREARPLATO;
     ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
 }
 
@@ -329,6 +326,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Un plato va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este plato de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -361,12 +359,12 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     {
         if(Q == MODIFICARING)
         {
-            ui->listView_Ingredientes->setModel(db1->modINGQuerys(captureTextBoxText(INGREDIENTES)));
+            db1->modINGQuerys(captureTextBoxText(INGREDIENTES));
             ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
         }
         else if(Q == ANIADIRING)
         {
-            ui->listView_Ingredientes->setModel(db1->addINGQuerys(captureTextBoxText(INGREDIENTES)));
+            db1->addINGQuerys(captureTextBoxText(INGREDIENTES));
             ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
         }
     }
@@ -401,7 +399,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 
             if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
             {
-                ui->listView_Platos->setModel(db1->addPLAQuerys(captureTextBoxText(PLATOS)));
+                db1->addPLAQuerys(captureTextBoxText(PLATOS));
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
                 fillIngPlaTextBox(model, PLATOS);
@@ -465,7 +463,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
 
             if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
             {
-                ui->listView_Platos->setModel(db1->modPLAQuerys(captureTextBoxText(PLATOS)));
+                db1->modPLAQuerys(captureTextBoxText(PLATOS));
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
                 fillIngPlaTextBox(model, PLATOS);
@@ -528,11 +526,9 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
 
     ACTION C = db1->controllQuerys(ANIADIRINGPLA, INGDEPLATO, index.data(Qt::DisplayRole).toString(), ui->label_PLAid->text());
 
-    //const QModelIndexList index = ui->listView_Ingredientes_PLA->selectionModel()->selectedIndexes();
-
     if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                             //___Comprobar si se ha seleccionado un ingrediente
     {
-        ui->listView_INGPLA->setModel(db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
+        db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text());
         ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
         ui->lineEdit_PLAING_cantidad->setText("");
     }
@@ -548,7 +544,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
         const QModelIndexList indexL = ui->listView_INGPLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
         const QModelIndex index = indexL.at(0);
 
-        ui->listView_INGPLA->setModel(db1->modINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text()));
+        db1->modINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text());
         ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Mostrar los ingredientes del plato
     }
 }
@@ -560,6 +556,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Un ingrediente del plato va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -572,7 +569,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
             const QModelIndexList indexL = ui->listView_INGPLA->selectionModel()->selectedIndexes();       //Captura la seleccion del listview de ingredientes
             const QModelIndex index = indexL.at(0);
 
-            ui->listView_INGPLA->setModel(db1->removeINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString()));
+            db1->removeINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString());
             ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));
             ui->lineEdit_PLAING_cantidad->setText("");
         }
@@ -866,10 +863,6 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
         break;
     }
 
-    /*for (int i = 0; i < dataTextBox.size(); ++i)
-    {
-        qDebug() << dataTextBox.at(i);
-    }*/
     return dataTextBox;
 }
 
@@ -899,7 +892,6 @@ ACTION MainWindowMenuPlan::controllDataTextBoxName(QLineEdit &le)
 ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb, int indexFor)
 {
     ACTION A;
-
     QList<QLineEdit *> alltextbox = gb.findChildren<QLineEdit *>();
     QString str;
 
@@ -952,7 +944,6 @@ ACTION MainWindowMenuPlan::controllDataTextBoxNum(QGroupBox &gb, int indexFor)
 ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 {
     ACTION A = ACCEPT;
-
     const QModelIndexList index = lv.selectionModel()->selectedIndexes();       //Captura la seleccion del listview
 
     if(index.size() != 1)                   //Controla si se ha seleccionado en elemento del listview
@@ -960,7 +951,6 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
         A = DENY;
         QMessageBox::information(this,"Información","Debe seleccionar un elemento de la lista.");
     }
-
     return A;
 }
 
@@ -972,48 +962,55 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 void MainWindowMenuPlan::nutricionalInfo()
 {
     QAbstractItemModel *model = ui->listView_INGPLA->model();
+    QSqlQueryModel * model2;
     QString ing;
-    float cantidadIngPlato = 0;
-    float cantidadIngBD = 0;
-    QStringList infoN;
-    QStringList temp;
+    float cantidadIngPlato = 0, cantidadIngBD = 0;
+    QStringList infoN, temp;
 
-    for(int i = 0; i < 21; i++)
-    {
-        infoN.push_back("0");
-    }
+    initializeInfoN(infoN);
 
     for(int i = 0; i < model->rowCount(); i++)
     {
         ing = ui->listView_INGPLA->model()->index(i,0).data(Qt::DisplayRole).toString();
         cantidadIngPlato = db1->queryMostrarCantidadInGPlatos(ui->label_PLAid->text(), ing).toFloat();
         cantidadIngBD = db1->queryMostrarCantidadING(ing).toFloat();
-        qDebug() << ing << " " << cantidadIngPlato << " " << cantidadIngBD;
 
-        QSqlQueryModel * model = db1->queryMostrarInfoNING(ing);     
+        model2 = new QSqlQueryModel;
+        model2 = db1->makeQuerys(MOSTRARINFONUTR, ing);
 
-        for(int i = 0; i < 21; i++)
+        for(int i = 0; i < NumInfN; i++)
         {
-            temp << model->index(0,i).data(Qt::DisplayRole).toString();
+            temp << model2->index(0,i).data(Qt::DisplayRole).toString();
         }
-
-        delete model;
 
         for(int i = 0; i < temp.size(); i++)
         {
             temp[i] = QString::number((cantidadIngPlato * temp[i].toFloat()) / cantidadIngBD);
             infoN[i] = QString::number(temp[i].toFloat() + infoN[i].toFloat());
-            qDebug() << temp[i];
         }
 
         temp.clear();
-
+        delete model2;
     }
 
-    db1->queryUpdateInfoNING(infoN, ui->label_PLAid->text());
-    QSqlQueryModel *model2 = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
-
-    fillIngPlaTextBox(model2, PLATOS);
-    delete model2;
+    showInfoN(infoN);
 }
 
+
+void MainWindowMenuPlan::initializeInfoN(QStringList &infoN)
+{
+    for(int i = 0; i < NumInfN; i++)
+    {
+        infoN.push_back("0");
+    }
+}
+
+
+void MainWindowMenuPlan::showInfoN(QStringList &infoN)
+{
+    db1->queryUpdateInfoNING(infoN, ui->label_PLAid->text());
+    QSqlQueryModel *model3 = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
+
+    fillIngPlaTextBox(model3, PLATOS);
+    delete model3;
+}
