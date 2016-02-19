@@ -235,23 +235,24 @@ void MainWindowMenuPlan::cleanListViewING_de_PLA()          //Se borra el listvi
 
 void MainWindowMenuPlan::on_pushButton_Aniadir_clicked()
 {
-    enableGCIngredientesButtons();
-    disableAMEIngredientesButtons();
-    enableIngredientesTextBox();
-    clearIngredientesTextBox();
+    disableAMEIngredientesButtons();                                            //deshabilitar botones AME
+    enableGCIngredientesButtons();                                              //habilitar botones GC
+    clearIngredientesTextBox();                                                 //Limpiar textbox
+    enableIngredientesTextBox();                                                //habilitar textbox
+
     Q = ANIADIRING;
     ui->label_InfoQuerys->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
 }
 
 void MainWindowMenuPlan::on_pushButton_Modificar_clicked()
 {
-    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);
+    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);            //Comprueba si hay un ingrediente seleccionado
 
     if(A == ACCEPT)
     {
-        enableGCIngredientesButtons();
-        disableAMEIngredientesButtons();
-        enableIngredientesTextBox();
+        disableAMEIngredientesButtons();                                        //deshabilitar botones AME
+        enableGCIngredientesButtons();                                          //habilitar botones GC
+        enableIngredientesTextBox();                                            //habilitar textbox
         Q = MODIFICARING;
         ui->label_InfoQuerys->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
     }
@@ -259,11 +260,11 @@ void MainWindowMenuPlan::on_pushButton_Modificar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
 {
-    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);
+    ACTION A = controllSelectionElement(*ui->listView_Ingredientes);            //Comprueba si hay un ingrediente seleccionado
 
     if(A == ACCEPT)
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox;                                                     //Mensaje de confirmacion
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Un ingrediente va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
@@ -274,9 +275,9 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
 
         if(msgBox.clickedButton() == myYesButton)
         {
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(ELIMINARING, ui->label_INGid->text()));
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
-            clearIngredientesTextBox();
+            db1->queryEliminarIngrediente(ui->label_INGid->text());                 //Consulta de eliminacion de ingrediente
+            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));       //Consulta para mostrar los ingredientes
+            clearIngredientesTextBox();                                             //Limpiar los textbox
         }
     }
 }
@@ -285,16 +286,16 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
 {
-    enableGCPlatosButtons();
-    disableAMEPlatosButtons();
-    enablePlatosTextBox();
-    clearPlatosTextBox();
+    disableAMEPlatosButtons();                                                  //deshabilitar los botones AME
+    enableGCPlatosButtons();                                                    //habilitar los botones GC
+    clearPlatosTextBox();                                                       //limpiar los textbox
+    enablePlatosTextBox();                                                      //habilitar los textbox
 
-    ui->listView_Platos->setEnabled(false);
-    ui->listView_Platos->clearSelection();
+    ui->listView_Platos->setEnabled(false);                                     //deshabilitar el listview de platos
+    ui->listView_Platos->clearSelection();                                      //eliminar la seleccion en el listview de platos
 
-    disableAMEINGPLAButtons();
-    ui->lineEdit_PLAING_cantidad->setEnabled(false);
+    disableAMEINGPLAButtons();                                                  //deshabilitar los botones AME de ingredientes
+    ui->lineEdit_PLAING_cantidad->setEnabled(false);                            //deshabilitar el textbox de cantidad de ingrediente
 
     Q = ANIADIRPLA;
     ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
@@ -302,17 +303,17 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
 {
-    ACTION A = controllSelectionElement(*ui->listView_Platos);
+    ACTION A = controllSelectionElement(*ui->listView_Platos);                  //Comprueba si hay un plato seleccionado
 
     if(A == ACCEPT)
-    {
-        enableGCPlatosButtons();
-        disableAMEPlatosButtons();
-        enablePlatosTextBox();
-        enableAMEINGPLAButtons();
-        ui->listView_Ingredientes_PLA->setEnabled(true);
-        ui->listView_Platos->setEnabled(false);
-        ui->listView_Platos->clearSelection();
+    {    
+        disableAMEPlatosButtons();                                              //deshabilita los botones AME
+        enableGCPlatosButtons();                                                //habilita los botones GC
+        enablePlatosTextBox();                                                  //habilita los textbox
+        enableAMEINGPLAButtons();                                               //habilita los botones AME de ingredientes
+        ui->listView_Ingredientes_PLA->setEnabled(true);                        //habilita el listview de ingredientes totales
+        ui->listView_Platos->setEnabled(false);                                 //deshabilita el listview de platos
+        ui->listView_Platos->clearSelection();                                  //eliminar la seleccion del listview de platos
 
         Q = MODIFICARPLA;
         ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo numérico vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
@@ -321,11 +322,11 @@ void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
 {
-    ACTION A = controllSelectionElement(*ui->listView_Platos);
+    ACTION A = controllSelectionElement(*ui->listView_Platos);                  //comprueba si hay un plato seleccionado
 
     if(A == ACCEPT)
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox;                                                     //mensaje de confirmacion
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Un plato va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este plato de forma permanente?");
@@ -336,10 +337,10 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
 
         if(msgBox.clickedButton() == myYesButton)
         {
-            ui->listView_Platos->setModel(db1->makeQuerys(ELIMINARPLA, ui->label_PLAid->text()));
-            ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
-            clearPlatosTextBox();
-            cleanListViewING_de_PLA();
+            db1->queryEliminarPlato(ui->label_PLAid->text());                   //consulta para eliminar un plato
+            ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));         //consulta para mostrar los platos
+            clearPlatosTextBox();                                               //limpiar los textbox
+            cleanListViewING_de_PLA();                                          //limpiar el listview ingredientes de plato
         }
     }
 }
@@ -348,40 +349,37 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
 
 void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
 {
-    enableAMEIngredientesButtons();
-    disableGCIngredientesButtons();
-    disableIngredientesTextBox();
-    ACTION A = controllDataTextBoxName(*ui->lineEdit_INGnombre);
-    ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento, 1);
-    ACTION C = db1->controllQuerys(Q, INGREDIENTES, ui->lineEdit_INGnombre->text(), ui->label_INGid->text());
+    enableAMEIngredientesButtons();                                                                             //habilitar los botones AME
+    disableGCIngredientesButtons();                                                                             //deshabilitar los botones GC
+    disableIngredientesTextBox();                                                                               //deshabilitar los textbox
+    ACTION A = controllDataTextBoxName(*ui->lineEdit_INGnombre);                                                //Comprobar si el nombre es correcto
+    ACTION B = controllDataTextBoxNum(*ui->groupBox_INGalimento, 1);                                            //Comprobar si los textbox numericos son correctos
+    ACTION C = db1->controllQuerys(Q, INGREDIENTES, ui->lineEdit_INGnombre->text(), ui->label_INGid->text());   //Controlar que no se inserte un nuevo ingrediente ya existente
 
     if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
     {
-        if(Q == MODIFICARING)
-        {
-            db1->modINGQuerys(captureTextBoxText(INGREDIENTES));
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
-        }
-        else if(Q == ANIADIRING)
-        {
-            db1->addINGQuerys(captureTextBoxText(INGREDIENTES));
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));
-        }
-    }
-    clearIngredientesTextBox();
+        if(Q == MODIFICARING)      
+            db1->modINGQuerys(captureTextBoxText(INGREDIENTES));                                //Consulta para modificar ingredientes
 
+        else if(Q == ANIADIRING)        
+            db1->addINGQuerys(captureTextBoxText(INGREDIENTES));                                //Consulta para añadir ingrediente
+
+        ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));                       //Consulta para mostrar ingredientes
+    }
+
+    clearIngredientesTextBox();                                 //Limpiar textbox
     ui->label_InfoQuerys->setText("");                          //Label informativo
     ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
 {
-    enableAMEIngredientesButtons();
-    disableGCIngredientesButtons();
-    disableIngredientesTextBox();
-    clearIngredientesTextBox();
+    enableAMEIngredientesButtons();                             //habilita los botones AME
+    disableGCIngredientesButtons();                             //deshabilita los botones GC
+    disableIngredientesTextBox();                               //deshabilita los textbox
+    clearIngredientesTextBox();                                 //limpia los textbox
 
-    ui->label_InfoQuerys->setText("");   
+    ui->label_InfoQuerys->setText("");                          //borra el label informativo
     ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
 }
 
@@ -393,18 +391,18 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
     {
         case ANIADIRPLA:
         {
-            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
-            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
-            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());
+            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);                                            //comprobar si el nombre es correcto
+            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);                                              //comprobar si el textbox numerico es correcto
+            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());     //comprobar que no se inserte un plato ya existente
 
-            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
+            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                                       //__Si todo es correcto
             {
-                db1->addPLAQuerys(captureTextBoxText(PLATOS));
-                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
-                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
-                fillIngPlaTextBox(model, PLATOS);
+                db1->addPLAQuerys(captureTextBoxText(PLATOS));                                                  //consulta para añadir un plato
+                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                     //consulta para mostrar los platos
+                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());        //consulta para mostrar la informacion recien añadida del plato
+                fillIngPlaTextBox(model, PLATOS);                                                               //rellenar los textbox con la informacion
 
-                QMessageBox msgBox;
+                QMessageBox msgBox;                                                                             //mensaje informativo para añadir ingredientes al plato
                 msgBox.setText("Un plato ha sido añadido a la base de datos.");
                 msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
                 QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -412,85 +410,85 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 msgBox.setDefaultButton(QMessageBox::No);
                 msgBox.exec();
 
-                if(msgBox.clickedButton() == myYesButton)
+                if(msgBox.clickedButton() == myYesButton)                       //__Si se quiere añadir un ingrediente al plato
                 {
                     Q = ANIADIRINGPLA;
-                    disablePlatosTextBox();
-                    ui->lineEdit_PLAING_cantidad->setEnabled(true);
-                    ui->pushButton_PLAING_aniadir->setEnabled(true);
-                    ui->listView_Ingredientes_PLA->setEnabled(true);
-                    ui->pushButton_Cancelar_PLA->setEnabled(false);
+                    disablePlatosTextBox();                                     //deshabilitar los textbox
+                    ui->lineEdit_PLAING_cantidad->setEnabled(true);             //habilitar el textbox de cantidad de ingrediente
+                    ui->pushButton_PLAING_aniadir->setEnabled(true);            //habilitar el boton añadir ingrediente
+                    ui->listView_Ingredientes_PLA->setEnabled(true);            //habilitar el listview de ingredientes totales
+                    ui->pushButton_Cancelar_PLA->setEnabled(false);             //deshabilitar el boton de cancelar
                 }
-                else
+                else                                                            //__Si no se quiere añadir un ingrediente al plato
                 {
-                    enableAMEPlatosButtons();
-                    disableGCPlatosButtons();
-                    disablePlatosTextBox();
-                    clearPlatosTextBox();
+                    disableGCPlatosButtons();                                   //deshabilitar botones GC
+                    enableAMEPlatosButtons();                                   //habilitar botones AME
+                    clearPlatosTextBox();                                       //limpiar los textbox
+                    disablePlatosTextBox();                                     //deshabilitar los textbox
 
-                    ui->listView_Platos->setEnabled(true);
+                    ui->listView_Platos->setEnabled(true);                      //habilitar el listview de platos
                 }
             }
-            else
+            else                                                                //__Si hay algun fallo en los datos introducidos
             {
-                enableAMEPlatosButtons();
-                disableGCPlatosButtons();
-                disablePlatosTextBox();
-                clearPlatosTextBox();
+                disableGCPlatosButtons();                                       //deshabilitar los botones GC
+                enableAMEPlatosButtons();                                       //habilitar los botones AME
+                clearPlatosTextBox();                                           //limpiar los textbox
+                disablePlatosTextBox();                                         //deshabilitar los textbox
 
-                ui->listView_Platos->setEnabled(true);
+                ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
             }
         }
         break;
 
-        case ANIADIRINGPLA:
-            enableAMEPlatosButtons();
-            disableGCPlatosButtons();
-            disableAMEINGPLAButtons();
+        case ANIADIRINGPLA:          
+            disableGCPlatosButtons();                                           //deshabilitar los botones AME
+            enableAMEPlatosButtons();                                           //habilitar los botones AME
+            disableAMEINGPLAButtons();                                          //deshabilitar los botones AME de ingredientes
 
-            disablePlatosTextBox();
-            clearPlatosTextBox();
-            cleanListViewING_de_PLA();
+            clearPlatosTextBox();                                               //limpiar los textbox
+            disablePlatosTextBox();                                             //deshabilitar los textbox
+            cleanListViewING_de_PLA();                                          //limpiar el listview de ingredientes de un plato
 
-            ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
-            ui->listView_Platos->setEnabled("true");
+            ui->listView_Ingredientes_PLA->clearSelection();                    //Desselecciona el posible ingrediente seleccionado en el listview
+            ui->listView_Platos->setEnabled("true");                            //habilitar el listview platos
         break;
 
         case MODIFICARPLA:
-            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);
-            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);
-            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());
+            ACTION A = controllDataTextBoxName(*ui->lineEdit_PLAnombre);                                            //comprobar si el nombre es correcto
+            ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);                                              //comprobar si los textbox numericos son correctos
+            ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());     //comprobar que no se añade un plato ya existente
 
-            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
+            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                       //__Si los datos introducidos son correctos
             {
-                db1->modPLAQuerys(captureTextBoxText(PLATOS));
-                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));
-                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());
-                fillIngPlaTextBox(model, PLATOS);
+                db1->modPLAQuerys(captureTextBoxText(PLATOS));                                                      //consulta para modificar un plato
+                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                         //consulta para mostrar los platos
+                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());            //consulta para mostrar la informacion recien modificada del plato
+                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
 
-                enableAMEPlatosButtons();
-                disableGCPlatosButtons();
-                disableAMEINGPLAButtons();
-                disablePlatosTextBox();
-                clearPlatosTextBox();
+                disableGCPlatosButtons();                                       //deshabilitar los botones GC
+                disableAMEINGPLAButtons();                                      //deshabilitar los botones AME de ingredientes
+                enableAMEPlatosButtons();                                       //habilitar los botones AME
+                clearPlatosTextBox();                                           //limpiar los textbox
+                disablePlatosTextBox();                                         //deshabilitar los textbox
 
-                ui->listView_Platos->setEnabled(true);
+                ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
             }
-            else
-            {
-                enableAMEPlatosButtons();
-                disableGCPlatosButtons();
-                disablePlatosTextBox();
-                disableAMEINGPLAButtons();
-                clearPlatosTextBox();
+            else                                                                //__Si los datos introducidos no son correctos
+            {         
+                disableGCPlatosButtons();                                       //deshabilitar los botones GC
+                disableAMEINGPLAButtons();                                      //deshabilitar los botones AME de ingredientes
+                enableAMEPlatosButtons();                                       //habilitar los botones AME
+                clearPlatosTextBox();                                           //limpiar los textbox
+                disablePlatosTextBox();                                         //deshabilitar los textbox
 
-                ui->listView_Platos->setEnabled(true);
+                ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
             }
         break;
     }
 
-    ui->label_InfoQuerys_2->setText("");                          //Label informativo
-    ui->lineEdit_PLAING_cantidad->setText("");
+    ui->label_InfoQuerys_2->setText("");                        //Limpiar el label informativo
+    ui->lineEdit_PLAING_cantidad->setText("");                  //Limpiar el textbox cantidad
     ui->listView_Platos->clearSelection();                      //Desselecciona el posible ingrediente seleccionado en el listview
     ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
 }

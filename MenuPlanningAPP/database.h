@@ -26,13 +26,13 @@ class database
 
         void queryMostrarIngredientes(QString &str);                                            //Consulta para mostrar los ingredientes disponibles en la base de datos
         void queryMostrarInfoIngredientes(QString &str, QString &strID);                        //Consulta para mostrar la informacion de un ingrediente
-        void queryEliminarIngrediente(QString &str, QString &strID);                            //Consulta para eliminar un ingrediente
+        void queryEliminarIngrediente(QString &strID);                                          //Consulta para eliminar un ingrediente
 
         void queryMostrarPlatos(QString &str);                                                  //Consulta para mostrar los platos disponibles en la base de datos
         void queryMostrarInfoPlatos(QString &str, QString &strID);                              //Consulta para mostrar la informacion de un plato
         void queryMostrarIngredientesPlatos(QString &str, QString &strID);                      //Consulta para mostrar los ingredientes de un plato
         QString queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);                 //Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
-        void queryEliminarPlato(QString &str, QString &strID);                                  //Consulta para eliminar un plato
+        void queryEliminarPlato(QString &strID);                                                //Consulta para eliminar un plato
 
         void modINGQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un ingrediente
         void addINGQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo ingrediente

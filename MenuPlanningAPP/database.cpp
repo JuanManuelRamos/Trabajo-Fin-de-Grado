@@ -67,10 +67,6 @@ QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
             queryMostrarInfoIngredientes(str, strID);
         break;
 
-        case ELIMINARING:
-            queryEliminarIngrediente(str, strID);
-        break;
-
         case MOSTRARPLA:
             queryMostrarPlatos(str);
         break;
@@ -81,10 +77,6 @@ QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
 
         case MOSTRARINGPLA:
             queryMostrarIngredientesPlatos(str, strID);
-        break;
-
-        case ELIMINARPLA:
-            queryEliminarPlato(str, strID);
         break;
 
         case MOSTRARINFONUTR:
@@ -184,13 +176,17 @@ QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
 /*-------------------------------------------------------------------------------------*/
 /*----------------------------- ELIMINAR UN INGREDIENTE -------------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryEliminarIngrediente(QString &str, QString &strID)
+void database::queryEliminarIngrediente(QString &strID)
 {
-    str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE AlimentosTAB_id=";
+    QString str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE AlimentosTAB_id=";
     str.append(strID);
     str.append("; DELETE FROM AlimentosTAB WHERE id_AlimentosTAB=");
     str.append(strID);
     str.append(";");
+
+    qry = new QSqlQuery();
+    qry->prepare(str);
+    qry->exec();
 }
 
 
@@ -455,13 +451,17 @@ void database::modPLAQuerys(QStringList &strl)
 /*-------------------------------------------------------------------------------------*/
 /*----------------------------- ELIMINAR UN PLATO -------------------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryEliminarPlato(QString &str, QString &strID)
+void database::queryEliminarPlato(QString &strID)
 {
-    str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE PlatosTAB_id=";
+    QString str = "SET SQL_SAFE_UPDATES = 0; DELETE FROM IngredientesTAB WHERE PlatosTAB_id=";
     str.append(strID);
     str.append("; DELETE FROM PlatosTAB WHERE id_PlatosTAB=");
     str.append(strID);
     str.append(";");
+
+    qry = new QSqlQuery();
+    qry->prepare(str);
+    qry->exec();
 }
 
 
