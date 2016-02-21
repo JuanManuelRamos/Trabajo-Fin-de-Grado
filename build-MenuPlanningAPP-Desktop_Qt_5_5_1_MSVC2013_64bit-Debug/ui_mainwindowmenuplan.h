@@ -35,13 +35,14 @@ class Ui_MainWindowMenuPlan
 public:
     QWidget *centralWidget;
     QTabWidget *tabWidget;
-    QWidget *tab;
+    QWidget *tab_inicio;
     QGroupBox *groupBox_3;
     QPushButton *pushButton_ConectarBD;
     QWidget *formLayoutWidget;
     QFormLayout *formLayout;
     QLabel *label_63;
     QLabel *label_EstadoConexion;
+    QLabel *label_image;
     QWidget *tab_platos;
     QLabel *label_InfoQuerys_2;
     QLabel *labelPlaTitle;
@@ -283,9 +284,9 @@ public:
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setGeometry(QRect(10, 0, 971, 601));
         tabWidget->setFocusPolicy(Qt::NoFocus);
-        tab = new QWidget();
-        tab->setObjectName(QStringLiteral("tab"));
-        groupBox_3 = new QGroupBox(tab);
+        tab_inicio = new QWidget();
+        tab_inicio->setObjectName(QStringLiteral("tab_inicio"));
+        groupBox_3 = new QGroupBox(tab_inicio);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         groupBox_3->setGeometry(QRect(740, 430, 211, 111));
         pushButton_ConectarBD = new QPushButton(groupBox_3);
@@ -309,7 +310,10 @@ public:
 
         formLayout->setWidget(0, QFormLayout::FieldRole, label_EstadoConexion);
 
-        tabWidget->addTab(tab, QString());
+        label_image = new QLabel(tab_inicio);
+        label_image->setObjectName(QStringLiteral("label_image"));
+        label_image->setGeometry(QRect(10, 10, 941, 401));
+        tabWidget->addTab(tab_inicio, QString());
         tab_platos = new QWidget();
         tab_platos->setObjectName(QStringLiteral("tab_platos"));
         label_InfoQuerys_2 = new QLabel(tab_platos);
@@ -725,7 +729,7 @@ public:
         label_PLAING->setTextFormat(Qt::AutoText);
         gridLayoutWidget_8 = new QWidget(groupBox_PLAING);
         gridLayoutWidget_8->setObjectName(QStringLiteral("gridLayoutWidget_8"));
-        gridLayoutWidget_8->setGeometry(QRect(10, 180, 211, 81));
+        gridLayoutWidget_8->setGeometry(QRect(10, 180, 239, 81));
         gridLayout_8 = new QGridLayout(gridLayoutWidget_8);
         gridLayout_8->setSpacing(6);
         gridLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -1392,7 +1396,7 @@ public:
 
         retranslateUi(MainWindowMenuPlan);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindowMenuPlan);
@@ -1405,7 +1409,8 @@ public:
         pushButton_ConectarBD->setText(QApplication::translate("MainWindowMenuPlan", "Conectar", 0));
         label_63->setText(QApplication::translate("MainWindowMenuPlan", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">Estado: </span></p></body></html>", 0));
         label_EstadoConexion->setText(QApplication::translate("MainWindowMenuPlan", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#ff0000;\">Desconectado</span></p></body></html>", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowMenuPlan", "Tab 1", 0));
+        label_image->setText(QString());
+        tabWidget->setTabText(tabWidget->indexOf(tab_inicio), QApplication::translate("MainWindowMenuPlan", "Inicio", 0));
         label_InfoQuerys_2->setText(QString());
         labelPlaTitle->setText(QApplication::translate("MainWindowMenuPlan", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600;\">En esta secci\303\263n se muestran todos los platos disponibles. </span></p><p><span style=\" font-size:10pt; font-weight:600;\">Desde aqu\303\255 se puede a\303\261adir un nuevo plato a la base de datos, modificar o eliminar uno existente.</span></p></body></html>", 0));
         groupBox_Plato->setTitle(QApplication::translate("MainWindowMenuPlan", "Plato", 0));

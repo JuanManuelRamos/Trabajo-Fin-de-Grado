@@ -12,6 +12,17 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->setupUi(this);
     db1 = new database;
 
+    //Establecer la pestaña inicio como la pagina principal al abrir la aplicacion
+    ui->tabWidget->setCurrentIndex(0);
+
+
+    /*C:\\Users\\JuanmaPC\\Desktop\\Proyectos TFG\\MenuPlanningAPP*/
+    QImage image("foto_inicio.png");
+    QPixmap pixm = QPixmap(":/images/foto_inicio.png");
+    ui->label_image->setPixmap(pixm);
+
+
+
     //Deshabilitar los botones de la parte de Ingredientes al arranque de la aplicacion
     disableGCIngredientesButtons();
     disableAMEIngredientesButtons();

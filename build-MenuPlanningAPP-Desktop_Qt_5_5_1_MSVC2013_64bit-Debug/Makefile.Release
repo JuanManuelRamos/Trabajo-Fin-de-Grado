@@ -45,14 +45,17 @@ OBJECTS_DIR   = release
 
 SOURCES       = ..\MenuPlanningAPP\main.cpp \
 		..\MenuPlanningAPP\mainwindowmenuplan.cpp \
-		..\MenuPlanningAPP\database.cpp release\moc_mainwindowmenuplan.cpp
+		..\MenuPlanningAPP\database.cpp release\qrc_resourceFile.cpp \
+		release\moc_mainwindowmenuplan.cpp
 OBJECTS       = release\main.obj \
 		release\mainwindowmenuplan.obj \
 		release\database.obj \
+		release\qrc_resourceFile.obj \
 		release\moc_mainwindowmenuplan.obj
 
 DIST          =  ..\MenuPlanningAPP\mainwindowmenuplan.h \
-		..\MenuPlanningAPP\database.h ..\MenuPlanningAPP\main.cpp \
+		..\MenuPlanningAPP\database.h \
+		..\MenuPlanningAPP\enums.h ..\MenuPlanningAPP\main.cpp \
 		..\MenuPlanningAPP\mainwindowmenuplan.cpp \
 		..\MenuPlanningAPP\database.cpp
 QMAKE_TARGET  = MenuPlanningAPP
@@ -140,10 +143,10 @@ qmake: FORCE
 qmake_all: FORCE
 
 dist:
-	$(ZIP) MenuPlanningAPP.zip $(SOURCES) $(DIST) ..\MenuPlanningAPP\MenuPlanningAPP.pro C:\Qt\5.5\msvc2013_64\mkspecs\features\spec_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.5\msvc2013_64\mkspecs\qconfig.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcollision.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcollision_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquickrenderer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquickrenderer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3drenderer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3drenderer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_declarative.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_declarative_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_enginio.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_enginio_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkit.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkit_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkitwidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkitwidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\features\qt_functions.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qt_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\qt_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\win32-msvc2013\qmake.conf C:\Qt\5.5\msvc2013_64\mkspecs\features\spec_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\default_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\resolve_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\default_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\build_pass.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qml_debug.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\rtti.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\c++11.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\precompile_header.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\warn_on.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qt.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\resources.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\moc.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\opengl.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\uic.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\windows.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\testcase_targets.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exceptions.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\yacc.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\lex.prf ..\MenuPlanningAPP\MenuPlanningAPP.pro C:/Qt/5.5/msvc2013_64/lib/qtmain.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Widgets.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Gui.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Sql.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Core.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
+	$(ZIP) MenuPlanningAPP.zip $(SOURCES) $(DIST) ..\MenuPlanningAPP\MenuPlanningAPP.pro C:\Qt\5.5\msvc2013_64\mkspecs\features\spec_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\common\msvc-desktop.conf C:\Qt\5.5\msvc2013_64\mkspecs\qconfig.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcollision.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcollision_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcore.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dcore_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dinput.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dinput_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dlogic.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dlogic_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquick.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquick_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquickrenderer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3dquickrenderer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3drenderer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_3drenderer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axbase.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axbase_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axcontainer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axcontainer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axserver.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_axserver_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bluetooth.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bluetooth_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_bootstrap_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_clucene_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_concurrent.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_concurrent_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_core.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_core_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_dbus.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_dbus_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_declarative.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_declarative_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designer.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designer_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_designercomponents_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_enginio.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_enginio_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_gui.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_gui_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_help.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_help_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_location.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_location_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimedia.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimedia_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimediawidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_multimediawidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_network.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_network_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_nfc.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_nfc_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_opengl.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_opengl_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_openglextensions.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_openglextensions_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_platformsupport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_positioning.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_positioning_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_printsupport.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_printsupport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qml.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qml_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmldevtools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmltest.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qmltest_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_qtmultimediaquicktools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quick.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quick_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickparticles_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickwidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_quickwidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_script.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_script_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_scripttools.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_scripttools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sensors.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sensors_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_serialport.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_serialport_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sql.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_sql_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_svg.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_svg_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_testlib.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_testlib_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uiplugin.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uitools.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_uitools_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webchannel.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webchannel_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webengine.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webengine_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginecore.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginecore_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginewidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webenginewidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkit.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkit_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkitwidgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webkitwidgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_websockets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_websockets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_webview_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_widgets.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_widgets_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_winextras.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_winextras_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xml.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xml_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xmlpatterns.pri C:\Qt\5.5\msvc2013_64\mkspecs\modules\qt_lib_xmlpatterns_private.pri C:\Qt\5.5\msvc2013_64\mkspecs\features\qt_functions.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qt_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\qt_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\win32-msvc2013\qmake.conf C:\Qt\5.5\msvc2013_64\mkspecs\features\spec_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exclusive_builds.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\default_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\default_pre.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\resolve_config.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exclusive_builds_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\default_post.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\build_pass.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qml_debug.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\rtti.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\c++11.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\precompile_header.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\warn_on.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\qt.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\resources.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\moc.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\opengl.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\uic.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\win32\windows.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\testcase_targets.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\exceptions.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\yacc.prf C:\Qt\5.5\msvc2013_64\mkspecs\features\lex.prf ..\MenuPlanningAPP\MenuPlanningAPP.pro ..\MenuPlanningAPP\resourceFile.qrc C:/Qt/5.5/msvc2013_64/lib/qtmain.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Widgets.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Gui.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Sql.prl C:/Qt/5.5/msvc2013_64/lib/Qt5Core.prl  NO_PCH_SOURCES RESOURCES HEADERS SOURCES OBJECTIVE_SOURCES FORMS YACCSOURCES YACCSOURCES LEXSOURCES 
 
 clean: compiler_clean 
-	-$(DEL_FILE) release\main.obj release\mainwindowmenuplan.obj release\database.obj release\moc_mainwindowmenuplan.obj
+	-$(DEL_FILE) release\main.obj release\mainwindowmenuplan.obj release\database.obj release\qrc_resourceFile.obj release\moc_mainwindowmenuplan.obj
 	-$(DEL_FILE) release\MenuPlanningAPP.exp
 
 distclean: clean 
@@ -159,8 +162,13 @@ check: first
 
 compiler_no_pch_compiler_make_all:
 compiler_no_pch_compiler_clean:
-compiler_rcc_make_all:
+compiler_rcc_make_all: release\qrc_resourceFile.cpp
 compiler_rcc_clean:
+	-$(DEL_FILE) release\qrc_resourceFile.cpp
+release\qrc_resourceFile.cpp: ..\MenuPlanningAPP\resourceFile.qrc \
+		..\MenuPlanningAPP\images\foto_inicio.png
+	C:\Qt\5.5\msvc2013_64\bin\rcc.exe -name resourceFile ..\MenuPlanningAPP\resourceFile.qrc -o release\qrc_resourceFile.cpp
+
 compiler_moc_header_make_all: release\moc_mainwindowmenuplan.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) release\moc_mainwindowmenuplan.cpp
@@ -421,6 +429,9 @@ release\moc_mainwindowmenuplan.cpp: C:\Qt\5.5\msvc2013_64\include\QtWidgets\QMai
 		C:\Qt\5.5\msvc2013_64\include\QtGui\QCloseEvent \
 		..\MenuPlanningAPP\database.h \
 		..\MenuPlanningAPP\mainwindowmenuplan.h \
+		..\MenuPlanningAPP\enums.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qgroupbox.h \
 		..\MenuPlanningAPP\mainwindowmenuplan.h
 	C:\Qt\5.5\msvc2013_64\bin\moc.exe $(DEFINES) -D_MSC_VER=1800 -D_WIN32 -D_WIN64 -IC:/Qt/5.5/msvc2013_64/mkspecs/win32-msvc2013 -I"C:/Users/JuanmaPC/Desktop/Proyectos TFG/MenuPlanningAPP" -IC:/Qt/5.5/msvc2013_64/include -IC:/Qt/5.5/msvc2013_64/include/QtWidgets -IC:/Qt/5.5/msvc2013_64/include/QtGui -IC:/Qt/5.5/msvc2013_64/include/QtANGLE -IC:/Qt/5.5/msvc2013_64/include/QtSql -IC:/Qt/5.5/msvc2013_64/include/QtCore -I. ..\MenuPlanningAPP\mainwindowmenuplan.h -o release\moc_mainwindowmenuplan.cpp
 
@@ -438,7 +449,7 @@ compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
-compiler_clean: compiler_moc_header_clean compiler_uic_clean 
+compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 
 
@@ -700,7 +711,10 @@ release\main.obj: ..\MenuPlanningAPP\main.cpp ../MenuPlanningAPP/mainwindowmenup
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qmessagebox.h \
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qdialog.h \
 		C:\Qt\5.5\msvc2013_64\include\QtGui\QCloseEvent \
-		../MenuPlanningAPP/database.h
+		../MenuPlanningAPP/database.h \
+		../MenuPlanningAPP/enums.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qgroupbox.h
 
 release\mainwindowmenuplan.obj: ..\MenuPlanningAPP\mainwindowmenuplan.cpp ../MenuPlanningAPP/mainwindowmenuplan.h \
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QMainWindow \
@@ -959,7 +973,48 @@ release\mainwindowmenuplan.obj: ..\MenuPlanningAPP\mainwindowmenuplan.cpp ../Men
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qdialog.h \
 		C:\Qt\5.5\msvc2013_64\include\QtGui\QCloseEvent \
 		../MenuPlanningAPP/database.h \
-		ui_mainwindowmenuplan.h
+		../MenuPlanningAPP/enums.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qgroupbox.h \
+		ui_mainwindowmenuplan.h \
+		C:\Qt\5.5\msvc2013_64\include\QtCore\QVariant \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QAction \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qaction.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qactiongroup.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QButtonGroup \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qbuttongroup.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QFormLayout \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qformlayout.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QLayout \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qlayout.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qlayoutitem.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qboxlayout.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qgridlayout.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QGridLayout \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QHeaderView \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qheaderview.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QLabel \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qlabel.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QLineEdit \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qlineedit.h \
+		C:\Qt\5.5\msvc2013_64\include\QtGui\qtextcursor.h \
+		C:\Qt\5.5\msvc2013_64\include\QtGui\qtextformat.h \
+		C:\Qt\5.5\msvc2013_64\include\QtGui\qpen.h \
+		C:\Qt\5.5\msvc2013_64\include\QtGui\qtextoption.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QListView \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QMenuBar \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qmenubar.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qmenu.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QPushButton \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qpushbutton.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qabstractbutton.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QStatusBar \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qstatusbar.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QTabWidget \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QTextEdit \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qtextedit.h \
+		C:\Qt\5.5\msvc2013_64\include\QtGui\qtextdocument.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QWidget
 
 release\database.obj: ..\MenuPlanningAPP\database.cpp ../MenuPlanningAPP/database.h \
 		../MenuPlanningAPP/mainwindowmenuplan.h \
@@ -1217,7 +1272,12 @@ release\database.obj: ..\MenuPlanningAPP\database.cpp ../MenuPlanningAPP/databas
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QMessageBox \
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qmessagebox.h \
 		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qdialog.h \
-		C:\Qt\5.5\msvc2013_64\include\QtGui\QCloseEvent
+		C:\Qt\5.5\msvc2013_64\include\QtGui\QCloseEvent \
+		../MenuPlanningAPP/enums.h \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\QGroupBox \
+		C:\Qt\5.5\msvc2013_64\include\QtWidgets\qgroupbox.h
+
+release\qrc_resourceFile.obj: release\qrc_resourceFile.cpp 
 
 release\moc_mainwindowmenuplan.obj: release\moc_mainwindowmenuplan.cpp 
 

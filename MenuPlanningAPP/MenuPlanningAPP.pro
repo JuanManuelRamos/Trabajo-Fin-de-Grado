@@ -15,9 +15,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindowmenuplan.cpp \
     database.cpp
+    images
 
 HEADERS  += mainwindowmenuplan.h \
     database.h \
     enums.h
 
 FORMS    += mainwindowmenuplan.ui
+
+RESOURCES += resourceFile.qrc

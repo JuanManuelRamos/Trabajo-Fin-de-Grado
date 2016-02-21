@@ -1,5 +1,8 @@
 #include "database.h"
 
+/*-------------------------------------------------------------------------*/
+/*----------------------- CONSTRUCTOR Y DESTRUCTOR ------------------------*/
+/*-------------------------------------------------------------------------*/
 
 database::database()
 {
@@ -17,32 +20,43 @@ database::~database()
 }
 
 
+/*-------------------------------------------------------------------------*/
+/*-------------------- CONECTAR A LA BASE DE DATOS ------------------------*/
+/*-------------------------------------------------------------------------*/
+
 bool database::connectBD()
 {
     if(!db.open())
-    {
-        //qDebug() << "Error connection... " << db.lastError().text();
+    {     
         error = db.lastError().text();
         return false;
     }
     else
     {
-        //ui->label->setText("Conectado");
         return true;
     }
 }
+
+/*-------------------------------------------------------------------------*/
+/*------------------- DESCONECTAR DE LA BASE DE DATOS ---------------------*/
+/*-------------------------------------------------------------------------*/
 
 void database::disconnectBD()
 {
     db.close();
 }
 
-
+/*-------------------------------------------------------------------------*/
+/*--------------------------- MENSAJE DE ERROR ----------------------------*/
+/*-------------------------------------------------------------------------*/
 QString database::errorMsg()
 {
     return error;
 }
 
+/*-------------------------------------------------------------------------*/
+/*---------------------------- LIBERAR MEMORIA ----------------------------*/
+/*-------------------------------------------------------------------------*/
 void database::finishQuery()
 {
     delete qry;
@@ -527,7 +541,7 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
     QString info = "Ya existe un ";
     ACTION AC = ACCEPT;
 
-    switch(AP)
+    switch(AP)                              //__Averiguar de que tipo de elemento se trata (ingrediente, plato o ingrediente de un plato)
     {
         case INGREDIENTES:
             query = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE nombre ='";
@@ -560,12 +574,12 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
     qry->exec();
     model->setQuery(*qry);
 
-    result = model->record(0).value(0).toString();
+    result = model->record(0).value(0).toString();      //__Recoge el resultado devuelto por la consulta anteriormente realizada
 
     delete model;
     delete qry;
 
-    switch(Q)
+    switch(Q)                                           //__Comprueba si el resultado dado por la consulta indica una repeticion de ingrediente, plato o ingrediente de plato
     {
         case ANIADIRING:
             if(result != "" || result != NULL)
@@ -593,16 +607,16 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
         break;
     }
 
-    if(AC == DENY)
+    if(AC == DENY)                                  //__Si se ha detectado una repeticion de ingrediente o plato
     {
-        QMessageBox msgBox;
+        QMessageBox msgBox;                         //__Se muestra un mensaje notificando
         msgBox.setIcon(QMessageBox::Information);
         msgBox.setText("Información");
         msgBox.setInformativeText(info);
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.setDefaultButton(QMessageBox::Ok);
         msgBox.exec();
-        return DENY;
+        return DENY;                                //__Se retorna una denegacion para realizar la consulta que provoca la repeticion
     }
     else
     {
@@ -612,10 +626,9 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
 
 
 
-/*-------------------------------------------------------------------------------------*/
-/*----------------------- CALCULO DE INFORMACION NUTRICIONAL --------------------------*/
-/*-------------------------------------------------------------------------------------*/
-
+/*--------------------------------------------------------------------------------------------------------*/
+/*------- MOATRAR LA CANTIDAD EN GRAMOS DE UN INGREDIENTE EN LA BASE DE DATOS (NO EN UN PLATO) -----------*/
+/*--------------------------------------------------------------------------------------------------------*/
 
 QString database::queryMostrarCantidadING(QString &nombre)
 {
@@ -638,6 +651,10 @@ QString database::queryMostrarCantidadING(QString &nombre)
     return resultado;
 }
 
+/*-------------------------------------------------------------------------------------*/
+/*------------------ MOSTRAR INF NUTRICIONAL DE UN INGREDIENTE ------------------------*/
+/*-------------------------------------------------------------------------------------*/
+
 void database::queryMostrarInfoNING(QString &str, QString &nombre)
 {
     str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, proteinas_g, potasio_mg, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
@@ -646,6 +663,9 @@ void database::queryMostrarInfoNING(QString &str, QString &nombre)
 }
 
 
+/*-------------------------------------------------------------------------------------*/
+/*----------------- ACTUALIZAR INF NUTRICIONAL DE UN INGREDIENTE ----------------------*/
+/*-------------------------------------------------------------------------------------*/
 
 void database::queryUpdateInfoNING(QStringList &strl, QString &id)
 {
