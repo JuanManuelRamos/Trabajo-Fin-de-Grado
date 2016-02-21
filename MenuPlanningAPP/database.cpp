@@ -275,7 +275,7 @@ void database::modINGQuerys(QStringList &strl)
 /*-------------------------------------------------------------------------------------*/
 void database::addINGQuerys(QStringList &strl)
 {
-    QString str = "INSERT INTO AlimentosTAB (nombre, cantidad_gramos, cantidad_g_precio, precio, precio_temporada, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, proteinas_g, potasio_mg, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
+    QString str = "INSERT INTO AlimentosTAB (nombre, cantidad_gramos, cantidad_g_precio, precio, precio_temporada, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
     str.append(strl.at(1));
     str.append("',");
     str.append(strl.at(2));
@@ -340,7 +340,7 @@ void database::addINGQuerys(QStringList &strl)
 /*-------------------------------------------------------------------------------------*/
 void database::addPLAQuerys(QStringList &strl)
 {
-    QString str = "INSERT INTO PlatosTAB (nombre, descripcion, precio, cantidad_gramos, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, proteinas_g, potasio_mg, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
+    QString str = "INSERT INTO PlatosTAB (nombre, descripcion, precio, cantidad_gramos, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
     str.append(strl.at(1));
     str.append("','");
     str.append(strl.at(2));
@@ -627,7 +627,7 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
 
 
 /*--------------------------------------------------------------------------------------------------------*/
-/*------- MOATRAR LA CANTIDAD EN GRAMOS DE UN INGREDIENTE EN LA BASE DE DATOS (NO EN UN PLATO) -----------*/
+/*------- MOSTRAR LA CANTIDAD EN GRAMOS DE UN INGREDIENTE EN LA BASE DE DATOS (NO EN UN PLATO) -----------*/
 /*--------------------------------------------------------------------------------------------------------*/
 
 QString database::queryMostrarCantidadING(QString &nombre)
@@ -657,7 +657,7 @@ QString database::queryMostrarCantidadING(QString &nombre)
 
 void database::queryMostrarInfoNING(QString &str, QString &nombre)
 {
-    str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, proteinas_g, potasio_mg, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
+    str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
     str.append(nombre);
     str.append("'");
 }

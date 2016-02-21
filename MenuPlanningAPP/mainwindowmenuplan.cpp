@@ -15,12 +15,24 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     //Establecer la pestaña inicio como la pagina principal al abrir la aplicacion
     ui->tabWidget->setCurrentIndex(0);
 
-
-    /*C:\\Users\\JuanmaPC\\Desktop\\Proyectos TFG\\MenuPlanningAPP*/
+    //Cargar la imagen en la pantalla de inicio
     QImage image("foto_inicio.png");
     QPixmap pixm = QPixmap(":/images/foto_inicio.png");
     ui->label_image->setPixmap(pixm);
 
+    //Establecer el tamaño de los elementos en la parte de ingredientes del plato (ya que en ocasiones se redimensionaba)
+    ui->pushButton_PLAING_aniadir->setMinimumSize(66,23);
+    ui->pushButton_PLAING_modificar->setMinimumSize(65,23);
+    ui->pushButton_PLAING_eliminar->setMinimumSize(66,23);
+    ui->label_123->setMinimumSize(66,20);
+    ui->lineEdit_PLAING_cantidad->setMinimumSize(65,20);
+    ui->label_124->setMinimumSize(66,20);
+    ui->pushButton_PLAING_aniadir->setMaximumSize(66,23);
+    ui->pushButton_PLAING_modificar->setMaximumSize(65,23);
+    ui->pushButton_PLAING_eliminar->setMaximumSize(66,23);
+    ui->label_123->setMaximumSize(66,20);
+    ui->lineEdit_PLAING_cantidad->setMaximumSize(65,20);
+    ui->label_124->setMaximumSize(66,20);
 
 
     //Deshabilitar los botones de la parte de Ingredientes al arranque de la aplicacion
@@ -286,9 +298,10 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
 
         if(msgBox.clickedButton() == myYesButton)
         {
-            db1->queryEliminarIngrediente(ui->label_INGid->text());                 //Consulta de eliminacion de ingrediente
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));       //Consulta para mostrar los ingredientes
-            clearIngredientesTextBox();                                             //Limpiar los textbox
+            db1->queryEliminarIngrediente(ui->label_INGid->text());                         //Consulta de eliminacion de ingrediente
+            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));               //Consulta para mostrar los ingredientes
+            ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());    //Mostrar los ingredientes actualizados en el listview de ingredientes en el apartado platos
+            clearIngredientesTextBox();                                                     //Limpiar los textbox
         }
     }
 }
@@ -376,6 +389,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
             db1->addINGQuerys(captureTextBoxText(INGREDIENTES));                                //Consulta para añadir ingrediente
 
         ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));                       //Consulta para mostrar ingredientes
+        ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());            //Mostrar los ingredientes actualizados en el listview de ingredientes en el apartado platos
     }
 
     clearIngredientesTextBox();                                 //Limpiar textbox
@@ -760,8 +774,8 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_PLAvitb6->setText(model->index(0,19).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAvitb12->setText(model->index(0,20).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAvitc->setText(model->index(0,21).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitd->setText(model->index(0,23).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvite->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitd->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvite->setText(model->index(0,23).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAyodo->setText(model->index(0,24).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAzinc->setText(model->index(0,25).data(Qt::DisplayRole).toString());
 
