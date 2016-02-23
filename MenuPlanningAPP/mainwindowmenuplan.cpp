@@ -288,7 +288,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;                                                     //Mensaje de confirmacion
-        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText("Un ingrediente va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -351,7 +351,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;                                                     //mensaje de confirmacion
-        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText("Un plato va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este plato de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -428,6 +428,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 fillIngPlaTextBox(model, PLATOS);                                                               //rellenar los textbox con la informacion
 
                 QMessageBox msgBox;                                                                             //mensaje informativo para añadir ingredientes al plato
+                msgBox.setIcon(QMessageBox::Information);
                 msgBox.setText("Un plato ha sido añadido a la base de datos.");
                 msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
                 QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
@@ -583,7 +584,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
     if(A == ACCEPT)
     {
         QMessageBox msgBox;                                                                                         //Mensaje de confirmacion de eliminacion
-        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setIcon(QMessageBox::Warning);
         msgBox.setText("Un ingrediente del plato va a ser eliminado.");
         msgBox.setInformativeText("¿Está seguro de que quiere eliminar este ingrediente de forma permanente?");
         QAbstractButton *myYesButton = msgBox.addButton(trUtf8("Sí"), QMessageBox::YesRole);
