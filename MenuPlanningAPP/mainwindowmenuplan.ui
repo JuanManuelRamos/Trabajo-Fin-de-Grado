@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>989</width>
-    <height>638</height>
+    <height>714</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -17,12 +17,6 @@
    </sizepolicy>
   </property>
   <property name="minimumSize">
-   <size>
-    <width>989</width>
-    <height>638</height>
-   </size>
-  </property>
-  <property name="maximumSize">
    <size>
     <width>989</width>
     <height>638</height>
@@ -38,14 +32,14 @@
       <x>10</x>
       <y>0</y>
       <width>971</width>
-      <height>601</height>
+      <height>671</height>
      </rect>
     </property>
     <property name="focusPolicy">
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -55,7 +49,7 @@
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>430</y>
+        <y>520</y>
         <width>211</width>
         <height>111</height>
        </rect>
@@ -153,10 +147,10 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>10</x>
         <y>110</y>
-        <width>731</width>
-        <height>461</height>
+        <width>721</width>
+        <height>531</height>
        </rect>
       </property>
       <property name="title">
@@ -195,9 +189,9 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>160</y>
          <width>711</width>
-         <height>341</height>
+         <height>361</height>
         </rect>
        </property>
        <property name="title">
@@ -812,7 +806,7 @@
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <property name="sizeConstraint">
-           <enum>QLayout::SetNoConstraint</enum>
+           <enum>QLayout::SetMinimumSize</enum>
           </property>
           <item row="0" column="1">
            <widget class="QLabel" name="label_123">
@@ -876,7 +870,7 @@
          <x>290</x>
          <y>9</y>
          <width>431</width>
-         <height>101</height>
+         <height>141</height>
         </rect>
        </property>
        <property name="title">
@@ -888,7 +882,7 @@
           <x>10</x>
           <y>20</y>
           <width>411</width>
-          <height>71</height>
+          <height>111</height>
          </rect>
         </property>
        </widget>
@@ -896,8 +890,8 @@
       <widget class="QWidget" name="gridLayoutWidget_7">
        <property name="geometry">
         <rect>
-         <x>30</x>
-         <y>50</y>
+         <x>20</x>
+         <y>60</y>
          <width>161</width>
          <height>48</height>
         </rect>
@@ -976,7 +970,7 @@
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>500</y>
+        <y>560</y>
         <width>221</width>
         <height>31</height>
        </rect>
@@ -992,7 +986,7 @@
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>540</y>
+        <y>600</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -1021,7 +1015,7 @@
       <property name="geometry">
        <rect>
         <x>860</x>
-        <y>540</y>
+        <y>600</y>
         <width>101</width>
         <height>31</height>
        </rect>
@@ -1036,7 +1030,7 @@
         <x>740</x>
         <y>120</y>
         <width>221</width>
-        <height>161</height>
+        <height>201</height>
        </rect>
       </property>
      </widget>
@@ -1044,7 +1038,7 @@
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>290</y>
+        <y>320</y>
         <width>221</width>
         <height>31</height>
        </rect>
@@ -1057,9 +1051,9 @@
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>320</y>
+        <y>350</y>
         <width>221</width>
-        <height>171</height>
+        <height>201</height>
        </rect>
       </property>
      </widget>
@@ -1090,7 +1084,7 @@
         <x>10</x>
         <y>110</y>
         <width>671</width>
-        <height>461</height>
+        <height>531</height>
        </rect>
       </property>
       <property name="title">
@@ -1129,7 +1123,7 @@
        <property name="geometry">
         <rect>
          <x>10</x>
-         <y>110</y>
+         <y>180</y>
          <width>651</width>
          <height>341</height>
         </rect>
@@ -1719,112 +1713,53 @@
         </property>
        </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_INGprecio">
+      <widget class="QGroupBox" name="groupBox_INGtemporada">
        <property name="geometry">
         <rect>
          <x>290</x>
          <y>9</y>
          <width>371</width>
-         <height>91</height>
+         <height>161</height>
         </rect>
        </property>
        <property name="title">
-        <string>Precio</string>
+        <string>Período de temporada</string>
        </property>
-       <widget class="QLabel" name="label_4">
-        <property name="geometry">
-         <rect>
-          <x>10</x>
-          <y>30</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Precio: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_INGprecio">
-        <property name="geometry">
-         <rect>
-          <x>60</x>
-          <y>30</y>
-          <width>91</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_5">
-        <property name="geometry">
-         <rect>
-          <x>160</x>
-          <y>30</y>
-          <width>41</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;€  por &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_INGcantporprecio">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>30</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_6">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>30</y>
-          <width>51</width>
-          <height>21</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;gramos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="label_7">
         <property name="geometry">
          <rect>
-          <x>70</x>
-          <y>60</y>
-          <width>131</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Precio de temporada:  &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_INGpreciotemp">
-        <property name="geometry">
-         <rect>
-          <x>200</x>
-          <y>60</y>
+          <x>10</x>
+          <y>20</y>
           <width>81</width>
           <height>20</height>
          </rect>
         </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Temporada: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
        </widget>
-       <widget class="QLabel" name="label_8">
+       <widget class="QScrollArea" name="scrollArea_temporada">
         <property name="geometry">
          <rect>
-          <x>290</x>
-          <y>60</y>
-          <width>16</width>
-          <height>21</height>
+          <x>90</x>
+          <y>20</y>
+          <width>221</width>
+          <height>131</height>
          </rect>
         </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;€&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>219</width>
+           <height>129</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
       </widget>
       <widget class="QLabel" name="label_2">
@@ -1892,6 +1827,78 @@
         </item>
        </layout>
       </widget>
+      <widget class="QLabel" name="label_6">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>130</y>
+         <width>51</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;gramos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>100</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;€&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>100</y>
+         <width>41</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Precio: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_INGprecio">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>100</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEdit_INGcantporprecio">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>130</y>
+         <width>91</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_8">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>130</y>
+         <width>21</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;por &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
      </widget>
      <widget class="QPushButton" name="pushButton_Aniadir">
       <property name="enabled">
@@ -1900,7 +1907,7 @@
       <property name="geometry">
        <rect>
         <x>700</x>
-        <y>500</y>
+        <y>560</y>
         <width>251</width>
         <height>31</height>
        </rect>
@@ -1916,7 +1923,7 @@
       <property name="geometry">
        <rect>
         <x>700</x>
-        <y>540</y>
+        <y>600</y>
         <width>121</width>
         <height>31</height>
        </rect>
@@ -1932,7 +1939,7 @@
       <property name="geometry">
        <rect>
         <x>830</x>
-        <y>540</y>
+        <y>600</y>
         <width>121</width>
         <height>31</height>
        </rect>
@@ -1947,7 +1954,7 @@
         <x>700</x>
         <y>120</y>
         <width>256</width>
-        <height>371</height>
+        <height>431</height>
        </rect>
       </property>
      </widget>
@@ -1975,6 +1982,16 @@
       </property>
       <property name="text">
        <string/>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_INGpreciotemp">
+      <property name="geometry">
+       <rect>
+        <x>820</x>
+        <y>30</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
       </property>
      </widget>
     </widget>

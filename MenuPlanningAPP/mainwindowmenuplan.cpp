@@ -34,6 +34,23 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->lineEdit_PLAING_cantidad->setMaximumSize(65,20);
     ui->label_124->setMaximumSize(66,20);
 
+    //Establecimiento de los checkbox en en layout con sus respectivos nombres
+    lay->addWidget(check);
+    lay->addWidget(check1);
+    lay->addWidget(check2);
+    lay->addWidget(check3);
+    lay->addWidget(check4);
+    lay->addWidget(check5);
+    lay->addWidget(check6);
+    lay->addWidget(check7);
+    lay->addWidget(check8);
+    lay->addWidget(check9);
+    lay->addWidget(check10);
+    lay->addWidget(check11);
+    lay->addWidget(check12);
+    ui->scrollAreaWidgetContents->setLayout(lay);
+    connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkboxClicked()));       //Creacion del evento click en el checkbox de Marcar/Desmarcar todos
+
 
     //Deshabilitar los botones de la parte de Ingredientes al arranque de la aplicacion
     disableGCIngredientesButtons();
@@ -52,6 +69,20 @@ MainWindowMenuPlan::~MainWindowMenuPlan()
 {
     delete db1;
     delete ui;
+    delete lay;
+    delete check;
+    delete check1;
+    delete check2;
+    delete check3;
+    delete check4;
+    delete check5;
+    delete check6;
+    delete check7;
+    delete check8;
+    delete check9;
+    delete check10;
+    delete check11;
+    delete check12;
 }
 
 
@@ -147,7 +178,7 @@ void MainWindowMenuPlan::disableAMEINGPLAButtons()          //deshabilitar los b
 
 /*---------------------------------------------------------------------------------------------------------------------*/
 
-void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los textbox (linedit) del apartado Ingredientes
+void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los textbox (linedit) y ceckbox del apartado Ingredientes
 {
     QList<QLineEdit *> alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
 
@@ -155,9 +186,10 @@ void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los text
     {
         alltextbox.at(i)->setEnabled(true);
     }
+    ui->scrollArea_temporada->setEnabled(true);
 }
 
-void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los textbox (linedit) del apartado Ingredientes
+void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los textbox (linedit) y checkbox del apartado Ingredientes
 {
     QList<QLineEdit *> alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
 
@@ -165,6 +197,7 @@ void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los t
     {
         alltextbox.at(i)->setEnabled(false);
     }
+    ui->scrollArea_temporada->setEnabled(false);
 }
 
 /*---------------------------------------------------------------------------------------------------------------------*/
@@ -606,6 +639,33 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
 }
 
 
+/*--------------------------------------------------------- CHECKBOX MARCAR O DESMARCAR TODOS ------------------------------------------------------------*/
+
+void MainWindowMenuPlan::checkboxClicked()
+{
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
+
+    //Al hacer click en el checkbox se cambia el estado antes de llegar a esta parte del codigo. Por lo que si el estado es checkeado, se chekean todos.
+    //Si el estado es no checkeado, se descheckean todos.
+
+    if(check->isChecked())
+    {
+        for(int i = 0; i < allcheckbox.size(); i++)
+        {
+            allcheckbox.at(i)->setChecked(true);
+        }
+    }
+    else
+    {
+        for(int i = 0; i < allcheckbox.size(); i++)
+        {
+            allcheckbox.at(i)->setChecked(false);
+        }
+    }
+}
+
+
+
 /*----------------------------------------------------------------------------------------------------*/
 /*---------------------- BOTON DE CONEXION Y DESCONEXION A LA BASE DE DATOS --------------------------*/
 /*----------------------------------------------------------------------------------------------------*/
@@ -646,6 +706,8 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
         cleanListViewING_en_Platos();                                                   //_____Se borra el listview con los ingredientes mostrados en el apartado platos
         cleanListViewING_de_PLA();                                                      //_____Se borra el listview con los ingredientes pertenecientes a un plato en el apartado platos
         cleanListViewPlatos();                                                          //_____Se borra el listview con los platos mostrados
+        clearIngredientesTextBox();                                                     //_____Se borran los textbox de ingredientes
+        clearPlatosTextBox();                                                           //_____Se borran los textbox de platos
         disableAMEIngredientesButtons();                                                //_____Se deshabilitan los botones de edicion del panel de ingredientes
         disableAMEPlatosButtons();                                                      //_____Se deshabilitan los botones de edicion del panel de platos
     }
@@ -1054,4 +1116,25 @@ void MainWindowMenuPlan::showInfoN(QStringList &infoN)
 
     fillIngPlaTextBox(model3, PLATOS);                                                              //Rellenar los textbox con los datos consultados
     delete model3;
+}
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*------------ RELLENA EL ARRAY mesesTemporada SEGUN LA TEMPORADA DE UN INGREDIENTE ---------------*/
+/*-------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::set_mesesTemporada()
+{
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
+
+    for(int i = 0; i < 12; i++)         //Empieza en 1 para saltarse el checkbox de marcar/desmarcar todos
+    {
+        if(allcheckbox.at(1+i)->isChecked())
+        {
+            mesesTemporada[i] = '1';
+        }
+        else
+        {
+           mesesTemporada[i] = '0';
+        }
+    }
 }

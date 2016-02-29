@@ -11,6 +11,7 @@
 #include "database.h"
 #include "enums.h"
 #include <QGroupBox>
+#include <QtWidgets>
 
 
 using namespace std;
@@ -64,9 +65,12 @@ class MainWindowMenuPlan : public QMainWindow
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
 
 
-        void nutricionalInfo();
-        void initializeInfoN(QStringList &infoN);
-        void showInfoN(QStringList &infoN);
+        void nutricionalInfo();                                                 //Calcula la informacion nutricional de un plato segun sus ingredientes
+        void initializeInfoN(QStringList &infoN);                               //Inicializa la lista en donde se guarda la informacion nutricional
+        void showInfoN(QStringList &infoN);                                     //Muestra la informacion nutricional
+
+        void set_mesesTemporada();                                              //Rellena el array mesesTemporada segun los meses en los que un ingrediente esta de temporada
+
 
     private slots:
 
@@ -108,12 +112,31 @@ class MainWindowMenuPlan : public QMainWindow
 
         void on_listView_INGPLA_clicked(const QModelIndex &index);
 
+        void checkboxClicked();
+
 private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;
         QUERYS Q;
         const int maxNumSize = 6;
         const int NumInfN = 21;
+        char mesesTemporada[12];
+
+        //Checkbox correspondientes a los meses de temporada y layout que los contiene
+        QVBoxLayout *lay = new QVBoxLayout(this);
+        QCheckBox *check = new QCheckBox("Marcar/desmarcar todos");
+        QCheckBox *check1 = new QCheckBox("Enero");
+        QCheckBox *check2 = new QCheckBox("Febrero");
+        QCheckBox *check3 = new QCheckBox("Marzo");
+        QCheckBox *check4 = new QCheckBox("Abril");
+        QCheckBox *check5 = new QCheckBox("Mayo");
+        QCheckBox *check6 = new QCheckBox("Junio");
+        QCheckBox *check7 = new QCheckBox("Julio");
+        QCheckBox *check8 = new QCheckBox("Agosto");
+        QCheckBox *check9 = new QCheckBox("Septiembre");
+        QCheckBox *check10 = new QCheckBox("Octubre");
+        QCheckBox *check11 = new QCheckBox("Noviembre");
+        QCheckBox *check12 = new QCheckBox("Diciembre");
 };
 
 #endif // MAINWINDOWMENUPLAN_H
