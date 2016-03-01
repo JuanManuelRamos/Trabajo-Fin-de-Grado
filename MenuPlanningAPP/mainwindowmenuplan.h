@@ -69,8 +69,8 @@ class MainWindowMenuPlan : public QMainWindow
         void initializeInfoN(QStringList &infoN);                               //Inicializa la lista en donde se guarda la informacion nutricional
         void showInfoN(QStringList &infoN);                                     //Muestra la informacion nutricional
 
-        void set_mesesTemporada();                                              //Rellena el array mesesTemporada segun los meses en los que un ingrediente esta de temporada
-
+        QString set_mesesTemporada();                                           //Rellena el array mesesTemporada segun los meses en los que un ingrediente esta de temporada
+        void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
 
     private slots:
 

@@ -186,7 +186,11 @@ void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los text
     {
         alltextbox.at(i)->setEnabled(true);
     }
-    ui->scrollArea_temporada->setEnabled(true);
+
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //habilita los checkbox existentes
+    for(int i = 0; i < allcheckbox.size(); i++)
+        allcheckbox.at(i)->setEnabled(true);
+
 }
 
 void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los textbox (linedit) y checkbox del apartado Ingredientes
@@ -197,7 +201,10 @@ void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los t
     {
         alltextbox.at(i)->setEnabled(false);
     }
-    ui->scrollArea_temporada->setEnabled(false);
+
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //deshabilita los checkbox existentes
+    for(int i = 0; i < allcheckbox.size(); i++)
+        allcheckbox.at(i)->setEnabled(false);
 }
 
 /*---------------------------------------------------------------------------------------------------------------------*/
@@ -787,7 +794,6 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_INGcantidad->setText(model->index(0,2).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGcantporprecio->setText(model->index(0,3).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGprecio->setText(model->index(0,4).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGpreciotemp->setText(model->index(0,5).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGacidofol->setText(model->index(0,6).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGcalcio->setText(model->index(0,7).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGenergia->setText(model->index(0,8).data(Qt::DisplayRole).toString());
@@ -811,7 +817,7 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_INGzinc->setText(model->index(0,26).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
-
+            mostrar_mesesTemporada(model->index(0,5).data(Qt::DisplayRole).toString());         //Rellenar  los checbox de temporada
         break;
 
         case PLATOS:
@@ -843,7 +849,6 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_PLAzinc->setText(model->index(0,25).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_Plato->findChildren<QLineEdit *>();
-
         break;
     }
 
@@ -897,13 +902,13 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
 
     switch(AP)
     {
-        case INGREDIENTES:
+        case INGREDIENTES:     
             dataTextBox << ui->label_INGid->text()
             << ui->lineEdit_INGnombre->text()
             << ui->lineEdit_INGcantidad->text()
             << ui->lineEdit_INGcantporprecio->text()
             << ui->lineEdit_INGprecio->text()
-            << ui->lineEdit_INGpreciotemp->text()
+            << set_mesesTemporada()                       //Rellenar el array mesesTemporada
             << ui->lineEdit_INGacidofol->text()
             << ui->lineEdit_INGcalcio->text()
             << ui->lineEdit_INGenergia->text()
@@ -924,7 +929,7 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
             << ui->lineEdit_INGvitd->text()
             << ui->lineEdit_INGvite->text()
             << ui->lineEdit_INGyodo->text()
-            << ui->lineEdit_INGzinc->text();
+            << ui->lineEdit_INGzinc->text();      
         break;
 
         case PLATOS:
@@ -1122,7 +1127,7 @@ void MainWindowMenuPlan::showInfoN(QStringList &infoN)
 /*-------------------------------------------------------------------------------------------------*/
 /*------------ RELLENA EL ARRAY mesesTemporada SEGUN LA TEMPORADA DE UN INGREDIENTE ---------------*/
 /*-------------------------------------------------------------------------------------------------*/
-void MainWindowMenuPlan::set_mesesTemporada()
+QString MainWindowMenuPlan::set_mesesTemporada()
 {
     QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
 
@@ -1135,6 +1140,32 @@ void MainWindowMenuPlan::set_mesesTemporada()
         else
         {
            mesesTemporada[i] = '0';
+        }
+    }
+    QString str;
+    for(int i = 0; i < 12; i++)
+        str.append(mesesTemporada[i]);
+
+    return str;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+/*----------------- RELLENA LOS CHECKBOX SEGUN LA TEMPORADA DE UN INGREDIENTE ---------------------*/
+/*-------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::mostrar_mesesTemporada(QString meses)
+{
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
+    allcheckbox.at(0)->setChecked(false);
+
+    for(int i = 0; i < 12; i++)         //Empieza en 1 para saltarse el checkbox de marcar/desmarcar todos
+    {
+        if(meses.at(i) == '1')
+        {
+            allcheckbox.at(1+i)->setChecked(true);
+        }
+        else
+        {
+            allcheckbox.at(1+i)->setChecked(false);
         }
     }
 }
