@@ -1369,7 +1369,7 @@
        <widget class="QWidget" name="gridLayoutWidget_2">
         <property name="geometry">
          <rect>
-          <x>250</x>
+          <x>220</x>
           <y>30</y>
           <width>201</width>
           <height>311</height>
@@ -1581,8 +1581,8 @@
        <widget class="QWidget" name="gridLayoutWidget_3">
         <property name="geometry">
          <rect>
-          <x>540</x>
-          <y>30</y>
+          <x>440</x>
+          <y>250</y>
           <width>100</width>
           <height>80</height>
          </rect>
@@ -1712,39 +1712,103 @@
          <string>Cancelar</string>
         </property>
        </widget>
+       <widget class="QGroupBox" name="groupBox_alergenos">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>30</y>
+          <width>181</width>
+          <height>191</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string>Alérgenos</string>
+        </property>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>160</width>
+           <height>161</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <item>
+           <widget class="QCheckBox" name="checkBox_cereales">
+            <property name="text">
+             <string>Cereales</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_frutos_secos">
+            <property name="text">
+             <string>Frutos secos</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_legumbres">
+            <property name="text">
+             <string>Legumbres</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_huevo">
+            <property name="text">
+             <string>Proteína de huevo</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_leche">
+            <property name="text">
+             <string>Proteína de la leche de vaca</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_marisco">
+            <property name="text">
+             <string>Marisco</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_pescado">
+            <property name="text">
+             <string>Pescado</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_INGtemporada">
        <property name="geometry">
         <rect>
          <x>290</x>
          <y>9</y>
-         <width>371</width>
-         <height>161</height>
+         <width>171</width>
+         <height>171</height>
         </rect>
        </property>
        <property name="title">
         <string>Período de temporada</string>
        </property>
-       <widget class="QLabel" name="label_7">
+       <widget class="QScrollArea" name="scrollArea_temporada">
         <property name="geometry">
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>81</width>
-          <height>20</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Temporada: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-       <widget class="QScrollArea" name="scrollArea_temporada">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>20</y>
-          <width>221</width>
-          <height>131</height>
+          <width>151</width>
+          <height>141</height>
          </rect>
         </property>
         <property name="widgetResizable">
@@ -1755,8 +1819,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>219</width>
-           <height>129</height>
+           <width>149</width>
+           <height>139</height>
           </rect>
          </property>
         </widget>
@@ -1898,6 +1962,66 @@
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;por &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
+      </widget>
+      <widget class="QGroupBox" name="groupBox_incompatibilidades">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>10</y>
+         <width>191</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="title">
+        <string>Incompatibilidades</string>
+       </property>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>20</y>
+          <width>175</width>
+          <height>141</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QCheckBox" name="checkBox_celiaco">
+           <property name="text">
+            <string>No apto para celíacos</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_diabetico">
+           <property name="text">
+            <string>No apto para diabéticos</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_semivegetariano">
+           <property name="text">
+            <string>No apto para semivegetarianos</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_vegetariano">
+           <property name="text">
+            <string>No apto para vegetarianos</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox_vegano">
+           <property name="text">
+            <string>No apto para veganos</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
      <widget class="QPushButton" name="pushButton_Aniadir">

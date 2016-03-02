@@ -124,7 +124,7 @@ private:
 
         //Checkbox correspondientes a los meses de temporada y layout que los contiene
         QVBoxLayout *lay = new QVBoxLayout(this);
-        QCheckBox *check = new QCheckBox("Marcar/desmarcar todos");
+        QCheckBox *check = new QCheckBox("Todos / ninguno");
         QCheckBox *check1 = new QCheckBox("Enero");
         QCheckBox *check2 = new QCheckBox("Febrero");
         QCheckBox *check3 = new QCheckBox("Marzo");

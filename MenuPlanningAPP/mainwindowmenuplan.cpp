@@ -187,7 +187,10 @@ void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los text
         alltextbox.at(i)->setEnabled(true);
     }
 
-    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //habilita los checkbox existentes
+    ui->groupBox_incompatibilidades->setEnabled(true);                                          //habilita los checbox de icompatibilidades
+    ui->groupBox_alergenos->setEnabled(true);                                                   //habilita los checbox de alergenos
+
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //habilita los checkbox de temporada
     for(int i = 0; i < allcheckbox.size(); i++)
         allcheckbox.at(i)->setEnabled(true);
 
@@ -202,7 +205,10 @@ void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los t
         alltextbox.at(i)->setEnabled(false);
     }
 
-    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //deshabilita los checkbox existentes
+    ui->groupBox_incompatibilidades->setEnabled(false);                                         //deshabilita los checbox de icompatibilidades
+    ui->groupBox_alergenos->setEnabled(false);                                                  //deshabilita los checbox de alergenos
+
+    QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //deshabilita los checkbox de temporada
     for(int i = 0; i < allcheckbox.size(); i++)
         allcheckbox.at(i)->setEnabled(false);
 }
