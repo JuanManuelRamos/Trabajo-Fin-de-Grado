@@ -1733,7 +1733,7 @@
            <height>161</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
+         <layout class="QVBoxLayout" name="verticalLayout_alergenos">
           <property name="sizeConstraint">
            <enum>QLayout::SetDefaultConstraint</enum>
           </property>
@@ -1759,20 +1759,6 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="checkBox_huevo">
-            <property name="text">
-             <string>Proteína de huevo</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QCheckBox" name="checkBox_leche">
-            <property name="text">
-             <string>Proteína de la leche de vaca</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QCheckBox" name="checkBox_marisco">
             <property name="text">
              <string>Marisco</string>
@@ -1786,8 +1772,24 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_huevo">
+            <property name="text">
+             <string>Proteína de huevo</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="checkBox_leche">
+            <property name="text">
+             <string>Proteína de la leche de vaca</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
+        <zorder>verticalLayoutWidget</zorder>
+        <zorder>gridLayoutWidget_9</zorder>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_INGtemporada">
@@ -1984,7 +1986,7 @@
           <height>141</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="verticalLayout_incompatibilidades">
          <item>
           <widget class="QCheckBox" name="checkBox_celiaco">
            <property name="text">
@@ -2022,6 +2024,8 @@
          </item>
         </layout>
        </widget>
+       <zorder>verticalLayoutWidget_2</zorder>
+       <zorder>gridLayoutWidget_6</zorder>
       </widget>
      </widget>
      <widget class="QPushButton" name="pushButton_Aniadir">

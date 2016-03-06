@@ -70,7 +70,10 @@ class MainWindowMenuPlan : public QMainWindow
         void showInfoN(QStringList &infoN);                                     //Muestra la informacion nutricional
 
         QString set_mesesTemporada();                                           //Rellena el array mesesTemporada segun los meses en los que un ingrediente esta de temporada
+        QString set_Incompatibilidades();
+        QString set_Alergenos();
         void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
+        void mostrar_alergenosIncom(CHECKBOX CB, QString array);
 
     private slots:
 
@@ -118,9 +121,15 @@ private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;
         QUERYS Q;
-        const int maxNumSize = 6;
-        const int NumInfN = 21;
-        char mesesTemporada[12];
+        const int maxNumSize = 6;                   //Numero maximo de digitos en un campo numerico
+        const int NumInfN = 21;                     //Numero de datos nutricionales
+        const static int NumMesesTemp = 12;         //Numero de meses de temporada
+        const static int NumAlergenos = 7;          //Numero de alergenos
+        const static int NumIncomp = 5;             //Numero de incompatibilidades alimenticias
+
+        char mesesTemporada[NumMesesTemp];          //Array de meses de temporada
+        char ary_alergenos[NumAlergenos];           //Array de alergenos
+        char ary_incomp[NumIncomp];                 //Array de incompatibilidades alimenticias
 
         //Checkbox correspondientes a los meses de temporada y layout que los contiene
         QVBoxLayout *lay = new QVBoxLayout(this);
@@ -137,6 +146,8 @@ private:
         QCheckBox *check10 = new QCheckBox("Octubre");
         QCheckBox *check11 = new QCheckBox("Noviembre");
         QCheckBox *check12 = new QCheckBox("Diciembre");
+
+
 };
 
 #endif // MAINWINDOWMENUPLAN_H

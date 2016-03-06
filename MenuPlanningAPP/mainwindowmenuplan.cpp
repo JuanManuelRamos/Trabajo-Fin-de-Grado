@@ -51,7 +51,6 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->scrollAreaWidgetContents->setLayout(lay);
     connect(check, SIGNAL(stateChanged(int)), this, SLOT(checkboxClicked()));       //Creacion del evento click en el checkbox de Marcar/Desmarcar todos
 
-
     //Deshabilitar los botones de la parte de Ingredientes al arranque de la aplicacion
     disableGCIngredientesButtons();
     disableAMEIngredientesButtons();
@@ -800,30 +799,32 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_INGcantidad->setText(model->index(0,2).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGcantporprecio->setText(model->index(0,3).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGprecio->setText(model->index(0,4).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGacidofol->setText(model->index(0,6).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGcalcio->setText(model->index(0,7).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGenergia->setText(model->index(0,8).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGfosforo->setText(model->index(0,9).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGgrasa->setText(model->index(0,10).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGhierro->setText(model->index(0,11).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGmagnesio->setText(model->index(0,12).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGpotasio->setText(model->index(0,13).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGproteinas->setText(model->index(0,14).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGselenio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGsodio->setText(model->index(0,16).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvita->setText(model->index(0,17).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb1->setText(model->index(0,18).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb2->setText(model->index(0,19).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb6->setText(model->index(0,20).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb12->setText(model->index(0,21).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitc->setText(model->index(0,22).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitd->setText(model->index(0,23).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvite->setText(model->index(0,24).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGyodo->setText(model->index(0,25).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGzinc->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGacidofol->setText(model->index(0,8).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGcalcio->setText(model->index(0,9).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGenergia->setText(model->index(0,10).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGfosforo->setText(model->index(0,11).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGgrasa->setText(model->index(0,12).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGhierro->setText(model->index(0,13).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGmagnesio->setText(model->index(0,14).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGpotasio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGproteinas->setText(model->index(0,16).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGselenio->setText(model->index(0,17).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGsodio->setText(model->index(0,18).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvita->setText(model->index(0,19).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb1->setText(model->index(0,20).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb2->setText(model->index(0,21).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb6->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb12->setText(model->index(0,23).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitc->setText(model->index(0,24).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitd->setText(model->index(0,25).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvite->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGyodo->setText(model->index(0,27).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGzinc->setText(model->index(0,28).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
-            mostrar_mesesTemporada(model->index(0,5).data(Qt::DisplayRole).toString());         //Rellenar  los checbox de temporada
+            mostrar_mesesTemporada(model->index(0,5).data(Qt::DisplayRole).toString());                         //Rellenar los checbox de temporada
+            mostrar_alergenosIncom(INCOMPATIBILIDADES, model->index(0,6).data(Qt::DisplayRole).toString());     //Rellenar los checkbox de incompatibilidades alimenticias
+            mostrar_alergenosIncom(ALERGENOS, model->index(0,7).data(Qt::DisplayRole).toString());              //Rellenar los checkbox de alergenos
         break;
 
         case PLATOS:
@@ -914,7 +915,9 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
             << ui->lineEdit_INGcantidad->text()
             << ui->lineEdit_INGcantporprecio->text()
             << ui->lineEdit_INGprecio->text()
-            << set_mesesTemporada()                       //Rellenar el array mesesTemporada
+            << set_mesesTemporada()                         //Rellenar el array mesesTemporada
+            << set_Incompatibilidades()                     //Rellena el array ary_incomp
+            << set_Alergenos()                              //Rellena el array ary_alergenos
             << ui->lineEdit_INGacidofol->text()
             << ui->lineEdit_INGcalcio->text()
             << ui->lineEdit_INGenergia->text()
@@ -1137,7 +1140,7 @@ QString MainWindowMenuPlan::set_mesesTemporada()
 {
     QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
 
-    for(int i = 0; i < 12; i++)         //Empieza en 1 para saltarse el checkbox de marcar/desmarcar todos
+    for(int i = 0; i < NumMesesTemp; i++)           //Se rellena el array con 0 y 1 dependiendo de si el checkbox esta marcado o no
     {
         if(allcheckbox.at(1+i)->isChecked())
         {
@@ -1149,21 +1152,73 @@ QString MainWindowMenuPlan::set_mesesTemporada()
         }
     }
     QString str;
-    for(int i = 0; i < 12; i++)
+    for(int i = 0; i < NumMesesTemp; i++)           //Se convierte el array en un string
         str.append(mesesTemporada[i]);
 
     return str;
 }
 
 /*-------------------------------------------------------------------------------------------------*/
-/*----------------- RELLENA LOS CHECKBOX SEGUN LA TEMPORADA DE UN INGREDIENTE ---------------------*/
+/*---- RELLENA EL ARRAY ary_incomp SEGUN LAS INCOMPATIBILIDADES ALIMENTICIAS DE UN INGREDIENTE ----*/
+/*-------------------------------------------------------------------------------------------------*/
+QString MainWindowMenuPlan::set_Incompatibilidades()
+{
+    QList<QCheckBox *> allcheckbox = ui->groupBox_incompatibilidades->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
+
+    for(int i = 0; i < NumIncomp; i++)              //Se rellena el array con 0 y 1 dependiendo de si el checkbox esta marcado o no
+    {
+        if(allcheckbox.at(i)->isChecked())
+        {
+            ary_incomp[i] = '1';
+        }
+        else
+        {
+           ary_incomp[i] = '0';
+        }
+    }
+    QString str;                                    //Se convierte el array en un string
+    for(int i = 0; i < NumIncomp; i++)
+        str.append(ary_incomp[i]);
+
+    return str;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+/*------------ RELLENA EL ARRAY ary_alergenos SEGUN LOS ALERGENOS DE UN INGREDIENTE ---------------*/
+/*-------------------------------------------------------------------------------------------------*/
+QString MainWindowMenuPlan::set_Alergenos()
+{
+    QList<QCheckBox *> allcheckbox = ui->groupBox_alergenos->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
+
+    for(int i = 0; i < NumAlergenos; i++)           //Se rellena el array con 0 y 1 dependiendo de si el checkbox esta marcado o no
+    {
+        if(allcheckbox.at(i)->isChecked())
+        {
+            ary_alergenos[i] = '1';
+        }
+        else
+        {
+           ary_alergenos[i] = '0';
+        }
+    }
+    QString str;                                    //Se convierte el array en un string
+    for(int i = 0; i < NumAlergenos; i++)
+        str.append(ary_alergenos[i]);
+
+    return str;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*----------------- MUESTRA LOS CHECKBOX SEGUN LA TEMPORADA DE UN INGREDIENTE ---------------------*/
 /*-------------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::mostrar_mesesTemporada(QString meses)
 {
     QList<QCheckBox *> allcheckbox = ui->scrollArea_temporada->findChildren<QCheckBox *>();     //Se guarda en un QList todos los checkbox existentes
     allcheckbox.at(0)->setChecked(false);
 
-    for(int i = 0; i < 12; i++)         //Empieza en 1 para saltarse el checkbox de marcar/desmarcar todos
+    for(int i = 0; i < meses.size(); i++)         //Empieza en 1 para saltarse el checkbox de marcar/desmarcar todos
     {
         if(meses.at(i) == '1')
         {
@@ -1172,6 +1227,38 @@ void MainWindowMenuPlan::mostrar_mesesTemporada(QString meses)
         else
         {
             allcheckbox.at(1+i)->setChecked(false);
+        }
+    }
+}
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*--------- MUESTRA LOS CHECKBOX SEGUN LAs INCOMPATIBILIDADES ALIMENTICIAS Y ALERGENOS ------------*/
+/*-------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::mostrar_alergenosIncom(CHECKBOX CB, QString array)
+{
+    QList<QCheckBox *> allcheckbox;
+
+    switch(CB)                          //Se comprueban los checkcobx a mostrar
+    {
+        case INCOMPATIBILIDADES:
+            allcheckbox = ui->groupBox_incompatibilidades->findChildren<QCheckBox *>();
+        break;
+
+        case ALERGENOS:
+            allcheckbox = ui->groupBox_alergenos->findChildren<QCheckBox *>();
+        break;
+    }
+
+    for(int i = 0; i < array.size(); i++)
+    {
+        if(array.at(i) == '1')
+        {
+            allcheckbox.at(i)->setChecked(true);
+        }
+        else
+        {
+            allcheckbox.at(i)->setChecked(false);
         }
     }
 }
