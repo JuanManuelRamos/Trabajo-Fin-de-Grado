@@ -32,7 +32,7 @@
       <x>10</x>
       <y>0</y>
       <width>971</width>
-      <height>671</height>
+      <height>681</height>
      </rect>
     </property>
     <property name="focusPolicy">
@@ -150,7 +150,7 @@
         <x>10</x>
         <y>110</y>
         <width>721</width>
-        <height>531</height>
+        <height>541</height>
        </rect>
       </property>
       <property name="title">
@@ -188,10 +188,10 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>160</y>
-         <width>711</width>
-         <height>361</height>
+         <x>0</x>
+         <y>170</y>
+         <width>721</width>
+         <height>371</height>
         </rect>
        </property>
        <property name="title">
@@ -800,13 +800,16 @@
           <rect>
            <x>10</x>
            <y>180</y>
-           <width>239</width>
+           <width>211</width>
            <height>81</height>
           </rect>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
           <property name="sizeConstraint">
-           <enum>QLayout::SetMinimumSize</enum>
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <property name="horizontalSpacing">
+           <number>6</number>
           </property>
           <item row="0" column="1">
            <widget class="QLabel" name="label_123">
@@ -869,8 +872,8 @@
         <rect>
          <x>290</x>
          <y>9</y>
-         <width>431</width>
-         <height>141</height>
+         <width>421</width>
+         <height>161</height>
         </rect>
        </property>
        <property name="title">
@@ -881,8 +884,8 @@
          <rect>
           <x>10</x>
           <y>20</y>
-          <width>411</width>
-          <height>111</height>
+          <width>401</width>
+          <height>131</height>
          </rect>
         </property>
        </widget>
@@ -890,9 +893,9 @@
       <widget class="QWidget" name="gridLayoutWidget_7">
        <property name="geometry">
         <rect>
-         <x>20</x>
-         <y>60</y>
-         <width>161</width>
+         <x>30</x>
+         <y>50</y>
+         <width>141</width>
          <height>48</height>
         </rect>
        </property>
@@ -939,8 +942,8 @@
       <widget class="QWidget" name="formLayoutWidget_3">
        <property name="geometry">
         <rect>
-         <x>220</x>
-         <y>50</y>
+         <x>70</x>
+         <y>120</y>
          <width>61</width>
          <height>16</height>
         </rect>
@@ -957,6 +960,39 @@
          <widget class="QLabel" name="label_PLAid">
           <property name="text">
            <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="verticalLayoutWidget_3">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>50</y>
+         <width>101</width>
+         <height>65</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="radioButton_primerP">
+          <property name="text">
+           <string>Primer plato</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_segundoP">
+          <property name="text">
+           <string>Segundo plato</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_postre">
+          <property name="text">
+           <string>Postre</string>
           </property>
          </widget>
         </item>
@@ -1122,10 +1158,10 @@
        </property>
        <property name="geometry">
         <rect>
-         <x>10</x>
+         <x>0</x>
          <y>180</y>
-         <width>651</width>
-         <height>341</height>
+         <width>671</width>
+         <height>351</height>
         </rect>
        </property>
        <property name="title">
@@ -1788,8 +1824,6 @@
           </item>
          </layout>
         </widget>
-        <zorder>verticalLayoutWidget</zorder>
-        <zorder>gridLayoutWidget_9</zorder>
        </widget>
       </widget>
       <widget class="QGroupBox" name="groupBox_INGtemporada">
@@ -2024,8 +2058,6 @@
          </item>
         </layout>
        </widget>
-       <zorder>verticalLayoutWidget_2</zorder>
-       <zorder>gridLayoutWidget_6</zorder>
       </widget>
      </widget>
      <widget class="QPushButton" name="pushButton_Aniadir">

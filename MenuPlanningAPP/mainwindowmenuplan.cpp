@@ -221,6 +221,9 @@ void MainWindowMenuPlan::enablePlatosTextBox()              //habilitar los text
     ui->lineEdit_PLAcantidad->setEnabled(true);
     ui->textEdit_PLAdescripcion->setEnabled(true);
     ui->lineEdit_PLAING_cantidad->setEnabled(true);
+    ui->radioButton_primerP->setEnabled(true);
+    ui->radioButton_segundoP->setEnabled(true);
+    ui->radioButton_postre->setEnabled(true);
 }
 
 void MainWindowMenuPlan::disablePlatosTextBox()             //deshabilitar los textbox (linedit) del apartado Platos
@@ -231,6 +234,9 @@ void MainWindowMenuPlan::disablePlatosTextBox()             //deshabilitar los t
     ui->textEdit_PLAdescripcion->setEnabled(false);
     ui->lineEdit_PLAING_cantidad->setEnabled(false);
     ui->listView_Ingredientes_PLA->setEnabled(false);
+    ui->radioButton_primerP->setEnabled(false);
+    ui->radioButton_segundoP->setEnabled(false);
+    ui->radioButton_postre->setEnabled(false);
     ui->label_PLAING->setText("<html><head/><body><p align=\"center\"><span style=\" font-weight:600;\">Ingrediente a añadir</span></p></body></html>");
 }
 
@@ -359,6 +365,7 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
     enableGCPlatosButtons();                                                    //habilitar los botones GC
     clearPlatosTextBox();                                                       //limpiar los textbox
     enablePlatosTextBox();                                                      //habilitar los textbox
+    ui->radioButton_primerP->setChecked(true);                                  //Activa por defecto el tipo Primer plato
 
     ui->listView_Platos->setEnabled(false);                                     //deshabilitar el listview de platos
     ui->listView_Platos->clearSelection();                                      //eliminar la seleccion en el listview de platos
@@ -484,7 +491,6 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 if(msgBox.clickedButton() == myYesButton)                       //__Si se quiere añadir un ingrediente al plato
                 {
                     Q = ANIADIRINGPLA;
-                    disablePlatosTextBox();                                     //deshabilitar los textbox
                     ui->lineEdit_PLAING_cantidad->setEnabled(true);             //habilitar el textbox de cantidad de ingrediente
                     ui->pushButton_PLAING_aniadir->setEnabled(true);            //habilitar el boton añadir ingrediente
                     ui->listView_Ingredientes_PLA->setEnabled(true);            //habilitar el listview de ingredientes totales
@@ -495,7 +501,6 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                     disableGCPlatosButtons();                                   //deshabilitar botones GC
                     enableAMEPlatosButtons();                                   //habilitar botones AME
                     clearPlatosTextBox();                                       //limpiar los textbox
-                    disablePlatosTextBox();                                     //deshabilitar los textbox
 
                     ui->listView_Platos->setEnabled(true);                      //habilitar el listview de platos
                 }
@@ -504,11 +509,12 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             {
                 disableGCPlatosButtons();                                       //deshabilitar los botones GC
                 enableAMEPlatosButtons();                                       //habilitar los botones AME
-                clearPlatosTextBox();                                           //limpiar los textbox
-                disablePlatosTextBox();                                         //deshabilitar los textbox
+                clearPlatosTextBox();                                           //limpiar los textbox              
 
                 ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
             }
+
+            disablePlatosTextBox();                                             //deshabilitar los textbox
         }
         break;
 
@@ -535,26 +541,17 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 db1->modPLAQuerys(captureTextBoxText(PLATOS));                                                      //consulta para modificar un plato
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                         //consulta para mostrar los platos
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());            //consulta para mostrar la informacion recien modificada del plato
-                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
-
-                disableGCPlatosButtons();                                       //deshabilitar los botones GC
-                disableAMEINGPLAButtons();                                      //deshabilitar los botones AME de ingredientes
-                enableAMEPlatosButtons();                                       //habilitar los botones AME
-                clearPlatosTextBox();                                           //limpiar los textbox
-                disablePlatosTextBox();                                         //deshabilitar los textbox
-
-                ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
+                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion            
             }
-            else                                                                //__Si los datos introducidos no son correctos
-            {         
-                disableGCPlatosButtons();                                       //deshabilitar los botones GC
-                disableAMEINGPLAButtons();                                      //deshabilitar los botones AME de ingredientes
-                enableAMEPlatosButtons();                                       //habilitar los botones AME
-                clearPlatosTextBox();                                           //limpiar los textbox
-                disablePlatosTextBox();                                         //deshabilitar los textbox
 
-                ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
-            }
+            disableGCPlatosButtons();                                       //deshabilitar los botones GC
+            disableAMEINGPLAButtons();                                      //deshabilitar los botones AME de ingredientes
+            enableAMEPlatosButtons();                                       //habilitar los botones AME
+            clearPlatosTextBox();                                           //limpiar los textbox
+            disablePlatosTextBox();                                         //deshabilitar los textbox
+
+            ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
+
         break;
     }
 
@@ -832,28 +829,29 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_PLAnombre->setText(model->index(0,1).data(Qt::DisplayRole).toString());
             ui->textEdit_PLAdescripcion->setText(model->index(0,2).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAprecio->setText(model->index(0,3).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAcantidad->setText(model->index(0,4).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAacidofol->setText(model->index(0,5).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAcalcio->setText(model->index(0,6).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAenergia->setText(model->index(0,7).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAfosforo->setText(model->index(0,8).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAgrasa->setText(model->index(0,9).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAhierro->setText(model->index(0,10).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAmagnesio->setText(model->index(0,11).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLApotasio->setText(model->index(0,12).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAproteinas->setText(model->index(0,13).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAselenio->setText(model->index(0,14).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAsodio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvita->setText(model->index(0,16).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb1->setText(model->index(0,17).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb2->setText(model->index(0,18).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb6->setText(model->index(0,19).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb12->setText(model->index(0,20).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitc->setText(model->index(0,21).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitd->setText(model->index(0,22).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvite->setText(model->index(0,23).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAyodo->setText(model->index(0,24).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAzinc->setText(model->index(0,25).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAcantidad->setText(model->index(0,5).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAacidofol->setText(model->index(0,6).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAcalcio->setText(model->index(0,7).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAenergia->setText(model->index(0,8).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAfosforo->setText(model->index(0,9).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAgrasa->setText(model->index(0,10).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAhierro->setText(model->index(0,11).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAmagnesio->setText(model->index(0,12).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLApotasio->setText(model->index(0,13).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAproteinas->setText(model->index(0,14).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAselenio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAsodio->setText(model->index(0,16).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvita->setText(model->index(0,17).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb1->setText(model->index(0,18).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb2->setText(model->index(0,19).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb6->setText(model->index(0,20).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb12->setText(model->index(0,21).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitc->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitd->setText(model->index(0,23).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvite->setText(model->index(0,24).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAyodo->setText(model->index(0,25).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAzinc->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            mostrarTipoPlato(model->index(0,4).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_Plato->findChildren<QLineEdit *>();
         break;
@@ -946,6 +944,7 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
             << ui->lineEdit_PLAnombre->text()
             << ui->textEdit_PLAdescripcion->toPlainText()
             << ui->lineEdit_PLAprecio->text()
+            << setTipoPlato()
             << ui->lineEdit_PLAcantidad->text()
             << ui->lineEdit_PLAacidofol->text()
             << ui->lineEdit_PLAcalcio->text()
@@ -1261,4 +1260,33 @@ void MainWindowMenuPlan::mostrar_alergenosIncom(CHECKBOX CB, QString array)
             allcheckbox.at(i)->setChecked(false);
         }
     }
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*------------ COMPROBAR QUE TIPO DE PLATO ES (PRIMER PLATO, SEGUNO PLATO O POSTRE) ---------------*/
+/*-------------------------------------------------------------------------------------------------*/
+QString MainWindowMenuPlan::setTipoPlato()
+{
+    QString tipo;
+
+    if(ui->radioButton_primerP->isChecked())
+        tipo = '1';
+    else if(ui->radioButton_segundoP->isChecked())
+        tipo = '2';
+    else
+        tipo = '3';
+    return tipo;
+}
+
+
+void MainWindowMenuPlan::mostrarTipoPlato(QString tipo)
+{
+    if(tipo == "1")
+        ui->radioButton_primerP->setChecked(true);
+    else if (tipo == "2")
+        ui->radioButton_segundoP->setChecked(true);
+    else
+        ui->radioButton_postre->setChecked(true);
 }

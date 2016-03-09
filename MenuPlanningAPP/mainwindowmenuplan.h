@@ -73,7 +73,10 @@ class MainWindowMenuPlan : public QMainWindow
         QString set_Incompatibilidades();
         QString set_Alergenos();
         void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
-        void mostrar_alergenosIncom(CHECKBOX CB, QString array);
+        void mostrar_alergenosIncom(CHECKBOX CB, QString array);                //Muestra en la aplicacion los alergenos y/o las incompatibilidades alimenticias de un ingrediente
+
+        QString setTipoPlato();
+        void mostrarTipoPlato(QString tipo);
 
     private slots:
 
