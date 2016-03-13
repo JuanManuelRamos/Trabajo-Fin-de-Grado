@@ -501,6 +501,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                     disableGCPlatosButtons();                                   //deshabilitar botones GC
                     enableAMEPlatosButtons();                                   //habilitar botones AME
                     clearPlatosTextBox();                                       //limpiar los textbox
+                    disablePlatosTextBox();                                             //deshabilitar los textbox
 
                     ui->listView_Platos->setEnabled(true);                      //habilitar el listview de platos
                 }
@@ -509,12 +510,11 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             {
                 disableGCPlatosButtons();                                       //deshabilitar los botones GC
                 enableAMEPlatosButtons();                                       //habilitar los botones AME
-                clearPlatosTextBox();                                           //limpiar los textbox              
+                clearPlatosTextBox();                                           //limpiar los textbox
+                disablePlatosTextBox();                                             //deshabilitar los textbox
 
                 ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
-            }
-
-            disablePlatosTextBox();                                             //deshabilitar los textbox
+            }        
         }
         break;
 
