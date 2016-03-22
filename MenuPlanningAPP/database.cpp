@@ -96,6 +96,10 @@ QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
         case MOSTRARINFONUTR:
             queryMostrarInfoNING(str, strID);
         break;
+
+        case MOSTRARTIPOPLA:
+            queryMostrarTiposPlatos(str, strID);
+        break;
     }
 
     //qDebug() << str;
@@ -158,6 +162,17 @@ void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
     str.append(strID);
     str.append(") ORDER BY nombre ASC");
 }
+
+/*-------------------------------------------------------------------------------------*/
+/*------------------------ MOSTRAR LOS PLATOS SEGUN SU TIPO ---------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryMostrarTiposPlatos(QString &str, QString &strID)
+{
+    str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
+    str.append(strID);
+    str.append("' ORDER BY nombre ASC");
+}
+
 
 
 /*-------------------------------------------------------------------------------------*/

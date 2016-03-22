@@ -120,6 +120,8 @@ class MainWindowMenuPlan : public QMainWindow
 
         void checkboxClicked();
 
+        void on_comboBox_platos_activated(const QString &arg1);
+
 private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>989</width>
-    <height>714</height>
+    <height>722</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>989</width>
-    <height>638</height>
+    <height>722</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>989</width>
+    <height>722</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -39,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -1070,28 +1076,58 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="label_130">
-      <property name="geometry">
-       <rect>
-        <x>740</x>
-        <y>320</y>
-        <width>221</width>
-        <height>31</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; text-decoration: underline;&quot;&gt;Platos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
      <widget class="QListView" name="listView_Platos">
       <property name="geometry">
        <rect>
         <x>740</x>
-        <y>350</y>
+        <y>360</y>
         <width>221</width>
-        <height>201</height>
+        <height>191</height>
        </rect>
       </property>
+     </widget>
+     <widget class="QWidget" name="horizontalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>330</y>
+        <width>211</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_130">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; text-decoration: underline;&quot;&gt;Platos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>Todos</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Primer plato</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Segundo Plato</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Postre</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QWidget" name="tab_ingredientes">

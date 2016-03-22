@@ -1240,7 +1240,7 @@ void MainWindowMenuPlan::mostrar_mesesTemporada(QString meses)
 
 
 /*-------------------------------------------------------------------------------------------------*/
-/*--------- MUESTRA LOS CHECKBOX SEGUN LAs INCOMPATIBILIDADES ALIMENTICIAS Y ALERGENOS ------------*/
+/*--------- MUESTRA LOS CHECKBOX SEGUN LAS INCOMPATIBILIDADES ALIMENTICIAS Y ALERGENOS ------------*/
 /*-------------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::mostrar_alergenosIncom(CHECKBOX CB, QString array)
 {
@@ -1288,7 +1288,9 @@ QString MainWindowMenuPlan::setTipoPlato()
     return tipo;
 }
 
-
+/*-------------------------------------------------------------------------------------------------*/
+/*------ MOSTRAR EL TIPO DE PLATO EN EL RADIOBUTTON (PRIMER PLATO, SEGUNO PLATO O POSTRE) ---------*/
+/*-------------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::mostrarTipoPlato(QString tipo)
 {
     if(tipo == "1")
@@ -1297,4 +1299,25 @@ void MainWindowMenuPlan::mostrarTipoPlato(QString tipo)
         ui->radioButton_segundoP->setChecked(true);
     else
         ui->radioButton_postre->setChecked(true);
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*----------- MUESTRA LOS PLATOS SEGUN EL TIPO DE PLATO QUE SE ELIJA EN EL COMBOBOX ---------------*/
+/*-------------------------------------------------------------------------------------------------*/
+
+void MainWindowMenuPlan::on_comboBox_platos_activated(const QString &arg1)
+{
+    if(arg1 == "Todos")
+        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                     //Consulta de todos los platos
+
+    else if(arg1 == "Primer plato")
+        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('1')));   //Consulta de solo los primeros platos
+
+    else if(arg1 == "Segundo plato")
+        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('2')));   //Consulta de solo los segundos platos
+
+    else if(arg1 == "Postre")
+        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('3')));   //Consulta de solo los postres
 }

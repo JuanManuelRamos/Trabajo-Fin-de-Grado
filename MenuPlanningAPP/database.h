@@ -30,6 +30,7 @@ class database
 
         void queryMostrarPlatos(QString &str);                                                  //Consulta para mostrar los platos disponibles en la base de datos
         void queryMostrarInfoPlatos(QString &str, QString &strID);                              //Consulta para mostrar la informacion de un plato
+        void queryMostrarTiposPlatos(QString &str, QString &strID);                             //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
         void queryMostrarIngredientesPlatos(QString &str, QString &strID);                      //Consulta para mostrar los ingredientes de un plato
         QString queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);                 //Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
         void queryEliminarPlato(QString &strID);                                                //Consulta para eliminar un plato
