@@ -156,7 +156,7 @@ void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
 {
     str = "SELECT nombre FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
     str.append(strID);
-    str.append(")");
+    str.append(") ORDER BY nombre ASC");
 }
 
 
