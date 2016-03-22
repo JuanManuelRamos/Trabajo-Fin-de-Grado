@@ -775,6 +775,14 @@ void MainWindowMenuPlan::on_listView_INGPLA_clicked(const QModelIndex &index)
 {
     //Consulta para mostrar la cantidad del ingrediente seleccionado
     ui->lineEdit_PLAING_cantidad->setText(db1->queryMostrarCantidadInGPlatos(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString()));
+
+    //Controlar que la cantidad mostrada no supere el numero maximo de digitos
+    QString str = ui->lineEdit_PLAING_cantidad->text();
+    if(str.size() > maxNumSize)
+    {
+        str.remove(maxNumSize, (str.size()-maxNumSize));    //Borrar el contenido que exceda maxNumSize
+        ui->lineEdit_PLAING_cantidad->setText(str);
+    }
 }
 
 
