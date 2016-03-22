@@ -475,7 +475,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                                       //__Si todo es correcto
             {
                 db1->addPLAQuerys(captureTextBoxText(PLATOS));                                                  //consulta para añadir un plato
-                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                     //consulta para mostrar los platos
+                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                     //consulta para mostrar los platos              
+                ui->comboBox_platos->setCurrentIndex(0);                                                        //Poner el combobox en el apartado Todos
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());        //consulta para mostrar la informacion recien añadida del plato
                 fillIngPlaTextBox(model, PLATOS);                                                               //rellenar los textbox con la informacion
 
@@ -541,7 +542,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 db1->modPLAQuerys(captureTextBoxText(PLATOS));                                                      //consulta para modificar un plato
                 ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                         //consulta para mostrar los platos
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());            //consulta para mostrar la informacion recien modificada del plato
-                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion            
+                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
+                ui->comboBox_platos->setCurrentIndex(0);                                                            //Poner el combobox en el apartado Todos
             }
 
             disableGCPlatosButtons();                                       //deshabilitar los botones GC

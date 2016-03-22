@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -1104,7 +1104,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="comboBox_platos">
          <item>
           <property name="text">
            <string>Todos</string>
@@ -1117,7 +1117,7 @@
          </item>
          <item>
           <property name="text">
-           <string>Segundo Plato</string>
+           <string>Segundo plato</string>
           </property>
          </item>
          <item>
