@@ -14,7 +14,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindowmenuplan.cpp \
-    database.cpp
+    database.cpp \
+    ingredientes.cpp \
+    platos.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \

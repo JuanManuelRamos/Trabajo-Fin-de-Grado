@@ -113,21 +113,114 @@ QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
     return model;
 }
 
+
+/*-------------------------------------------------------------------------------------*/
+/*--------------- CONTROLAR LA REPETICIÓN DE INGREDIENTES O PLATOS --------------------*/
+/*-------------------------------------------------------------------------------------*/
+ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2)
+{
+    QString result = NULL;
+    QString query;
+    QString info = "Ya existe un ";
+    ACTION AC = ACCEPT;
+
+    switch(AP)                              //__Averiguar de que tipo de elemento se trata (ingrediente, plato o ingrediente de un plato)
+    {
+        case INGREDIENTES:
+            query = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE nombre ='";
+            query.append(strID1);
+            query.append("'");
+            info.append("ingrediente");
+        break;
+
+        case PLATOS:
+            query = "SELECT id_PlatosTAB FROM PlatosTAB WHERE nombre ='";
+            query.append(strID1);
+            query.append("'");
+            info.append("plato");
+        break;
+
+        case INGDEPLATO:
+            query = "SELECT id_IngredientesTAB FROM IngredientesTAB WHERE AlimentosTAB_id = (SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='";
+            query.append(strID1);
+            query.append("') AND PlatosTAB_id =");
+            query.append(strID2);
+            info.append("ingrediente para este plato");
+        break;
+    }
+
+    info.append(" con este nombre en la base de datos.");
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(query);
+    qry->exec();
+    model->setQuery(*qry);
+
+    result = model->record(0).value(0).toString();      //__Recoge el resultado devuelto por la consulta anteriormente realizada
+
+    delete model;
+    delete qry;
+
+    switch(Q)                                           //__Comprueba si el resultado dado por la consulta indica una repeticion de ingrediente, plato o ingrediente de plato
+    {
+        case ANIADIRING:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+
+        case ANIADIRPLA:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+
+        case MODIFICARING:
+            if((result != "" || result != NULL) && result != strID2)
+                AC = DENY;
+        break;
+
+        case MODIFICARPLA:
+            if((result != "" || result != NULL) && result != strID2)
+                AC = DENY;
+        break;
+
+        case ANIADIRINGPLA:
+            if(result != "" || result != NULL)
+                AC = DENY;
+        break;
+    }
+
+    if(AC == DENY)                                  //__Si se ha detectado una repeticion de ingrediente o plato
+    {
+        QMessageBox msgBox;                         //__Se muestra un mensaje notificando
+        msgBox.setIcon(QMessageBox::Information);
+        msgBox.setText("Información");
+        msgBox.setInformativeText(info);
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        msgBox.exec();
+        return DENY;                                //__Se retorna una denegacion para realizar la consulta que provoca la repeticion
+    }
+    else
+    {
+        return ACCEPT;
+    }
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------------       INGREDIENTES        ----------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+
 /*-------------------------------------------------------------------------------------*/
 /*------------------------------- MOSTRAR INGREDIENTES --------------------------------*/
 /*-------------------------------------------------------------------------------------*/
 void database::queryMostrarIngredientes(QString &str)
 {
     str = "SELECT nombre FROM AlimentosTAB ORDER BY nombre ASC";
-}
-
-
-/*-------------------------------------------------------------------------------------*/
-/*--------------------------------- MOSTRAR PLATOS ------------------------------------*/
-/*-------------------------------------------------------------------------------------*/
-void database::queryMostrarPlatos(QString &str)
-{
-    str = "SELECT nombre FROM PlatosTAB ORDER BY nombre ASC";
 }
 
 
@@ -139,66 +232,6 @@ void database::queryMostrarInfoIngredientes(QString &str, QString &strID)
     str = "SELECT * FROM AlimentosTAB WHERE nombre = \"";
     str.append(strID);
     str.append("\"");
-}
-
-
-/*-------------------------------------------------------------------------------------*/
-/*-------------------------- MOSTRAR INFORMACION DE PLATOS ----------------------------*/
-/*-------------------------------------------------------------------------------------*/
-void database::queryMostrarInfoPlatos(QString &str, QString &strID)
-{
-    str = "SELECT * FROM PlatosTAB WHERE nombre = '";
-    str.append(strID);
-    str.append("'");
-}
-
-
-/*-------------------------------------------------------------------------------------*/
-/*---------------------- MOSTRAR LOS INGREDIENTES DE UN PLATO -------------------------*/
-/*-------------------------------------------------------------------------------------*/
-void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
-{
-    str = "SELECT nombre FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
-    str.append(strID);
-    str.append(") ORDER BY nombre ASC");
-}
-
-/*-------------------------------------------------------------------------------------*/
-/*------------------------ MOSTRAR LOS PLATOS SEGUN SU TIPO ---------------------------*/
-/*-------------------------------------------------------------------------------------*/
-void database::queryMostrarTiposPlatos(QString &str, QString &strID)
-{
-    str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
-    str.append(strID);
-    str.append("' ORDER BY nombre ASC");
-}
-
-
-
-/*-------------------------------------------------------------------------------------*/
-/*----------- MOSTRAR LA CANTIDAD EN GRAMOS DEL INGREDIENTE DE UN PLATO ---------------*/
-/*-------------------------------------------------------------------------------------*/
-QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
-{
-    QString str = "SELECT cantidad_gramos FROM IngredientesTAB WHERE platostab_id=";
-    str.append(strID);
-    str.append(" AND alimentostab_id=(SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
-    str.append(nombre);
-    str.append("')");
-
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    QString resultado = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return resultado;
 }
 
 
@@ -358,6 +391,169 @@ void database::addINGQuerys(QStringList &strl)
 }
 
 
+
+/*--------------------------------------------------------------------------------------------------------*/
+/*------- MOSTRAR LA CANTIDAD EN GRAMOS DE UN INGREDIENTE EN LA BASE DE DATOS (NO EN UN PLATO) -----------*/
+/*--------------------------------------------------------------------------------------------------------*/
+
+QString database::queryMostrarCantidadING(QString &nombre)
+{
+    QString query = "SELECT cantidad_gramos FROM AlimentosTAB WHERE nombre='";
+    query.append(nombre);
+    query.append("'");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(query);
+    qry->exec();
+    model->setQuery(*qry);
+
+    QString resultado = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return resultado;
+}
+
+/*-------------------------------------------------------------------------------------*/
+/*------------------ MOSTRAR INF NUTRICIONAL DE UN INGREDIENTE ------------------------*/
+/*-------------------------------------------------------------------------------------*/
+
+void database::queryMostrarInfoNING(QString &str, QString &nombre)
+{
+    str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
+    str.append(nombre);
+    str.append("'");
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*----------------- ACTUALIZAR INF NUTRICIONAL DE UN INGREDIENTE ----------------------*/
+/*-------------------------------------------------------------------------------------*/
+
+void database::queryUpdateInfoNING(QStringList &strl, QString &id)
+{
+    QString str = "UPDATE PlatosTAB SET acido_folico_ug=";
+    str.append(strl.at(0));
+    str.append(",calcio_mg=");
+    str.append(strl.at(1));
+    str.append(",energia_kcal=");
+    str.append(strl.at(2));
+    str.append(",fosforo_mg=");
+    str.append(strl.at(3));
+    str.append(",grasa_total_g=");
+    str.append(strl.at(4));
+    str.append(",hierro_mg=");
+    str.append(strl.at(5));
+    str.append(",magnesio_mg=");
+    str.append(strl.at(6));
+    str.append(",potasio_mg=");
+    str.append(strl.at(7));
+    str.append(",proteinas_g=");
+    str.append(strl.at(8));
+    str.append(",selenio_ug=");
+    str.append(strl.at(9));
+    str.append(",sodio_mg=");
+    str.append(strl.at(10));
+    str.append(",vit_a_ug=");
+    str.append(strl.at(11));
+    str.append(",vit_b1_mg=");
+    str.append(strl.at(12));
+    str.append(",vit_b2_mg=");
+    str.append(strl.at(13));
+    str.append(",vit_b6_mg=");
+    str.append(strl.at(14));
+    str.append(",vit_b12_ug=");
+    str.append(strl.at(15));
+    str.append(",vit_c_mg=");
+    str.append(strl.at(16));
+    str.append(",vit_d_ug=");
+    str.append(strl.at(17));
+    str.append(",vit_e_mg=");
+    str.append(strl.at(18));
+    str.append(",yodo_ug=");
+    str.append(strl.at(19));
+    str.append(",zinc_mg=");
+    str.append(strl.at(20));
+    str.append(" WHERE id_PlatosTAB=");
+    str.append(id);
+
+    qry = new QSqlQuery();
+
+    qry->prepare(str);
+    qry->exec();
+
+    delete qry;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*------- MOSTRAR EL PRECIO DE UN INGREDIENTE PARA UNA CANTIDAD DETERMINADA -----------*/
+/*-------------------------------------------------------------------------------------*/
+float database::queryMostrarPrecioING(QString &nombre, float cantidad)
+{
+    QString str = "SELECT precio, cantidad_g_precio FROM AlimentosTAB WHERE nombre='";
+    str.append(nombre);
+    str.append("'");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    float precio = (cantidad * model->record(0).value(0).toFloat()) / model->record(0).value(1).toFloat();
+
+    delete model;
+    delete qry;
+
+    return precio;
+}
+
+
+
+
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------       PLATOS        -------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+
+/*-------------------------------------------------------------------------------------*/
+/*--------------------------------- MOSTRAR PLATOS ------------------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryMostrarPlatos(QString &str)
+{
+    str = "SELECT nombre FROM PlatosTAB ORDER BY nombre ASC";
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*-------------------------- MOSTRAR INFORMACION DE PLATOS ----------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryMostrarInfoPlatos(QString &str, QString &strID)
+{
+    str = "SELECT * FROM PlatosTAB WHERE nombre = '";
+    str.append(strID);
+    str.append("'");
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*------------------------ MOSTRAR LOS PLATOS SEGUN SU TIPO ---------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryMostrarTiposPlatos(QString &str, QString &strID)
+{
+    str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
+    str.append(strID);
+    str.append("' ORDER BY nombre ASC");
+}
+
+
 /*-------------------------------------------------------------------------------------*/
 /*--------------------------------- AÑADIR UN PLATO -----------------------------------*/
 /*-------------------------------------------------------------------------------------*/
@@ -507,6 +703,94 @@ void database::queryEliminarPlato(QString &strID)
 
 
 /*-------------------------------------------------------------------------------------*/
+/*-------------- MODIFICAR LA CANTIDAD EN GRAMOS DE UN PLATO --------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryModificarCantidadPlato(QString &strID, QString &cantidad)
+{
+    QString str = "UPDATE PlatosTAB SET cantidad_gramos=";
+    str.append(cantidad);
+    str.append(" WHERE id_PlatosTAB=");
+    str.append(strID);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    delete model;
+    delete qry;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*------------------------ MODIFICAR EL PRECIO DE UN PLATO ----------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryModificarPrecioPlato(QString &strID, QString &precio)
+{
+    QString str = "UPDATE PlatosTAB SET precio=";
+    str.append(precio);
+    str.append(" WHERE id_PlatosTAB=");
+    str.append(strID);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    delete model;
+    delete qry;
+}
+
+
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------       INGREDIENTES DE UN PLATO        ----------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------------------*/
+/*---------------------- MOSTRAR LOS INGREDIENTES DE UN PLATO -------------------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
+{
+    str = "SELECT nombre FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
+    str.append(strID);
+    str.append(") ORDER BY nombre ASC");
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*----------- MOSTRAR LA CANTIDAD EN GRAMOS DEL INGREDIENTE DE UN PLATO ---------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
+{
+    QString str = "SELECT cantidad_gramos FROM IngredientesTAB WHERE platostab_id=";
+    str.append(strID);
+    str.append(" AND alimentostab_id=(SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='");
+    str.append(nombre);
+    str.append("')");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    QString resultado = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return resultado;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
 /*------------------------ AÑADIR UN INGREDIENTE A UN PLATO ---------------------------*/
 /*-------------------------------------------------------------------------------------*/
 void database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad)
@@ -523,6 +807,7 @@ void database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &can
     qry->prepare(str);
     qry->exec();
 }
+
 
 /*-------------------------------------------------------------------------------------*/
 /*--------------------- MODIFICAR UN INGREDIENTE DE UN PLATO --------------------------*/
@@ -541,6 +826,7 @@ void database::modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &can
     qry->exec();
 }
 
+
 /*-------------------------------------------------------------------------------------*/
 /*--------------------- ELIMINAR UN INGREDIENTE DE UN PLATO ---------------------------*/
 /*-------------------------------------------------------------------------------------*/
@@ -557,194 +843,3 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
     qry->exec();
 }
 
-
-/*-------------------------------------------------------------------------------------*/
-/*--------------- CONTROLAR LA REPETICIÓN DE INGREDIENTES O PLATOS --------------------*/
-/*-------------------------------------------------------------------------------------*/
-ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2)
-{
-    QString result = NULL;
-    QString query;
-    QString info = "Ya existe un ";
-    ACTION AC = ACCEPT;
-
-    switch(AP)                              //__Averiguar de que tipo de elemento se trata (ingrediente, plato o ingrediente de un plato)
-    {
-        case INGREDIENTES:
-            query = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE nombre ='";
-            query.append(strID1);
-            query.append("'");
-            info.append("ingrediente");
-        break;
-
-        case PLATOS:
-            query = "SELECT id_PlatosTAB FROM PlatosTAB WHERE nombre ='";
-            query.append(strID1);
-            query.append("'");
-            info.append("plato");
-        break;
-
-        case INGDEPLATO:
-            query = "SELECT id_IngredientesTAB FROM IngredientesTAB WHERE AlimentosTAB_id = (SELECT id_alimentostab FROM AlimentosTAB WHERE nombre='";
-            query.append(strID1);
-            query.append("') AND PlatosTAB_id =");
-            query.append(strID2);
-            info.append("ingrediente para este plato");
-        break;
-    }
-
-    info.append(" con este nombre en la base de datos.");
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(query);
-    qry->exec();
-    model->setQuery(*qry);
-
-    result = model->record(0).value(0).toString();      //__Recoge el resultado devuelto por la consulta anteriormente realizada
-
-    delete model;
-    delete qry;
-
-    switch(Q)                                           //__Comprueba si el resultado dado por la consulta indica una repeticion de ingrediente, plato o ingrediente de plato
-    {
-        case ANIADIRING:
-            if(result != "" || result != NULL)
-                AC = DENY;
-        break;
-
-        case ANIADIRPLA:
-            if(result != "" || result != NULL)
-                AC = DENY;
-        break;
-
-        case MODIFICARING:
-            if((result != "" || result != NULL) && result != strID2)
-                AC = DENY;
-        break;
-
-        case MODIFICARPLA:
-            if((result != "" || result != NULL) && result != strID2)
-                AC = DENY;
-        break;
-
-        case ANIADIRINGPLA:
-            if(result != "" || result != NULL)
-                AC = DENY;
-        break;
-    }
-
-    if(AC == DENY)                                  //__Si se ha detectado una repeticion de ingrediente o plato
-    {
-        QMessageBox msgBox;                         //__Se muestra un mensaje notificando
-        msgBox.setIcon(QMessageBox::Information);
-        msgBox.setText("Información");
-        msgBox.setInformativeText(info);
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.setDefaultButton(QMessageBox::Ok);
-        msgBox.exec();
-        return DENY;                                //__Se retorna una denegacion para realizar la consulta que provoca la repeticion
-    }
-    else
-    {
-        return ACCEPT;
-    }
-}
-
-
-
-/*--------------------------------------------------------------------------------------------------------*/
-/*------- MOSTRAR LA CANTIDAD EN GRAMOS DE UN INGREDIENTE EN LA BASE DE DATOS (NO EN UN PLATO) -----------*/
-/*--------------------------------------------------------------------------------------------------------*/
-
-QString database::queryMostrarCantidadING(QString &nombre)
-{
-    QString query = "SELECT cantidad_gramos FROM AlimentosTAB WHERE nombre='";
-    query.append(nombre);
-    query.append("'");
-
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(query);
-    qry->exec();
-    model->setQuery(*qry);
-
-    QString resultado = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return resultado;
-}
-
-/*-------------------------------------------------------------------------------------*/
-/*------------------ MOSTRAR INF NUTRICIONAL DE UN INGREDIENTE ------------------------*/
-/*-------------------------------------------------------------------------------------*/
-
-void database::queryMostrarInfoNING(QString &str, QString &nombre)
-{
-    str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
-    str.append(nombre);
-    str.append("'");
-}
-
-
-/*-------------------------------------------------------------------------------------*/
-/*----------------- ACTUALIZAR INF NUTRICIONAL DE UN INGREDIENTE ----------------------*/
-/*-------------------------------------------------------------------------------------*/
-
-void database::queryUpdateInfoNING(QStringList &strl, QString &id)
-{
-    QString str = "UPDATE PlatosTAB SET acido_folico_ug=";
-    str.append(strl.at(0));
-    str.append(",calcio_mg=");
-    str.append(strl.at(1));
-    str.append(",energia_kcal=");
-    str.append(strl.at(2));
-    str.append(",fosforo_mg=");
-    str.append(strl.at(3));
-    str.append(",grasa_total_g=");
-    str.append(strl.at(4));
-    str.append(",hierro_mg=");
-    str.append(strl.at(5));
-    str.append(",magnesio_mg=");
-    str.append(strl.at(6));
-    str.append(",potasio_mg=");
-    str.append(strl.at(7));
-    str.append(",proteinas_g=");
-    str.append(strl.at(8));
-    str.append(",selenio_ug=");
-    str.append(strl.at(9));
-    str.append(",sodio_mg=");
-    str.append(strl.at(10));
-    str.append(",vit_a_ug=");
-    str.append(strl.at(11));
-    str.append(",vit_b1_mg=");
-    str.append(strl.at(12));
-    str.append(",vit_b2_mg=");
-    str.append(strl.at(13));
-    str.append(",vit_b6_mg=");
-    str.append(strl.at(14));
-    str.append(",vit_b12_ug=");
-    str.append(strl.at(15));
-    str.append(",vit_c_mg=");
-    str.append(strl.at(16));
-    str.append(",vit_d_ug=");
-    str.append(strl.at(17));
-    str.append(",vit_e_mg=");
-    str.append(strl.at(18));
-    str.append(",yodo_ug=");
-    str.append(strl.at(19));
-    str.append(",zinc_mg=");
-    str.append(strl.at(20));
-    str.append(" WHERE id_PlatosTAB=");
-    str.append(id);
-
-    qry = new QSqlQuery();
-
-    qry->prepare(str);
-    qry->exec();
-
-    delete qry;
-}
