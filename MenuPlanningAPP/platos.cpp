@@ -331,6 +331,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
             nutricionalInfo();                                                                                                              //Calcular la informacion nutricional del plato
             setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
             setPrecioPlato();                                                                                                               //Calcular el precio del plato
+            set_Incomp_Alerg_Plato();                                                                                                       //Calcula las incompatibilidades y alergenos del plato
         }
     }
 }
@@ -350,6 +351,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
         nutricionalInfo();                                                                                                              //Calcular la informacion nutricional del plato
         setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
         setPrecioPlato();                                                                                                               //Calcular el precio del plato
+        set_Incomp_Alerg_Plato();                                                                                                       //Calcula las incompatibilidades y alergenos del plato
     }
 
 
@@ -381,6 +383,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
             nutricionalInfo();                                                                                      //Calcular la informacion nutricional del plato
             setCantidadPlato();                                                                                     //Calcular la cantidad del plato
             setPrecioPlato();                                                                                       //Calcular el precio del plato
+            set_Incomp_Alerg_Plato();                                                                               //Calcula las incompatibilidades y alergenos del plato
         }
     }
 }
@@ -585,6 +588,44 @@ void MainWindowMenuPlan::setPrecioPlato()
 
 
 
+/*---------------------------------------------------------------------------------------------------------*/
+/*------------ CALCULA LAS INCOMPATIBILIDADES Y ALERGENOS DEL PLATO SEGUN SUS INGREDIENTES ---------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::set_Incomp_Alerg_Plato()
+{
+    QString incompING, alergING;
+    QString incompPLA = "00000";
+    QString alergPLA = "0000000";
 
+    for(int i = 0; i < ui->listView_INGPLA->model()->rowCount(); i++)
+    {
+        incompING = db1->queryIncompatibilidadesING(ui->listView_INGPLA->model()->index(i,0).data(Qt::DisplayRole).toString());
+        alergING = db1->queryAlergenosING(ui->listView_INGPLA->model()->index(i,0).data(Qt::DisplayRole).toString());
+
+        for(int j = 0; j < incompING.size(); j++)
+        {
+            if(incompING.at(j) == '1' && incompPLA.at(j) == '0')
+                incompPLA.replace(j, 1, '1');
+        }
+
+        for(int j = 0; j < alergING.size(); j++)
+        {
+            if(alergING.at(j) == '1' && alergPLA.at(j) == '0')
+                alergPLA.replace(j, 1, '1');
+        }
+    }
+
+    db1->queryModificarIncompAlergPlato(ui->label_PLAid->text(), incompPLA, alergPLA);
+}
+
+
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*------------------ CALCULA LOS MESES DE TEMPORADA DEL PLATO SEGUN SUS INGREDIENTES ----------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::set_temporada_Plato()
+{
+
+}
 
 

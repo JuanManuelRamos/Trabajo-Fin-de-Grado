@@ -29,33 +29,6 @@ class MainWindowMenuPlan : public QMainWindow
         explicit MainWindowMenuPlan(QWidget *parent = 0);
         ~MainWindowMenuPlan();
 
-        //Funciones de habilitacion, deshabilitacion, limpieza, etc de elementos
-
-        void enableGCIngredientesButtons();                     //habilitar los botones Guardar y Cancelar del apartado Ingredientes
-        void disableGCIngredientesButtons();                    //deshabilitar los botones Guardar y Cancelar del apartado Ingredientes
-        void enableGCPlatosButtons();                           //habilitar los botones Guardar y Cancelar del apartado Platos
-        void disableGCPlatosButtons();                          //deshabilitar los botones Guardar y Cancelar del apartado Platos
-
-        void enableAMEIngredientesButtons();                    //habilitar los botones Añadir, Modificar y Eliminar del apartado Ingredientes
-        void disableAMEIngredientesButtons();                   //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Ingredientes
-        void enableAMEPlatosButtons();                          //habilitar los botones Añadir, Modificar y Eliminar del apartado Platos
-        void disableAMEPlatosButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Platos
-
-        void enableAMEINGPLAButtons();                          //habilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
-        void disableAMEINGPLAButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
-
-        void cleanListViewING();                                //Limpia de contenido el list view de Ingredientes
-        void cleanListViewING_en_Platos();                      //Limpia de contenido el list view de Ingredientes en el apartado Platos
-        void cleanListViewPlatos();                             //Limpia de contenido el list view de Platos
-        void cleanListViewING_de_PLA();                         //Limpia de contenido el list view de ingredientes pertenecientes a un plato, en el apartado Platos
-
-        void enableIngredientesTextBox();                       //habilitar los textbox (linedit) del apartado Ingredientes
-        void disableIngredientesTextBox();                      //deshabilitar los textbox (linedit) del apartado Ingredientes
-        void enablePlatosTextBox();                             //habilitar los textbox (linedit) del apartado Platos
-        void disablePlatosTextBox();                            //deshabilitar los textbox (linedit) del apartado Platos
-
-        void clearIngredientesTextBox();                        //Deja en blanco todos los textbox del apartado Ingredientes
-        void clearPlatosTextBox();                              //Deja en blanco todos los textbox del apartado Platos
 
         //Funciones de control de datos
         void fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A);             //Rellena los textbox con los datos de cada ingrediente o plato
@@ -65,64 +38,88 @@ class MainWindowMenuPlan : public QMainWindow
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
 
 
-        void nutricionalInfo();                                                 //Calcula la informacion nutricional de un plato segun sus ingredientes
-        void initializeInfoN(QStringList &infoN);                               //Inicializa la lista en donde se guarda la informacion nutricional
-        void showInfoN(QStringList &infoN);                                     //Muestra la informacion nutricional
+        /*--------------------*/
+        /*--- INGREDIENTES ---*/
+        /*--------------------*/
+        void enableGCIngredientesButtons();                     //habilitar los botones Guardar y Cancelar del apartado Ingredientes
+        void disableGCIngredientesButtons();                    //deshabilitar los botones Guardar y Cancelar del apartado Ingredientes
+        void enableAMEIngredientesButtons();                    //habilitar los botones Añadir, Modificar y Eliminar del apartado Ingredientes
+        void disableAMEIngredientesButtons();                   //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Ingredientes
+
+        void cleanListViewING();                                //Limpia de contenido el list view de Ingredientes
+
+        void enableIngredientesTextBox();                       //habilitar los textbox (linedit) del apartado Ingredientes
+        void disableIngredientesTextBox();                      //deshabilitar los textbox (linedit) del apartado Ingredientes
+        void clearIngredientesTextBox();                        //Deja en blanco todos los textbox del apartado Ingredientes
 
         QString set_mesesTemporada();                                           //Rellena el array mesesTemporada segun los meses en los que un ingrediente esta de temporada
-        QString set_Incompatibilidades();
-        QString set_Alergenos();
+        QString set_Incompatibilidades();                                       //Rellena el array de incompatibilidades
+        QString set_Alergenos();                                                //Rellena el array de alergenos
         void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
         void mostrar_alergenosIncom(CHECKBOX CB, QString array);                //Muestra en la aplicacion los alergenos y/o las incompatibilidades alimenticias de un ingrediente
 
-        QString setTipoPlato();                                                 //Determina que tipo de plato es el que se crea
-        void mostrarTipoPlato(QString tipo);                                    //Muestra en el combo box el tipo de plato seleccionado
 
-        void setCantidadPlato();                                                //Calcula la cantidad en gramos de un plato en base a la cantidad de sus ingredientes
-        void setPrecioPlato();                                                  //Calcula el precio de un plato en base al precio y la cantidad de sus ingredientes
+        /*--------------*/
+        /*--- PLATOS ---*/
+        /*--------------*/
+        void enableGCPlatosButtons();                           //habilitar los botones Guardar y Cancelar del apartado Platos
+        void disableGCPlatosButtons();                          //deshabilitar los botones Guardar y Cancelar del apartado Platos
+        void enableAMEPlatosButtons();                          //habilitar los botones Añadir, Modificar y Eliminar del apartado Platos
+        void disableAMEPlatosButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Platos
+
+        void cleanListViewING_en_Platos();                      //Limpia de contenido el list view de Ingredientes en el apartado Platos
+        void cleanListViewPlatos();                             //Limpia de contenido el list view de Platos
+
+        void enablePlatosTextBox();                             //habilitar los textbox (linedit) del apartado Platos
+        void disablePlatosTextBox();                            //deshabilitar los textbox (linedit) del apartado Platos
+        void clearPlatosTextBox();                              //Deja en blanco todos los textbox del apartado Platos
+
+        void nutricionalInfo();                                 //Calcula la informacion nutricional de un plato segun sus ingredientes
+        void initializeInfoN(QStringList &infoN);               //Inicializa la lista en donde se guarda la informacion nutricional
+        void showInfoN(QStringList &infoN);                     //Muestra la informacion nutricional
+
+        QString setTipoPlato();                                 //Determina que tipo de plato es el que se crea
+        void mostrarTipoPlato(QString tipo);                    //Muestra en el combo box el tipo de plato seleccionado
+
+        void setCantidadPlato();                                //Calcula la cantidad en gramos de un plato en base a la cantidad de sus ingredientes
+        void setPrecioPlato();                                  //Calcula el precio de un plato en base al precio y la cantidad de sus ingredientes
+
+        void set_Incomp_Alerg_Plato();                          //Calcula las incompatibilidades y alergenos del plato segun sus ingredientes
+        void set_temporada_Plato();                             //Calcula los meses de temporada del plato segun sus ingredientes
+
+
+        /*--------------------------------*/
+        /*--- INGREDIENTES DE UN PLATO ---*/
+        /*--------------------------------*/
+        void enableAMEINGPLAButtons();                          //habilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
+        void disableAMEINGPLAButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar de los ingredientes pertenecientes a un plato
+
+        void cleanListViewING_de_PLA();                         //Limpia de contenido el list view de ingredientes pertenecientes a un plato, en el apartado Platos
+
+
 
     private slots:
 
         void closeEvent(QCloseEvent * event);
-
         void on_pushButton_Aniadir_clicked();
-
         void on_pushButton_Modificar_clicked();
-
         void on_pushButton_Eliminar_clicked();
-
         void on_pushButton_Guardar_clicked();
-
         void on_pushButton_Cancelar_clicked();
-
         void on_pushButton_ConectarBD_clicked();
-
         void on_listView_Ingredientes_clicked(const QModelIndex &index);
-
         void on_listView_Platos_clicked(const QModelIndex &index);
-
         void on_listView_Ingredientes_PLA_clicked(const QModelIndex &index);
-
         void on_pushButton_Aniadir_PLA_clicked();
-
         void on_pushButton_Modificar_PLA_clicked();
-
         void on_pushButton_Eliminar_PLA_clicked();
-
         void on_pushButton_Guardar_PLA_clicked();
-
         void on_pushButton_Cancelar_PLA_clicked();
-
         void on_pushButton_PLAING_aniadir_clicked();
-
         void on_pushButton_PLAING_modificar_clicked();
-
         void on_pushButton_PLAING_eliminar_clicked();
-
         void on_listView_INGPLA_clicked(const QModelIndex &index);
-
         void checkboxClicked();
-
         void on_comboBox_platos_activated(const QString &arg1);
 
 private:

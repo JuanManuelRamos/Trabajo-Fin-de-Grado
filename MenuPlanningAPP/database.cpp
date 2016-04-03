@@ -514,6 +514,81 @@ float database::queryMostrarPrecioING(QString &nombre, float cantidad)
 }
 
 
+/*-------------------------------------------------------------------------------------*/
+/*------------ MOSTRAR LAS INCOMPATIBILIDADES DE UN INGREDIENTE CONCRETO --------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryIncompatibilidadesING(QString nombre)
+{
+    QString str = "SELECT incompatibilidades FROM AlimentosTAB WHERE nombre = \"";
+    str.append(nombre);
+    str.append("\"");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*---------------- MOSTRAR LOS ALERGENOS DE UN INGREDIENTE CONCRETO -------------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryAlergenosING(QString nombre)
+{
+    QString str = "SELECT alergenos FROM AlimentosTAB WHERE nombre = \"";
+    str.append(nombre);
+    str.append("\"");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*------------ MOSTRAR LOS MESES DE TEMPORADA DE UN INGREDIENTE CONCRETO --------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryTemporadaING(QString nombre)
+{
+    QString str = "SELECT temporada FROM AlimentosTAB WHERE nombre = \"";
+    str.append(nombre);
+    str.append("\"");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
 
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
@@ -559,7 +634,7 @@ void database::queryMostrarTiposPlatos(QString &str, QString &strID)
 /*-------------------------------------------------------------------------------------*/
 void database::addPLAQuerys(QStringList &strl)
 {
-    QString str = "INSERT INTO PlatosTAB (nombre, descripcion, precio, tipo, cantidad_gramos, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
+    QString str = "INSERT INTO PlatosTAB (nombre, descripcion, precio, tipo, cantidad_gramos, incompatibilidades, alergenos, temporada, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
     str.append(strl.at(1));
     str.append("','");
     str.append(strl.at(2));
@@ -569,7 +644,7 @@ void database::addPLAQuerys(QStringList &strl)
     str.append(strl.at(4));
     str.append("',");
     str.append(strl.at(5));
-    str.append(",");
+    str.append(",'00000','0000000',0,");
     str.append(strl.at(6));
     str.append(",");
     str.append(strl.at(7));
@@ -732,6 +807,30 @@ void database::queryModificarPrecioPlato(QString &strID, QString &precio)
     QString str = "UPDATE PlatosTAB SET precio=";
     str.append(precio);
     str.append(" WHERE id_PlatosTAB=");
+    str.append(strID);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    delete model;
+    delete qry;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*------------ MODIFICAR LAS INCOMPATIBILIDADES Y ALERGENOS DE UN PLATO ---------------*/
+/*-------------------------------------------------------------------------------------*/
+void database::queryModificarIncompAlergPlato(QString &strID, QString &incomp, QString &alerg)
+{
+    QString str = "UPDATE PlatosTAB SET incompatibilidades='";
+    str.append(incomp);
+    str.append("',alergenos='");
+    str.append(alerg);
+    str.append("' WHERE id_PlatosTAB=");
     str.append(strID);
 
     qry = new QSqlQuery();

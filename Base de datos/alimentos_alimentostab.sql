@@ -53,7 +53,7 @@ CREATE TABLE `alimentostab` (
   `yodo_ug` float unsigned NOT NULL,
   `zinc_mg` float unsigned NOT NULL,
   PRIMARY KEY (`id_AlimentosTAB`)
-) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-30 23:09:17
+-- Dump completed on 2016-04-03 22:54:58

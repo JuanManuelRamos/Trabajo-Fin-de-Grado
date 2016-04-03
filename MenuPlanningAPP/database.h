@@ -37,6 +37,9 @@ class database
         void queryEliminarIngrediente(QString &strID);                                          //Consulta para eliminar un ingrediente
 
         float queryMostrarPrecioING(QString &nombre, float cantidad);                           //Consulta para mostrar el precio de un ingrediente en base a su cantidad
+        QString queryIncompatibilidadesING(QString nombre);
+        QString queryAlergenosING(QString nombre);
+        QString queryTemporadaING(QString nombre);
 
 
         /*--------------*/
@@ -52,6 +55,7 @@ class database
 
         void queryModificarCantidadPlato(QString &strID, QString &cantidad);                    //Consulta para modificar la cantidad en gramos de un plato
         void queryModificarPrecioPlato(QString &strID, QString &precio);                        //Consulta para modificar el precio de un plato
+        void queryModificarIncompAlergPlato(QString &strID, QString &incomp, QString &alerg);   //Consulta para modificar las incompatibilidades y alergenos de un plato
 
 
         void queryUpdateInfoNING(QStringList &strl, QString &id);                               //Calculo de la informacion nutricional de un plato
@@ -68,6 +72,8 @@ class database
         void addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);           //Consulta para añadir un ingrediente a un plato
         void modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);           //Consulta para modificar un ingrediente a un plato
         void removeINGtoPLAQuery(QString &strIDPLA, QString &nombre);                           //Consulta para eliminar un ingrediente a un plato
+
+
 
 };
 
