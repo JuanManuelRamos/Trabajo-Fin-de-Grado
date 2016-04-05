@@ -116,6 +116,23 @@ void MainWindowMenuPlan::cleanListViewING_de_PLA()          //Se borra el listvi
     delete model;
 }
 
+void MainWindowMenuPlan::disableImagenes_Incomp_Alerg()     //deshabilita las imagenes de alergenos e incompatibilidades
+{
+    ui->label_Aler_cereales->setVisible(false);
+    ui->label_Aler_frutos_secos->setVisible(false);
+    ui->label_Aler_legumbres->setVisible(false);
+    ui->label_Aler_marisco->setVisible(false);
+    ui->label_Aler_pescado->setVisible(false);
+    ui->label_Aler_huevo->setVisible(false);
+    ui->label_Aler_leche->setVisible(false);
+    ui->label_Inc_celiaco->setVisible(false);
+    ui->label_Inc_diabetico->setVisible(false);
+    ui->label_Inc_semivegetariano->setVisible(false);
+    ui->label_Inc_vegetariano->setVisible(false);
+    ui->label_Inc_vegano->setVisible(false);
+}
+
+
 
 
 /*-------------------------------------------------------------------------*/
@@ -135,6 +152,7 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_PLA_clicked()
 
     ui->listView_Platos->setEnabled(false);                                     //deshabilitar el listview de platos
     ui->listView_Platos->clearSelection();                                      //eliminar la seleccion en el listview de platos
+    disableImagenes_Incomp_Alerg();                                             //deshabilita las imagenes de alergenos e incompatibilidades
 
     disableAMEINGPLAButtons();                                                  //deshabilitar los botones AME de ingredientes
     ui->lineEdit_PLAING_cantidad->setEnabled(false);                            //deshabilitar el textbox de cantidad de ingrediente
@@ -156,6 +174,7 @@ void MainWindowMenuPlan::on_pushButton_Modificar_PLA_clicked()
         ui->listView_Ingredientes_PLA->setEnabled(true);                        //habilita el listview de ingredientes totales
         ui->listView_Platos->setEnabled(false);                                 //deshabilita el listview de platos
         ui->listView_Platos->clearSelection();                                  //eliminar la seleccion del listview de platos
+        disableImagenes_Incomp_Alerg();                                         //deshabilita las imagenes de alergenos e incompatibilidades
 
         Q = MODIFICARPLA;
         ui->label_InfoQuerys_2->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo numérico vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> y </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Descripción&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
@@ -183,6 +202,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
             ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));         //consulta para mostrar los platos
             clearPlatosTextBox();                                               //limpiar los textbox
             cleanListViewING_de_PLA();                                          //limpiar el listview ingredientes de plato
+            disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
         }
     }
 }
@@ -229,7 +249,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                     disableGCPlatosButtons();                                   //deshabilitar botones GC
                     enableAMEPlatosButtons();                                   //habilitar botones AME
                     clearPlatosTextBox();                                       //limpiar los textbox
-                    disablePlatosTextBox();                                             //deshabilitar los textbox
+                    disablePlatosTextBox();                                     //deshabilitar los textbox
+                    disableImagenes_Incomp_Alerg();                             //deshabilita las imagenes de alergenos e incompatibilidades
 
                     ui->listView_Platos->setEnabled(true);                      //habilitar el listview de platos
                 }
@@ -239,7 +260,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 disableGCPlatosButtons();                                       //deshabilitar los botones GC
                 enableAMEPlatosButtons();                                       //habilitar los botones AME
                 clearPlatosTextBox();                                           //limpiar los textbox
-                disablePlatosTextBox();                                             //deshabilitar los textbox
+                disablePlatosTextBox();                                         //deshabilitar los textbox
+                disableImagenes_Incomp_Alerg();                                 //deshabilita las imagenes de alergenos e incompatibilidades
 
                 ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
             }
@@ -254,6 +276,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             clearPlatosTextBox();                                               //limpiar los textbox
             disablePlatosTextBox();                                             //deshabilitar los textbox
             cleanListViewING_de_PLA();                                          //limpiar el listview de ingredientes de un plato
+            disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
 
             ui->listView_Ingredientes_PLA->clearSelection();                    //Desselecciona el posible ingrediente seleccionado en el listview
             ui->listView_Platos->setEnabled("true");                            //habilitar el listview platos
@@ -278,6 +301,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             enableAMEPlatosButtons();                                       //habilitar los botones AME
             clearPlatosTextBox();                                           //limpiar los textbox
             disablePlatosTextBox();                                         //deshabilitar los textbox
+            disableImagenes_Incomp_Alerg();                                 //deshabilita las imagenes de alergenos e incompatibilidades
 
             ui->listView_Platos->setEnabled(true);                          //habilitar el listview de platos
 
@@ -299,6 +323,7 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_PLA_clicked()
     disablePlatosTextBox();
     clearPlatosTextBox();
     cleanListViewING_de_PLA();
+    disableImagenes_Incomp_Alerg();                             //deshabilita las imagenes de alergenos e incompatibilidades
 
     ui->listView_Ingredientes_PLA->clearSelection();            //Desselecciona el posible ingrediente seleccionado en el listview
     ui->listView_Platos->clearSelection();                      //Desselecciona el posible ingrediente seleccionado en el listview
@@ -332,6 +357,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
             setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
             setPrecioPlato();                                                                                                               //Calcular el precio del plato
             set_Incomp_Alerg_Plato();                                                                                                       //Calcula las incompatibilidades y alergenos del plato
+            mostrar_Incomp_Alerg_Plato();
         }
     }
 }
@@ -352,6 +378,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
         setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
         setPrecioPlato();                                                                                                               //Calcular el precio del plato
         set_Incomp_Alerg_Plato();                                                                                                       //Calcula las incompatibilidades y alergenos del plato
+        mostrar_Incomp_Alerg_Plato();
     }
 
 
@@ -384,6 +411,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
             setCantidadPlato();                                                                                     //Calcular la cantidad del plato
             setPrecioPlato();                                                                                       //Calcular el precio del plato
             set_Incomp_Alerg_Plato();                                                                               //Calcula las incompatibilidades y alergenos del plato
+            mostrar_Incomp_Alerg_Plato();
         }
     }
 }
@@ -619,9 +647,45 @@ void MainWindowMenuPlan::set_Incomp_Alerg_Plato()
 }
 
 
-
 /*---------------------------------------------------------------------------------------------------------*/
 /*------------------ CALCULA LOS MESES DE TEMPORADA DEL PLATO SEGUN SUS INGREDIENTES ----------------------*/
+/*---------------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::mostrar_Incomp_Alerg_Plato()
+{
+    QString inc = db1->queryMostrarIncompPlato(ui->label_PLAid->text());
+    QString aler = db1->queryMostrarAlergPlato(ui->label_PLAid->text());
+
+    if(inc.at(0) == '1')
+        ui->label_Inc_celiaco->setVisible(true);
+    if(inc.at(1) == '1')
+        ui->label_Inc_diabetico->setVisible(true);
+    if(inc.at(2) == '1')
+        ui->label_Inc_semivegetariano->setVisible(true);
+    if(inc.at(3) == '1')
+        ui->label_Inc_vegetariano->setVisible(true);
+    if(inc.at(4) == '1')
+        ui->label_Inc_vegano->setVisible(true);
+
+    if(aler.at(0) == '1')
+        ui->label_Aler_cereales->setVisible(true);
+    if(aler.at(1) == '1')
+        ui->label_Aler_frutos_secos->setVisible(true);
+    if(aler.at(2) == '1')
+        ui->label_Aler_legumbres->setVisible(true);
+    if(aler.at(3) == '1')
+        ui->label_Aler_marisco->setVisible(true);
+    if(aler.at(4) == '1')
+        ui->label_Aler_pescado->setVisible(true);
+    if(aler.at(5) == '1')
+        ui->label_Aler_huevo->setVisible(true);
+    if(aler.at(6) == '1')
+        ui->label_Aler_leche->setVisible(true);
+}
+
+
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*----------------- CALCULA LA CALIDAD DEL PLATO SEGUN LOS INGREDIENTES DE TEMPORADA ----------------------*/
 /*---------------------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::set_temporada_Plato()
 {

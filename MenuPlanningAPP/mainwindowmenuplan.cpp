@@ -17,10 +17,21 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     //Establecer la pestaña inicio como la pagina principal al abrir la aplicacion
     ui->tabWidget->setCurrentIndex(0);
 
-    //Cargar la imagen en la pantalla de inicio
-    QImage image("foto_inicio.png");
-    QPixmap pixm = QPixmap(":/images/foto_inicio.png");
-    ui->label_image->setPixmap(pixm);
+    //Cargar las imagenes en la pantalla de inicio y platos
+    ui->label_image->setPixmap(QPixmap(":/images/foto_inicio.png"));
+    ui->label_Aler_cereales->setPixmap(QPixmap(":/images/alerg_cereales.png"));
+    ui->label_Aler_frutos_secos->setPixmap(QPixmap(":/images/alerg_frutosSecos.png"));
+    ui->label_Aler_legumbres->setPixmap(QPixmap(":/images/alerg_legumbres"));
+    ui->label_Aler_marisco->setPixmap(QPixmap(":/images/alerg_marisco"));
+    ui->label_Aler_pescado->setPixmap(QPixmap(":/images/alerg_pescado"));
+    ui->label_Aler_huevo->setPixmap(QPixmap(":/images/alerg_huevo"));
+    ui->label_Aler_leche->setPixmap(QPixmap(":/images/alerg_leche"));
+    ui->label_Inc_celiaco->setPixmap(QPixmap(":/images/incomp_celiaco"));
+    ui->label_Inc_diabetico->setPixmap(QPixmap(":/images/incomp_diabetico"));
+    ui->label_Inc_semivegetariano->setPixmap(QPixmap(":/images/incomp_semivegetariano"));
+    ui->label_Inc_vegetariano->setPixmap(QPixmap(":/images/incomp_vegetariano"));
+    ui->label_Inc_vegano->setPixmap(QPixmap(":/images/incomp_vegano"));
+
 
     //Establecer el tamaño de los elementos en la parte de ingredientes del plato (ya que en ocasiones se redimensionaba)
     ui->pushButton_PLAING_aniadir->setMinimumSize(66,23);
@@ -64,6 +75,8 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     disableIngredientesTextBox();
     //Deshabilitar los textbox (lineedit) de Platos al arranque de la aplicacion
     disablePlatosTextBox();
+    //Deshabilita las imagenes de alergenos e incompatibilidades
+    disableImagenes_Incomp_Alerg();
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
@@ -223,6 +236,8 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             mostrarTipoPlato(model->index(0,4).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_Plato->findChildren<QLineEdit *>();
+            disableImagenes_Incomp_Alerg();
+            mostrar_Incomp_Alerg_Plato();
         break;
     }
 
@@ -433,3 +448,9 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 }
 
 
+
+void MainWindowMenuPlan::on_tabWidget_tabBarClicked(int index)
+{
+    if(index == 3)
+        qDebug() << "ola k ase";
+}

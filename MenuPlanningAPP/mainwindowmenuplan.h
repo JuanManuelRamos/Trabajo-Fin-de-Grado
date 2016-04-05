@@ -66,6 +66,7 @@ class MainWindowMenuPlan : public QMainWindow
         void disableGCPlatosButtons();                          //deshabilitar los botones Guardar y Cancelar del apartado Platos
         void enableAMEPlatosButtons();                          //habilitar los botones Añadir, Modificar y Eliminar del apartado Platos
         void disableAMEPlatosButtons();                         //deshabilitar los botones Añadir, Modificar y Eliminar del apartado Platos
+        void disableImagenes_Incomp_Alerg();                    //deshabilita las imagenes de alergenos e incompatibilidades
 
         void cleanListViewING_en_Platos();                      //Limpia de contenido el list view de Ingredientes en el apartado Platos
         void cleanListViewPlatos();                             //Limpia de contenido el list view de Platos
@@ -85,7 +86,8 @@ class MainWindowMenuPlan : public QMainWindow
         void setPrecioPlato();                                  //Calcula el precio de un plato en base al precio y la cantidad de sus ingredientes
 
         void set_Incomp_Alerg_Plato();                          //Calcula las incompatibilidades y alergenos del plato segun sus ingredientes
-        void set_temporada_Plato();                             //Calcula los meses de temporada del plato segun sus ingredientes
+        void mostrar_Incomp_Alerg_Plato();                      //Muestra las incompatibilidades y alergenos del plato
+        void set_temporada_Plato();                             //Calcula la calidad de un plato segun la temporada de sus ingredientes
 
 
         /*--------------------------------*/
@@ -121,6 +123,8 @@ class MainWindowMenuPlan : public QMainWindow
         void on_listView_INGPLA_clicked(const QModelIndex &index);
         void checkboxClicked();
         void on_comboBox_platos_activated(const QString &arg1);
+
+        void on_tabWidget_tabBarClicked(int index);
 
 private:
         Ui::MainWindowMenuPlan *ui;

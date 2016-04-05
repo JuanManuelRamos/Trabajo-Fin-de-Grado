@@ -845,6 +845,54 @@ void database::queryModificarIncompAlergPlato(QString &strID, QString &incomp, Q
 }
 
 
+/*-------------------------------------------------------------------------------------*/
+/*------------ MOSTRAR LAS INCOMPATIBILIDADES DE UN PLATO ---------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryMostrarIncompPlato(QString id)
+{
+    QString str = "SELECT incompatibilidades FROM PlatosTAB WHERE id_PlatosTAB=";
+    str.append(id);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+/*-------------------------------------------------------------------------------------*/
+/*-------------- MOSTRAR LOS ALERGENOS DE UN PLATO ---------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryMostrarAlergPlato(QString id)
+{
+    QString str = "SELECT alergenos FROM PlatosTAB WHERE id_PlatosTAB=";
+    str.append(id);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
+
 /*-----------------------------------------------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------------*/
 /*----------------------------------------       INGREDIENTES DE UN PLATO        ----------------------------------------*/

@@ -2,4 +2,40 @@
     <qresource>
         <file>images/foto_inicio.png</file>
     </qresource>
+    <qresource>
+        <file>images/alerg_cereales.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_frutosSecos.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_huevo.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_legumbres.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_marisco.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_pescado.png</file>
+    </qresource>
+    <qresource>
+        <file>images/alerg_leche.png</file>
+    </qresource>
+    <qresource>
+        <file>images/incomp_celiaco.png</file>
+    </qresource>
+    <qresource>
+        <file>images/incomp_diabetico.png</file>
+    </qresource>
+    <qresource>
+        <file>images/incomp_semivegetariano.png</file>
+    </qresource>
+    <qresource>
+        <file>images/incomp_vegetariano.png</file>
+    </qresource>
+    <qresource>
+        <file>images/incomp_vegano.png</file>
+    </qresource>
 </RCC>

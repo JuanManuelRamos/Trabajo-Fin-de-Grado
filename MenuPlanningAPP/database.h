@@ -56,6 +56,8 @@ class database
         void queryModificarCantidadPlato(QString &strID, QString &cantidad);                    //Consulta para modificar la cantidad en gramos de un plato
         void queryModificarPrecioPlato(QString &strID, QString &precio);                        //Consulta para modificar el precio de un plato
         void queryModificarIncompAlergPlato(QString &strID, QString &incomp, QString &alerg);   //Consulta para modificar las incompatibilidades y alergenos de un plato
+        QString queryMostrarIncompPlato(QString id);
+        QString queryMostrarAlergPlato(QString id);
 
 
         void queryUpdateInfoNING(QStringList &strl, QString &id);                               //Calculo de la informacion nutricional de un plato
