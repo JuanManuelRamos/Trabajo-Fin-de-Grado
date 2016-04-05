@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -806,7 +806,7 @@
           <rect>
            <x>10</x>
            <y>180</y>
-           <width>211</width>
+           <width>239</width>
            <height>81</height>
           </rect>
          </property>
@@ -1017,7 +1017,7 @@
         <rect>
          <x>290</x>
          <y>120</y>
-         <width>221</width>
+         <width>222</width>
          <height>31</height>
         </rect>
        </property>
@@ -2457,8 +2457,93 @@
     </widget>
     <widget class="QWidget" name="tab">
      <attribute name="title">
-      <string>Selección</string>
+      <string>Planificador</string>
      </attribute>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>731</width>
+        <height>281</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Platos</string>
+      </property>
+      <widget class="QListView" name="listView_PLAN_Platos">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>50</y>
+         <width>171</width>
+         <height>221</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_PLAN_der">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>110</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&gt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButton_PLAN_izq">
+       <property name="geometry">
+        <rect>
+         <x>190</x>
+         <y>170</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_111">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>20</y>
+         <width>111</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Platos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_112">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>20</y>
+         <width>171</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Platos seleccionados&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidget_PLAN_PlatosSelec">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>50</y>
+         <width>171</width>
+         <height>221</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
     </widget>
    </widget>
   </widget>

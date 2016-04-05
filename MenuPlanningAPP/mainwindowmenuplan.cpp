@@ -2,6 +2,7 @@
 #include "ui_mainwindowmenuplan.h"
 #include "ingredientes.cpp"
 #include "platos.cpp"
+#include "planificador.cpp"
 
 /*-------------------------------------------------------------------------*/
 /*----------------------- CONSTRUCTOR Y DESTRUCTOR ------------------------*/
@@ -131,8 +132,9 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             ui->pushButton_ConectarBD->setText("Desconectar");
 
             ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));           //______Se hace una consulta de los ingredientes para mostrarse en el apartado ingredientes
-            ui->listView_Ingredientes_PLA->setModel(db1->makeQuerys(MOSTRARING));       //______Se hace una consulta de los ingredientes para mostrarse en el apartado platos
+            ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());//______Se muestran los ingredientes en el apartado platos
             ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                 //______Se hace una consulta de los platos para mostrarse
+            ui->listView_PLAN_Platos->setModel(ui->listView_Platos->model());           //______Se muestran los platos en el apartado platos de la seccion Planificador
             enableAMEIngredientesButtons();                                             //______Se habilitan los botones de edicion en el panel de ingredientes
             enableAMEPlatosButtons();                                                   //______Se habilitan los botones de edicion en el panel de platos
         }
@@ -447,10 +449,3 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
     return A;
 }
 
-
-
-void MainWindowMenuPlan::on_tabWidget_tabBarClicked(int index)
-{
-    if(index == 3)
-        qDebug() << "ola k ase";
-}

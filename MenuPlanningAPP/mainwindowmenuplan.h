@@ -126,6 +126,10 @@ class MainWindowMenuPlan : public QMainWindow
 
         void on_tabWidget_tabBarClicked(int index);
 
+        void on_pushButton_PLAN_der_clicked();
+
+        void on_pushButton_PLAN_izq_clicked();
+
 private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;
