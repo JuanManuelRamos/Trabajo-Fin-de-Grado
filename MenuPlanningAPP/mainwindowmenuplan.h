@@ -99,6 +99,14 @@ class MainWindowMenuPlan : public QMainWindow
         void cleanListViewING_de_PLA();                         //Limpia de contenido el list view de ingredientes pertenecientes a un plato, en el apartado Platos
 
 
+        /*--------------------*/
+        /*--- PLANIFICADOR ---*/
+        /*--------------------*/
+        void enablePLANElements();
+        void disablePLANElements();
+
+        void infoPLANPlatos();
+
 
     private slots:
 
@@ -124,11 +132,13 @@ class MainWindowMenuPlan : public QMainWindow
         void checkboxClicked();
         void on_comboBox_platos_activated(const QString &arg1);
 
-        void on_tabWidget_tabBarClicked(int index);
-
         void on_pushButton_PLAN_der_clicked();
 
         void on_pushButton_PLAN_izq_clicked();
+
+        void on_pushButton_PLAN_der2_clicked();
+
+        void on_pushButton_PLAN_izq2_clicked();
 
 private:
         Ui::MainWindowMenuPlan *ui;

@@ -203,6 +203,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
             clearPlatosTextBox();                                               //limpiar los textbox
             cleanListViewING_de_PLA();                                          //limpiar el listview ingredientes de plato
             disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
+            infoPLANPlatos();                                                   //Actualizar la informacion de numero de platos
         }
     }
 }
@@ -226,6 +227,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 ui->comboBox_platos->setCurrentIndex(0);                                                        //Poner el combobox en el apartado Todos
                 QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());        //consulta para mostrar la informacion recien añadida del plato
                 fillIngPlaTextBox(model, PLATOS);                                                               //rellenar los textbox con la informacion
+                infoPLANPlatos();                                                                               //Actualizar la informacion de numero de platos
 
                 QMessageBox msgBox;                                                                             //mensaje informativo para añadir ingredientes al plato
                 msgBox.setIcon(QMessageBox::Information);
@@ -480,7 +482,7 @@ void MainWindowMenuPlan::nutricionalInfo()
     float cantidadIngPlato = 0, cantidadIngBD = 0;
     QStringList infoN, temp;
 
-    initializeInfoN(infoN);                                                                                 //Inisializa la lista donde sera almacenada toda la informacion
+    initializeInfoN(infoN);                                                                                 //Inicializa la lista donde sera almacenada toda la informacion
 
     for(int i = 0; i < model->rowCount(); i++)
     {
@@ -491,10 +493,9 @@ void MainWindowMenuPlan::nutricionalInfo()
         model2 = new QSqlQueryModel;
         model2 = db1->makeQuerys(MOSTRARINFONUTR, ing);                                                     //Consulta para guardar en un modelo la informacion nutricional del ingrediente
 
-        for(int i = 0; i < NumInfN; i++)
-        {
+        for(int i = 0; i < NumInfN; i++)       
             temp << model2->index(0,i).data(Qt::DisplayRole).toString();                                    //Guardar la inf nutricional en una lista temporal
-        }
+
 
         for(int i = 0; i < temp.size(); i++)                                                                //Hacer el calculo de la inf nutricional para el plato
         {
@@ -527,11 +528,8 @@ void MainWindowMenuPlan::initializeInfoN(QStringList &infoN)
 /*-------------------------------------------------------------------------*/
 void MainWindowMenuPlan::showInfoN(QStringList &infoN)
 {
-    db1->queryUpdateInfoNING(infoN, ui->label_PLAid->text());                                       //Consulta para actualizar los datos
-    QSqlQueryModel *model3 = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());       //Consulta para mostrar los datos del plato
-
-    fillIngPlaTextBox(model3, PLATOS);                                                              //Rellenar los textbox con los datos consultados
-    delete model3;
+    db1->queryUpdateInfoNING(infoN, ui->label_PLAid->text());                                       //Consulta para actualizar los datos   
+    fillIngPlaTextBox(db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text()), PLATOS);     //Rellenar los textbox con los datos consultados
 }
 
 

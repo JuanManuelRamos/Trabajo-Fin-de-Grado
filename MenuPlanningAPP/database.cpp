@@ -990,3 +990,96 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
     qry->exec();
 }
 
+
+
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------       INGREDIENTES DE UN PLATO        ----------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+QString database::queryNumPlatos()
+{
+    QString str = "SELECT COUNT(*) FROM platosTAB";
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+QString database::queryNumPriPlato()
+{
+    QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=1";
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+QString database::queryNumSegPlato()
+{
+    QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=2";
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+QString database::queryNumPostre()
+{
+    QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=3";
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

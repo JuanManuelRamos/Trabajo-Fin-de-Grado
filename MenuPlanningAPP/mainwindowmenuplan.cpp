@@ -72,12 +72,11 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     disableGCPlatosButtons();
     disableAMEPlatosButtons();
     disableAMEINGPLAButtons();
-    //Deshabilitar los textbox (lineedit) de Ingredientes al arranque de la aplicacion
-    disableIngredientesTextBox();
-    //Deshabilitar los textbox (lineedit) de Platos al arranque de la aplicacion
-    disablePlatosTextBox();
-    //Deshabilita las imagenes de alergenos e incompatibilidades
-    disableImagenes_Incomp_Alerg();
+
+    disableIngredientesTextBox();                               //Deshabilitar los textbox (lineedit) de Ingredientes al arranque de la aplicacion
+    disablePlatosTextBox();                                     //Deshabilitar los textbox (lineedit) de Platos al arranque de la aplicacion
+    disableImagenes_Incomp_Alerg();                             //Deshabilita las imagenes de alergenos e incompatibilidades
+    disablePLANElements();                                      //Se deshabilitan los elementos en la seccion de planificador
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
@@ -137,6 +136,8 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             ui->listView_PLAN_Platos->setModel(ui->listView_Platos->model());           //______Se muestran los platos en el apartado platos de la seccion Planificador
             enableAMEIngredientesButtons();                                             //______Se habilitan los botones de edicion en el panel de ingredientes
             enableAMEPlatosButtons();                                                   //______Se habilitan los botones de edicion en el panel de platos
+            enablePLANElements();                                                       //______Se habilitan los elementos en la seccion de planificador
+            infoPLANPlatos();                                                           //______Mostrar la informacion de numero de platos
         }
         else                                                                            //______Si se produce un error de conexion a la base de datos...
         {
@@ -158,6 +159,7 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
         clearPlatosTextBox();                                                           //_____Se borran los textbox de platos
         disableAMEIngredientesButtons();                                                //_____Se deshabilitan los botones de edicion del panel de ingredientes
         disableAMEPlatosButtons();                                                      //_____Se deshabilitan los botones de edicion del panel de platos
+        disablePLANElements();                                                          //_____Se deshabilitan los elementos en la seccion de planificador
     }
 }
 
@@ -214,27 +216,27 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->textEdit_PLAdescripcion->setText(model->index(0,2).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAprecio->setText(model->index(0,3).data(Qt::DisplayRole).toString());
             ui->lineEdit_PLAcantidad->setText(model->index(0,5).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAacidofol->setText(model->index(0,6).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAcalcio->setText(model->index(0,7).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAenergia->setText(model->index(0,8).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAfosforo->setText(model->index(0,9).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAgrasa->setText(model->index(0,10).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAhierro->setText(model->index(0,11).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAmagnesio->setText(model->index(0,12).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLApotasio->setText(model->index(0,13).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAproteinas->setText(model->index(0,14).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAselenio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAsodio->setText(model->index(0,16).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvita->setText(model->index(0,17).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb1->setText(model->index(0,18).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb2->setText(model->index(0,19).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb6->setText(model->index(0,20).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitb12->setText(model->index(0,21).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitc->setText(model->index(0,22).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvitd->setText(model->index(0,23).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAvite->setText(model->index(0,24).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAyodo->setText(model->index(0,25).data(Qt::DisplayRole).toString());
-            ui->lineEdit_PLAzinc->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAacidofol->setText(model->index(0,9).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAcalcio->setText(model->index(0,10).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAenergia->setText(model->index(0,11).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAfosforo->setText(model->index(0,12).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAgrasa->setText(model->index(0,13).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAhierro->setText(model->index(0,14).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAmagnesio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLApotasio->setText(model->index(0,16).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAproteinas->setText(model->index(0,17).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAselenio->setText(model->index(0,18).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAsodio->setText(model->index(0,19).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvita->setText(model->index(0,20).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb1->setText(model->index(0,21).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb2->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb6->setText(model->index(0,23).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitb12->setText(model->index(0,24).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitc->setText(model->index(0,25).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvitd->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAvite->setText(model->index(0,27).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAyodo->setText(model->index(0,28).data(Qt::DisplayRole).toString());
+            ui->lineEdit_PLAzinc->setText(model->index(0,29).data(Qt::DisplayRole).toString());
             mostrarTipoPlato(model->index(0,4).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_Plato->findChildren<QLineEdit *>();
@@ -448,4 +450,8 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
     }
     return A;
 }
+
+
+
+
 

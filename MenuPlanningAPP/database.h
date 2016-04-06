@@ -76,6 +76,14 @@ class database
         void removeINGtoPLAQuery(QString &strIDPLA, QString &nombre);                           //Consulta para eliminar un ingrediente a un plato
 
 
+        /*--------------------*/
+        /*--- PLANIFICADOR ---*/
+        /*--------------------*/
+        QString queryNumPlatos();
+        QString queryNumPriPlato();
+        QString queryNumSegPlato();
+        QString queryNumPostre();
+
 
 };
 
