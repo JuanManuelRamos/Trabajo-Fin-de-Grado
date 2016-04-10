@@ -28,8 +28,20 @@ void MainWindowMenuPlan::disablePLANElements()
     ui->label_PLAN_PP->setText("");
     ui->label_PLAN_SP->setText("");
     ui->label_PLAN_P->setText("");
+    disablePLANLabelsSelec();
 }
 
+
+/*-----------------------------------------------------------------*/
+/*-------- DESHABILITAR LOS LABELS DE PLATOS SELECCIONADOS --------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::disablePLANLabelsSelec()
+{
+    ui->label_PLAN_PlatosSel->setText("0");
+    ui->label_PLAN_PP_2->setText("0");
+    ui->label_PLAN_SP_2->setText("0");
+    ui->label_PLAN_P_2->setText("0");
+}
 
 
 /*-----------------------------------------------------------------*/
@@ -53,7 +65,10 @@ void MainWindowMenuPlan::on_pushButton_PLAN_der_clicked()
         }
 
         if(A == ACCEPT)
+        {
             ui->listWidget_PLAN_PlatosSelec->addItem(ui->listView_PLAN_Platos->currentIndex().data(Qt::DisplayRole).toString());    //Añadir el elemento del listview platos al listwidget platos seleccionados
+            infoPLANPlatosSelec();                                                                                                  //Actualiza la informacion de platos seleccionados
+        }
     }
 }
 
@@ -69,6 +84,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_der2_clicked()
     {
         ui->listWidget_PLAN_PlatosSelec->addItem(ui->listView_PLAN_Platos->model()->index(i, 0).data(Qt::DisplayRole).toString());  //Seleccionar uno a uno los platos del listview y añadirlos al listwidget
     }
+    infoPLANPlatosSelec();                                                                                                          //Actualiza la informacion de platos seleccionados
 }
 
 
@@ -83,8 +99,9 @@ void MainWindowMenuPlan::on_pushButton_PLAN_izq_clicked()
     {
         foreach(QListWidgetItem * item, ql)
         {
-            delete ui->listWidget_PLAN_PlatosSelec->takeItem(ui->listWidget_PLAN_PlatosSelec->row(item));
+            delete ui->listWidget_PLAN_PlatosSelec->takeItem(ui->listWidget_PLAN_PlatosSelec->row(item));       //Elimina de la lista el plato seleccionado
         }
+        infoPLANPlatosSelec();                                                                                  //Actualiza la informacion de platos seleccionados
     }
     else
     {
@@ -99,6 +116,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_izq_clicked()
 void MainWindowMenuPlan::on_pushButton_PLAN_izq2_clicked()
 {
     ui->listWidget_PLAN_PlatosSelec->clear();                           //Borrar todos los elementos del listwidget
+    disablePLANLabelsSelec();                                           //Borra los labels de platos seleccionados
 }
 
 
@@ -115,5 +133,76 @@ void MainWindowMenuPlan::infoPLANPlatos()
 }
 
 
+/*-----------------------------------------------------------------*/
+/*------- INFORMACION DE NUMERO DE PLATOS SELECCIONADOS -----------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::infoPLANPlatosSelec()
+{
+    int pp = 0, sp = 0, p = 0, tipo = 0;
+    int rows = ui->listWidget_PLAN_PlatosSelec->model()->rowCount();
+
+    ui->label_PLAN_PlatosSel->setText(QString::number(rows));
+
+    for(int i = 0; i < rows; i++)
+    {
+        tipo = db1->queryMostrarTipoPlato(ui->listWidget_PLAN_PlatosSelec->model()->index(i, 0).data(Qt::DisplayRole).toString()).toInt();
+
+        switch(tipo)
+        {
+            case 1:
+                pp++;
+            break;
+
+            case 2:
+                sp++;
+            break;
+
+            case 3:
+                p++;
+            break;
+        }
+    }
+
+    ui->label_PLAN_PP_2->setText(QString::number(pp));
+    ui->label_PLAN_SP_2->setText(QString::number(sp));
+    ui->label_PLAN_P_2->setText(QString::number(p));
+}
 
 
+/*-----------------------------------------------------------------*/
+/*------------- EVENTO CLICK DEL RADIOBUTTON DESDE ----------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_radioButton_PLAN_desde_clicked()
+{
+   if(ui->radioButton_PLAN_desde->isChecked())
+       ui->radioButton_PLAN_hasta->setChecked(false);
+   else
+      ui->radioButton_PLAN_desde->setChecked(true);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*-------------- EVENTO CLICK DEL RADIOBUTTON HASTA ---------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_radioButton_PLAN_hasta_clicked()
+{
+    if(ui->radioButton_PLAN_hasta->isChecked())
+        ui->radioButton_PLAN_desde->setChecked(false);
+    else
+        ui->radioButton_PLAN_hasta->setChecked(true);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*------------------ EVENTO CLICK DEL CALENDARIO ------------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_calendarWidget_clicked(const QDate &date)
+{
+    if(ui->radioButton_PLAN_desde->isChecked())
+        ui->dateEdit_desde->setDate(date);
+    else if(ui->radioButton_PLAN_hasta->isChecked())
+        if(date > ui->dateEdit_desde->date())
+            ui->dateEdit_hasta->setDate(date);
+        else
+            QMessageBox::information(this,"Información","La fecha de finalización del plan no puede ser anterior a la de inicio.");
+}

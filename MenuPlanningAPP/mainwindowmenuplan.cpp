@@ -77,6 +77,11 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     disablePlatosTextBox();                                     //Deshabilitar los textbox (lineedit) de Platos al arranque de la aplicacion
     disableImagenes_Incomp_Alerg();                             //Deshabilita las imagenes de alergenos e incompatibilidades
     disablePLANElements();                                      //Se deshabilitan los elementos en la seccion de planificador
+
+
+    //Establecer las fechas por defecto en la seccion del Planificador
+    ui->dateEdit_desde->setDate(QDate::currentDate());
+    ui->dateEdit_hasta->setDate(QDate::currentDate().addMonths(1));
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
@@ -450,6 +455,10 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
     }
     return A;
 }
+
+
+
+
 
 
 

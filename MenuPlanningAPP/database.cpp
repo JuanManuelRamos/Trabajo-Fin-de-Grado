@@ -630,6 +630,31 @@ void database::queryMostrarTiposPlatos(QString &str, QString &strID)
 
 
 /*-------------------------------------------------------------------------------------*/
+/*------------------- MOSTRAR EL TIPO DE UN PLATO DETERMINADO -------------------------*/
+/*-------------------------------------------------------------------------------------*/
+QString database::queryMostrarTipoPlato(QString nombre)
+{
+    QString str = "SELECT tipo FROM platosTAB WHERE nombre='";
+    str.append(nombre);
+    str.append("'");
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}
+
+
+/*-------------------------------------------------------------------------------------*/
 /*--------------------------------- AÑADIR UN PLATO -----------------------------------*/
 /*-------------------------------------------------------------------------------------*/
 void database::addPLAQuerys(QStringList &strl)

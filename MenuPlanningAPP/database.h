@@ -48,6 +48,7 @@ class database
         void queryMostrarPlatos(QString &str);                                                  //Consulta para mostrar los platos disponibles en la base de datos
         void queryMostrarInfoPlatos(QString &str, QString &strID);                              //Consulta para mostrar la informacion de un plato
         void queryMostrarTiposPlatos(QString &str, QString &strID);                             //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
+        QString queryMostrarTipoPlato(QString nombre);                                          //Consulta para mostrar de que tipo es un plato determinado (primer plato, segundo plato o postre)
 
         void addPLAQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo plato
         void modPLAQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un plato

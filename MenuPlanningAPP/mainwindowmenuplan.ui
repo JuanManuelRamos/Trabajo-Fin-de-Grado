@@ -2459,7 +2459,7 @@
      <attribute name="title">
       <string>Planificador</string>
      </attribute>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="groupBox_PLAN_Platos">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -2704,6 +2704,76 @@
        <property name="text">
         <string>&lt;&lt;</string>
        </property>
+      </widget>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_PLAN_Fechas">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>320</y>
+        <width>511</width>
+        <height>221</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Duración del plan</string>
+      </property>
+      <widget class="QCalendarWidget" name="calendarWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>30</y>
+         <width>296</width>
+         <height>183</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_10">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>60</y>
+         <width>102</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_10">
+        <item row="1" column="1">
+         <widget class="QDateEdit" name="dateEdit_desde"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="radioButton_PLAN_desde">
+          <property name="text">
+           <string>Desde: </string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="gridLayoutWidget_11">
+       <property name="geometry">
+        <rect>
+         <x>340</x>
+         <y>140</y>
+         <width>102</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_11">
+        <item row="1" column="1">
+         <widget class="QDateEdit" name="dateEdit_hasta"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="radioButton_PLAN_hasta">
+          <property name="text">
+           <string>Hasta: </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </widget>

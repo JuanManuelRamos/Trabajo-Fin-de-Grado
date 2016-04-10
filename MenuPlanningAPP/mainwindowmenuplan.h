@@ -104,8 +104,10 @@ class MainWindowMenuPlan : public QMainWindow
         /*--------------------*/
         void enablePLANElements();
         void disablePLANElements();
+        void disablePLANLabelsSelec();
 
         void infoPLANPlatos();
+        void infoPLANPlatosSelec();
 
 
     private slots:
@@ -139,6 +141,12 @@ class MainWindowMenuPlan : public QMainWindow
         void on_pushButton_PLAN_der2_clicked();
 
         void on_pushButton_PLAN_izq2_clicked();
+
+        void on_calendarWidget_clicked(const QDate &date);
+
+        void on_radioButton_PLAN_desde_clicked();
+
+        void on_radioButton_PLAN_hasta_clicked();
 
 private:
         Ui::MainWindowMenuPlan *ui;
