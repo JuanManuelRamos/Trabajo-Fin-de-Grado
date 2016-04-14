@@ -206,3 +206,130 @@ void MainWindowMenuPlan::on_calendarWidget_clicked(const QDate &date)
         else
             QMessageBox::information(this,"Información","La fecha de finalización del plan no puede ser anterior a la de inicio.");
 }
+
+
+
+/*-----------------------------------------------------------------*/
+/*------------ MUESTRA LA INGESTA DIARIA RECOMENDADA --------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::getIngestaDiariaRecomendada()
+{
+    ui->lineEdit_PLAN_acidofol->setText(QString::number(idrN.acidoFol));
+    ui->lineEdit_PLAN_calcio->setText(QString::number(idrN.calcio));
+    ui->lineEdit_PLAN_energia->setText(QString::number(idrN.energia));
+    ui->lineEdit_PLAN_fosforo->setText(QString::number(idrN.fosforo));
+    ui->lineEdit_PLAN_grasa->setText(QString::number(idrN.grasa));
+    ui->lineEdit_PLAN_hierro->setText(QString::number(idrN.hierro));
+    ui->lineEdit_PLAN_magnesio->setText(QString::number(idrN.magnesio));
+    ui->lineEdit_PLAN_potasio->setText(QString::number(idrN.potasio));
+    ui->lineEdit_PLAN_proteinas->setText(QString::number(idrN.proteinas));
+    ui->lineEdit_PLAN_selenio->setText(QString::number(idrN.selenio));
+    ui->lineEdit_PLAN_sodio->setText(QString::number(idrN.sodio));
+    ui->lineEdit_PLAN_vita->setText(QString::number(idrN.vitA));
+    ui->lineEdit_PLAN_vitb1->setText(QString::number(idrN.vitB1));
+    ui->lineEdit_PLAN_vitb2->setText(QString::number(idrN.vitB2));
+    ui->lineEdit_PLAN_vitb6->setText(QString::number(idrN.vitB6));
+    ui->lineEdit_PLAN_vitb12->setText(QString::number(idrN.vitB12));
+    ui->lineEdit_PLAN_vitc->setText(QString::number(idrN.vitC));
+    ui->lineEdit_PLAN_vitd->setText(QString::number(idrN.vitD));
+    ui->lineEdit_PLAN_vite->setText(QString::number(idrN.vitE));
+    ui->lineEdit_PLAN_yodo->setText(QString::number(idrN.yodo));
+    ui->lineEdit_PLAN_zinc->setText(QString::number(idrN.zinc));
+}
+
+
+/*-----------------------------------------------------------------*/
+/*------------ MODIFICA LA INGESTA DIARIA RECOMENDADA -------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::setIngestaDiariaRecomendada()
+{
+    ACTION A = controllDataTextBoxNum(*ui->groupBox_PLAN_idr, 0);
+
+    if(A == ACCEPT)
+    {
+        idrN.acidoFol = ui->lineEdit_PLAN_acidofol->text().toFloat();
+        idrN.calcio = ui->lineEdit_PLAN_calcio->text().toFloat();
+        idrN.energia = ui->lineEdit_PLAN_energia->text().toFloat();
+        idrN.fosforo = ui->lineEdit_PLAN_fosforo->text().toFloat();
+        idrN.grasa = ui->lineEdit_PLAN_grasa->text().toFloat();
+        idrN.hierro =  ui->lineEdit_PLAN_hierro->text().toFloat();
+        idrN.magnesio = ui->lineEdit_PLAN_magnesio->text().toFloat();
+        idrN.potasio = ui->lineEdit_PLAN_potasio->text().toFloat();
+        idrN.proteinas = ui->lineEdit_PLAN_proteinas->text().toFloat();
+        idrN.selenio = ui->lineEdit_PLAN_selenio->text().toFloat();
+        idrN.sodio = ui->lineEdit_PLAN_sodio->text().toFloat();
+        idrN.vitA = ui->lineEdit_PLAN_vita->text().toFloat();
+        idrN.vitB1 = ui->lineEdit_PLAN_vitb1->text().toFloat();
+        idrN.vitB2 = ui->lineEdit_PLAN_vitb2->text().toFloat();
+        idrN.vitB6 = ui->lineEdit_PLAN_vitb6->text().toFloat();
+        idrN.vitB12 = ui->lineEdit_PLAN_vitb12->text().toFloat();
+        idrN.vitC = ui->lineEdit_PLAN_vitc->text().toFloat();
+        idrN.vitD = ui->lineEdit_PLAN_vitd->text().toFloat();
+        idrN.vitE = ui->lineEdit_PLAN_vite->text().toFloat();
+        idrN.yodo = ui->lineEdit_PLAN_yodo->text().toFloat();
+        idrN.zinc = ui->lineEdit_PLAN_zinc->text().toFloat();
+    }
+}
+
+
+/*-----------------------------------------------------------------*/
+/*------ HABILITAR LOS TEXTBOX DE INGESTA DIARIA RECOMENDADA ------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::enableIDR()
+{
+    QList<QLineEdit *> alltextbox = ui->groupBox_PLAN_idr->findChildren<QLineEdit *>();
+
+    for(int i = 0; i < alltextbox.size(); i++)
+        alltextbox.at(i)->setEnabled(true);
+
+    ui->pushButton_PLAN_Cancelar->setEnabled(true);
+    ui->pushButton_PLAN_Guardar->setEnabled(true);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*---- DESHABILITAR LOS TEXTBOX DE INGESTA DIARIA RECOMENDADA -----*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::disableIDR()
+{
+    QList<QLineEdit *> alltextbox = ui->groupBox_PLAN_idr->findChildren<QLineEdit *>();
+
+    for(int i = 0; i < alltextbox.size(); i++)
+        alltextbox.at(i)->setEnabled(false);
+
+    ui->pushButton_PLAN_Cancelar->setEnabled(false);
+    ui->pushButton_PLAN_Guardar->setEnabled(false);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*--------------- EVENTO CLICK DEL BOTON MODIFICAR ----------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_pushButton_PLAN_Modificar_clicked()
+{
+    enableIDR();
+    ui->pushButton_PLAN_Modificar->setEnabled(false);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*--------------- EVENTO CLICK DEL BOTON GUARDAR ------------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_pushButton_PLAN_Guardar_clicked()
+{
+    setIngestaDiariaRecomendada();
+    getIngestaDiariaRecomendada();
+    disableIDR();
+    ui->pushButton_PLAN_Modificar->setEnabled(true);
+}
+
+
+/*-----------------------------------------------------------------*/
+/*--------------- EVENTO CLICK DEL BOTON CANCELAR -----------------*/
+/*-----------------------------------------------------------------*/
+void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
+{
+    getIngestaDiariaRecomendada();
+    disableIDR();
+    ui->pushButton_PLAN_Modificar->setEnabled(true);
+}

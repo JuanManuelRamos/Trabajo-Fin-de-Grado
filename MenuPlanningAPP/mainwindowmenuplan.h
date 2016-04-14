@@ -109,6 +109,11 @@ class MainWindowMenuPlan : public QMainWindow
         void infoPLANPlatos();
         void infoPLANPlatosSelec();
 
+        void getIngestaDiariaRecomendada();
+        void setIngestaDiariaRecomendada();
+        void enableIDR();
+        void disableIDR();
+
 
     private slots:
 
@@ -133,20 +138,19 @@ class MainWindowMenuPlan : public QMainWindow
         void on_listView_INGPLA_clicked(const QModelIndex &index);
         void checkboxClicked();
         void on_comboBox_platos_activated(const QString &arg1);
-
         void on_pushButton_PLAN_der_clicked();
-
         void on_pushButton_PLAN_izq_clicked();
-
         void on_pushButton_PLAN_der2_clicked();
-
         void on_pushButton_PLAN_izq2_clicked();
-
         void on_calendarWidget_clicked(const QDate &date);
-
         void on_radioButton_PLAN_desde_clicked();
-
         void on_radioButton_PLAN_hasta_clicked();
+
+        void on_pushButton_PLAN_Modificar_clicked();
+
+        void on_pushButton_PLAN_Guardar_clicked();
+
+        void on_pushButton_PLAN_Cancelar_clicked();
 
 private:
         Ui::MainWindowMenuPlan *ui;
@@ -178,7 +182,10 @@ private:
         QCheckBox *check11 = new QCheckBox("Noviembre");
         QCheckBox *check12 = new QCheckBox("Diciembre");
 
-
+        struct idr      //Ingesta diaria recomendada
+        {
+            float acidoFol, calcio, energia, fosforo, grasa, hierro, magnesio, potasio, proteinas, selenio, sodio, vitA, vitB1, vitB2, vitB6, vitB12, vitC, vitD, vitE, yodo, zinc;
+        }idrN;
 };
 
 #endif // MAINWINDOWMENUPLAN_H

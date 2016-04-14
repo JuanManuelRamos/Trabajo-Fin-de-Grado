@@ -82,6 +82,30 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     //Establecer las fechas por defecto en la seccion del Planificador
     ui->dateEdit_desde->setDate(QDate::currentDate());
     ui->dateEdit_hasta->setDate(QDate::currentDate().addMonths(1));
+
+    //Establecer las ingestias diarias recomendadas
+    idrN.acidoFol = 250;
+    idrN.calcio = 1000;
+    idrN.energia = 1900;
+    idrN.fosforo = 1000;
+    idrN.grasa = 63;
+    idrN.hierro = 10;
+    idrN.magnesio = 180;
+    idrN.potasio = 460;
+    idrN.proteinas = 36;
+    idrN.selenio = 30;
+    idrN.sodio = 1600;
+    idrN.vitA = 700;
+    idrN.vitB1 = 0.8f;
+    idrN.vitB2 = 1;
+    idrN.vitB6 = 1.1f;
+    idrN.vitB12 = 1.7f;
+    idrN.vitC = 55;
+    idrN.vitD = 15;
+    idrN.vitE = 8;
+    idrN.yodo = 130;
+    idrN.zinc = 10;
+    disableIDR();
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
@@ -143,6 +167,7 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             enableAMEPlatosButtons();                                                   //______Se habilitan los botones de edicion en el panel de platos
             enablePLANElements();                                                       //______Se habilitan los elementos en la seccion de planificador
             infoPLANPlatos();                                                           //______Mostrar la informacion de numero de platos
+            getIngestaDiariaRecomendada();                                              //______Mostrar la informacion de ingestas diarias recomendadas
         }
         else                                                                            //______Si se produce un error de conexion a la base de datos...
         {
@@ -455,11 +480,6 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
     }
     return A;
 }
-
-
-
-
-
 
 
 

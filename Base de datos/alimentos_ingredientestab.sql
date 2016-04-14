@@ -32,7 +32,7 @@ CREATE TABLE `ingredientestab` (
   KEY `fk_IngredientesTAB_PlatosTAB1_idx` (`PlatosTAB_id`),
   CONSTRAINT `fk_IngredientesTAB_AlimentosTAB1` FOREIGN KEY (`AlimentosTAB_id`) REFERENCES `alimentostab` (`id_AlimentosTAB`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_IngredientesTAB_PlatosTAB1` FOREIGN KEY (`PlatosTAB_id`) REFERENCES `platostab` (`id_PlatosTAB`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=409 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-05 16:09:28
+-- Dump completed on 2016-04-14 22:30:09
