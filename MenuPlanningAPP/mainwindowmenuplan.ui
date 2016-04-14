@@ -3406,14 +3406,14 @@
       <widget class="QLabel" name="label_184">
        <property name="geometry">
         <rect>
-         <x>20</x>
+         <x>10</x>
          <y>280</y>
-         <width>451</width>
-         <height>16</height>
+         <width>591</width>
+         <height>20</height>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;* Ingestas diarias recomendadas para niños/as correspondientes al almuerzo.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;* Ingestas diarias recomendadas para niños/as correspondientes al almuerzo (40% del consumo diario).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </widget>

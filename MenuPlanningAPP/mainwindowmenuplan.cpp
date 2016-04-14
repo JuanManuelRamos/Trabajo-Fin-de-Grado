@@ -84,27 +84,27 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->dateEdit_hasta->setDate(QDate::currentDate().addMonths(1));
 
     //Establecer las ingestias diarias recomendadas
-    idrN.acidoFol = 250;
-    idrN.calcio = 1000;
-    idrN.energia = 1900;
-    idrN.fosforo = 1000;
-    idrN.grasa = 63;
-    idrN.hierro = 10;
-    idrN.magnesio = 180;
-    idrN.potasio = 460;
-    idrN.proteinas = 36;
-    idrN.selenio = 30;
-    idrN.sodio = 1600;
-    idrN.vitA = 700;
-    idrN.vitB1 = 0.8f;
-    idrN.vitB2 = 1;
-    idrN.vitB6 = 1.1f;
-    idrN.vitB12 = 1.7f;
-    idrN.vitC = 55;
-    idrN.vitD = 15;
-    idrN.vitE = 8;
-    idrN.yodo = 130;
-    idrN.zinc = 10;
+    idrN.acidoFol = 100;
+    idrN.calcio = 400;
+    idrN.energia = 760;
+    idrN.fosforo = 400;
+    idrN.grasa = 25.2f;
+    idrN.hierro = 4;
+    idrN.magnesio = 72;
+    idrN.potasio = 184;
+    idrN.proteinas = 14.4f;
+    idrN.selenio = 12;
+    idrN.sodio = 640;
+    idrN.vitA = 280;
+    idrN.vitB1 = 0.32f;
+    idrN.vitB2 = 0.4f;
+    idrN.vitB6 = 0.44f;
+    idrN.vitB12 = 0.68f;
+    idrN.vitC = 22;
+    idrN.vitD = 6;
+    idrN.vitE = 3.2f;
+    idrN.yodo = 52;
+    idrN.zinc = 4;
     disableIDR();
 }
 
