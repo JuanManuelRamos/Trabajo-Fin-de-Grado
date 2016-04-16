@@ -17,6 +17,7 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
 
     //Establecer la pestaña inicio como la pagina principal al abrir la aplicacion
     ui->tabWidget->setCurrentIndex(0);
+    ui->tabWidget_PLAN_alerg_incomp->setCurrentIndex(0);
 
     //Cargar las imagenes en la pantalla de inicio y platos
     ui->label_image->setPixmap(QPixmap(":/images/foto_inicio.png"));
@@ -32,6 +33,18 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->label_Inc_semivegetariano->setPixmap(QPixmap(":/images/incomp_semivegetariano"));
     ui->label_Inc_vegetariano->setPixmap(QPixmap(":/images/incomp_vegetariano"));
     ui->label_Inc_vegano->setPixmap(QPixmap(":/images/incomp_vegano"));
+    ui->label_Aler_cereales_2->setPixmap(QPixmap(":/images/alerg_cereales.png"));
+    ui->label_Aler_frutos_secos_2->setPixmap(QPixmap(":/images/alerg_frutosSecos.png"));
+    ui->label_Aler_legumbres_2->setPixmap(QPixmap(":/images/alerg_legumbres"));
+    ui->label_Aler_marisco_2->setPixmap(QPixmap(":/images/alerg_marisco"));
+    ui->label_Aler_pescado_2->setPixmap(QPixmap(":/images/alerg_pescado"));
+    ui->label_Aler_huevo_2->setPixmap(QPixmap(":/images/alerg_huevo"));
+    ui->label_Aler_leche_2->setPixmap(QPixmap(":/images/alerg_leche"));
+    ui->label_Inc_celiaco_2->setPixmap(QPixmap(":/images/incomp_celiaco"));
+    ui->label_Inc_diabetico_2->setPixmap(QPixmap(":/images/incomp_diabetico"));
+    ui->label_Inc_semivegetariano_2->setPixmap(QPixmap(":/images/incomp_semivegetariano"));
+    ui->label_Inc_vegetariano_2->setPixmap(QPixmap(":/images/incomp_vegetariano"));
+    ui->label_Inc_vegano_2->setPixmap(QPixmap(":/images/incomp_vegano"));
 
 
     //Establecer el tamaño de los elementos en la parte de ingredientes del plato (ya que en ocasiones se redimensionaba)
@@ -106,6 +119,10 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     idrN.yodo = 52;
     idrN.zinc = 4;
     disableIDR();
+
+    //Establecer el formato del boton Generar Plan
+    QFont font("Times", 12);
+    ui->pushButton_PLAN_GenerarPlan->setFont(font);
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()

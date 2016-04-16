@@ -659,7 +659,7 @@ QString database::queryMostrarTipoPlato(QString nombre)
 /*-------------------------------------------------------------------------------------*/
 void database::addPLAQuerys(QStringList &strl)
 {
-    QString str = "INSERT INTO PlatosTAB (nombre, descripcion, precio, tipo, cantidad_gramos, incompatibilidades, alergenos, temporada, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
+    QString str = "ALTER TABLE PlatosTAB AUTO_INCREMENT = 1; INSERT INTO PlatosTAB (nombre, descripcion, precio, tipo, cantidad_gramos, incompatibilidades, alergenos, temporada, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_mg, vit_b2_mg, vit_b6_mg, vit_b12_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
     str.append(strl.at(1));
     str.append("','");
     str.append(strl.at(2));
