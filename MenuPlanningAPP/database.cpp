@@ -271,48 +271,52 @@ void database::modINGQuerys(QStringList &strl)
     str.append(strl.at(6));
     str.append("',alergenos='");
     str.append(strl.at(7));
-    str.append("',acido_folico_ug=");
+    str.append("',ingrediente_principal='");
     str.append(strl.at(8));
-    str.append(",calcio_mg=");
+    str.append("',grupo_alimenticio='");
     str.append(strl.at(9));
-    str.append(",energia_kcal=");
+    str.append("',acido_folico_ug=");
     str.append(strl.at(10));
-    str.append(",fosforo_mg=");
+    str.append(",calcio_mg=");
     str.append(strl.at(11));
-    str.append(",grasa_total_g=");
+    str.append(",energia_kcal=");
     str.append(strl.at(12));
-    str.append(",hierro_mg=");
+    str.append(",fosforo_mg=");
     str.append(strl.at(13));
-    str.append(",magnesio_mg=");
+    str.append(",grasa_total_g=");
     str.append(strl.at(14));
-    str.append(",potasio_mg=");
+    str.append(",hierro_mg=");
     str.append(strl.at(15));
-    str.append(",proteinas_g=");
+    str.append(",magnesio_mg=");
     str.append(strl.at(16));
-    str.append(",selenio_ug=");
+    str.append(",potasio_mg=");
     str.append(strl.at(17));
-    str.append(",sodio_mg=");
+    str.append(",proteinas_g=");
     str.append(strl.at(18));
-    str.append(",vit_a_ug=");
+    str.append(",selenio_ug=");
     str.append(strl.at(19));
-    str.append(",vit_b1_tiamina_mg=");
+    str.append(",sodio_mg=");
     str.append(strl.at(20));
-    str.append(",vit_b2_riboflavina_mg=");
+    str.append(",vit_a_ug=");
     str.append(strl.at(21));
-    str.append(",vit_b6_piridoxina_mg=");
+    str.append(",vit_b1_tiamina_mg=");
     str.append(strl.at(22));
-    str.append(",vit_b12_cianocobalamina_ug=");
+    str.append(",vit_b2_riboflavina_mg=");
     str.append(strl.at(23));
-    str.append(",vit_c_mg=");
+    str.append(",vit_b6_piridoxina_mg=");
     str.append(strl.at(24));
-    str.append(",vit_d_ug=");
+    str.append(",vit_b12_cianocobalamina_ug=");
     str.append(strl.at(25));
-    str.append(",vit_e_mg=");
+    str.append(",vit_c_mg=");
     str.append(strl.at(26));
-    str.append(",yodo_ug=");
+    str.append(",vit_d_ug=");
     str.append(strl.at(27));
-    str.append(",zinc_mg=");
+    str.append(",vit_e_mg=");
     str.append(strl.at(28));
+    str.append(",yodo_ug=");
+    str.append(strl.at(29));
+    str.append(",zinc_mg=");
+    str.append(strl.at(30));
     str.append(" WHERE id_AlimentosTAB=");
     str.append(strl.at(0));
 
@@ -327,7 +331,7 @@ void database::modINGQuerys(QStringList &strl)
 /*-------------------------------------------------------------------------------------*/
 void database::addINGQuerys(QStringList &strl)
 {
-    QString str = "INSERT INTO AlimentosTAB (nombre, cantidad_gramos, cantidad_g_precio, precio, temporada, incompatibilidades, alergenos, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
+    QString str = "ALTER TABLE AlimentosTAB AUTO_INCREMENT = 1; INSERT INTO AlimentosTAB (nombre, cantidad_gramos, cantidad_g_precio, precio, temporada, incompatibilidades, alergenos, ingrediente_principal, grupo_alimenticio, acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg) VALUES ('";
     str.append(strl.at(1));
     str.append("',");
     str.append(strl.at(2));
@@ -341,11 +345,11 @@ void database::addINGQuerys(QStringList &strl)
     str.append(strl.at(6));
     str.append("','");
     str.append(strl.at(7));
-    str.append("',");
+    str.append("','");
     str.append(strl.at(8));
-    str.append(",");
+    str.append("','");
     str.append(strl.at(9));
-    str.append(",");
+    str.append("',");
     str.append(strl.at(10));
     str.append(",");
     str.append(strl.at(11));
@@ -383,6 +387,10 @@ void database::addINGQuerys(QStringList &strl)
     str.append(strl.at(27));
     str.append(",");
     str.append(strl.at(28));
+    str.append(",");
+    str.append(strl.at(29));
+    str.append(",");
+    str.append(strl.at(30));
     str.append(");");
 
     qry = new QSqlQuery();
@@ -426,66 +434,6 @@ void database::queryMostrarInfoNING(QString &str, QString &nombre)
     str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
     str.append(nombre);
     str.append("'");
-}
-
-
-/*-------------------------------------------------------------------------------------*/
-/*----------------- ACTUALIZAR INF NUTRICIONAL DE UN INGREDIENTE ----------------------*/
-/*-------------------------------------------------------------------------------------*/
-
-void database::queryUpdateInfoNING(QStringList &strl, QString &id)
-{
-    QString str = "UPDATE PlatosTAB SET acido_folico_ug=";
-    str.append(strl.at(0));
-    str.append(",calcio_mg=");
-    str.append(strl.at(1));
-    str.append(",energia_kcal=");
-    str.append(strl.at(2));
-    str.append(",fosforo_mg=");
-    str.append(strl.at(3));
-    str.append(",grasa_total_g=");
-    str.append(strl.at(4));
-    str.append(",hierro_mg=");
-    str.append(strl.at(5));
-    str.append(",magnesio_mg=");
-    str.append(strl.at(6));
-    str.append(",potasio_mg=");
-    str.append(strl.at(7));
-    str.append(",proteinas_g=");
-    str.append(strl.at(8));
-    str.append(",selenio_ug=");
-    str.append(strl.at(9));
-    str.append(",sodio_mg=");
-    str.append(strl.at(10));
-    str.append(",vit_a_ug=");
-    str.append(strl.at(11));
-    str.append(",vit_b1_mg=");
-    str.append(strl.at(12));
-    str.append(",vit_b2_mg=");
-    str.append(strl.at(13));
-    str.append(",vit_b6_mg=");
-    str.append(strl.at(14));
-    str.append(",vit_b12_ug=");
-    str.append(strl.at(15));
-    str.append(",vit_c_mg=");
-    str.append(strl.at(16));
-    str.append(",vit_d_ug=");
-    str.append(strl.at(17));
-    str.append(",vit_e_mg=");
-    str.append(strl.at(18));
-    str.append(",yodo_ug=");
-    str.append(strl.at(19));
-    str.append(",zinc_mg=");
-    str.append(strl.at(20));
-    str.append(" WHERE id_PlatosTAB=");
-    str.append(id);
-
-    qry = new QSqlQuery();
-
-    qry->prepare(str);
-    qry->exec();
-
-    delete qry;
 }
 
 
@@ -799,6 +747,66 @@ void database::queryEliminarPlato(QString &strID)
     qry = new QSqlQuery();
     qry->prepare(str);
     qry->exec();
+}
+
+
+/*-------------------------------------------------------------------------------*/
+/*----------------- ACTUALIZAR INF NUTRICIONAL DE UN PLATO ----------------------*/
+/*-------------------------------------------------------------------------------*/
+
+void database::queryUpdateInfoNING(QStringList &strl, QString &id)
+{
+    QString str = "UPDATE PlatosTAB SET acido_folico_ug=";
+    str.append(strl.at(0));
+    str.append(",calcio_mg=");
+    str.append(strl.at(1));
+    str.append(",energia_kcal=");
+    str.append(strl.at(2));
+    str.append(",fosforo_mg=");
+    str.append(strl.at(3));
+    str.append(",grasa_total_g=");
+    str.append(strl.at(4));
+    str.append(",hierro_mg=");
+    str.append(strl.at(5));
+    str.append(",magnesio_mg=");
+    str.append(strl.at(6));
+    str.append(",potasio_mg=");
+    str.append(strl.at(7));
+    str.append(",proteinas_g=");
+    str.append(strl.at(8));
+    str.append(",selenio_ug=");
+    str.append(strl.at(9));
+    str.append(",sodio_mg=");
+    str.append(strl.at(10));
+    str.append(",vit_a_ug=");
+    str.append(strl.at(11));
+    str.append(",vit_b1_mg=");
+    str.append(strl.at(12));
+    str.append(",vit_b2_mg=");
+    str.append(strl.at(13));
+    str.append(",vit_b6_mg=");
+    str.append(strl.at(14));
+    str.append(",vit_b12_ug=");
+    str.append(strl.at(15));
+    str.append(",vit_c_mg=");
+    str.append(strl.at(16));
+    str.append(",vit_d_ug=");
+    str.append(strl.at(17));
+    str.append(",vit_e_mg=");
+    str.append(strl.at(18));
+    str.append(",yodo_ug=");
+    str.append(strl.at(19));
+    str.append(",zinc_mg=");
+    str.append(strl.at(20));
+    str.append(" WHERE id_PlatosTAB=");
+    str.append(id);
+
+    qry = new QSqlQuery();
+
+    qry->prepare(str);
+    qry->exec();
+
+    delete qry;
 }
 
 

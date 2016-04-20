@@ -45,6 +45,18 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
     ui->label_Inc_semivegetariano_2->setPixmap(QPixmap(":/images/incomp_semivegetariano"));
     ui->label_Inc_vegetariano_2->setPixmap(QPixmap(":/images/incomp_vegetariano"));
     ui->label_Inc_vegano_2->setPixmap(QPixmap(":/images/incomp_vegano"));
+    ui->label_Aler_cereales_3->setPixmap(QPixmap(":/images/alerg_cereales.png"));
+    ui->label_Aler_frutos_secos_3->setPixmap(QPixmap(":/images/alerg_frutosSecos.png"));
+    ui->label_Aler_legumbres_3->setPixmap(QPixmap(":/images/alerg_legumbres"));
+    ui->label_Aler_marisco_3->setPixmap(QPixmap(":/images/alerg_marisco"));
+    ui->label_Aler_pescado_3->setPixmap(QPixmap(":/images/alerg_pescado"));
+    ui->label_Aler_huevo_3->setPixmap(QPixmap(":/images/alerg_huevo"));
+    ui->label_Aler_leche_3->setPixmap(QPixmap(":/images/alerg_leche"));
+    ui->label_Inc_celiaco_3->setPixmap(QPixmap(":/images/incomp_celiaco"));
+    ui->label_Inc_diabetico_3->setPixmap(QPixmap(":/images/incomp_diabetico"));
+    ui->label_Inc_semivegetariano_3->setPixmap(QPixmap(":/images/incomp_semivegetariano"));
+    ui->label_Inc_vegetariano_3->setPixmap(QPixmap(":/images/incomp_vegetariano"));
+    ui->label_Inc_vegano_3->setPixmap(QPixmap(":/images/incomp_vegano"));
 
 
     //Establecer el tamaño de los elementos en la parte de ingredientes del plato (ya que en ocasiones se redimensionaba)
@@ -229,32 +241,34 @@ void MainWindowMenuPlan::fillIngPlaTextBox(QSqlQueryModel *model, APARTADOS A)
             ui->lineEdit_INGcantidad->setText(model->index(0,2).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGcantporprecio->setText(model->index(0,3).data(Qt::DisplayRole).toString());
             ui->lineEdit_INGprecio->setText(model->index(0,4).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGacidofol->setText(model->index(0,8).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGcalcio->setText(model->index(0,9).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGenergia->setText(model->index(0,10).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGfosforo->setText(model->index(0,11).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGgrasa->setText(model->index(0,12).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGhierro->setText(model->index(0,13).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGmagnesio->setText(model->index(0,14).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGpotasio->setText(model->index(0,15).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGproteinas->setText(model->index(0,16).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGselenio->setText(model->index(0,17).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGsodio->setText(model->index(0,18).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvita->setText(model->index(0,19).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb1->setText(model->index(0,20).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb2->setText(model->index(0,21).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb6->setText(model->index(0,22).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitb12->setText(model->index(0,23).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitc->setText(model->index(0,24).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvitd->setText(model->index(0,25).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGvite->setText(model->index(0,26).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGyodo->setText(model->index(0,27).data(Qt::DisplayRole).toString());
-            ui->lineEdit_INGzinc->setText(model->index(0,28).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGacidofol->setText(model->index(0,10).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGcalcio->setText(model->index(0,11).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGenergia->setText(model->index(0,12).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGfosforo->setText(model->index(0,13).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGgrasa->setText(model->index(0,14).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGhierro->setText(model->index(0,15).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGmagnesio->setText(model->index(0,16).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGpotasio->setText(model->index(0,17).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGproteinas->setText(model->index(0,18).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGselenio->setText(model->index(0,19).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGsodio->setText(model->index(0,20).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvita->setText(model->index(0,21).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb1->setText(model->index(0,22).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb2->setText(model->index(0,23).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb6->setText(model->index(0,24).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitb12->setText(model->index(0,25).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitc->setText(model->index(0,26).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvitd->setText(model->index(0,27).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGvite->setText(model->index(0,28).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGyodo->setText(model->index(0,29).data(Qt::DisplayRole).toString());
+            ui->lineEdit_INGzinc->setText(model->index(0,30).data(Qt::DisplayRole).toString());
 
             alltextbox = ui->groupBox_INGalimento->findChildren<QLineEdit *>();
             mostrar_mesesTemporada(model->index(0,5).data(Qt::DisplayRole).toString());                         //Rellenar los checbox de temporada
             mostrar_alergenosIncom(INCOMPATIBILIDADES, model->index(0,6).data(Qt::DisplayRole).toString());     //Rellenar los checkbox de incompatibilidades alimenticias
             mostrar_alergenosIncom(ALERGENOS, model->index(0,7).data(Qt::DisplayRole).toString());              //Rellenar los checkbox de alergenos
+            mostrar_IngredientePrincipal(model->index(0,8).data(Qt::DisplayRole).toString());                   //Mostrar si es ingrediente principal o no
+            mostrar_GrupoAlimenticio(model->index(0,9).data(Qt::DisplayRole).toString());                       //Mostrar el grupo alimenticio
         break;
 
         case PLATOS:
@@ -351,6 +365,8 @@ QStringList MainWindowMenuPlan::captureTextBoxText(APARTADOS AP)
             << set_mesesTemporada()                         //Rellenar el array mesesTemporada
             << set_Incompatibilidades()                     //Rellena el array ary_incomp
             << set_Alergenos()                              //Rellena el array ary_alergenos
+            << set_IngredientePrincipal()
+            << set_GrupoAlimenticio()
             << ui->lineEdit_INGacidofol->text()
             << ui->lineEdit_INGcalcio->text()
             << ui->lineEdit_INGenergia->text()

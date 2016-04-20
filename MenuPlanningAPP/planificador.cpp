@@ -12,6 +12,17 @@ void MainWindowMenuPlan::enablePLANElements()
     ui->pushButton_PLAN_der2->setEnabled(true);
     ui->pushButton_PLAN_izq->setEnabled(true);
     ui->pushButton_PLAN_izq2->setEnabled(true);
+    ui->calendarWidget->setEnabled(true);
+    ui->radioButton_PLAN_desde->setEnabled(true);
+    ui->radioButton_PLAN_hasta->setEnabled(true);
+    ui->dateEdit_desde->setEnabled(true);
+    ui->dateEdit_hasta->setEnabled(true);
+    ui->pushButton_PLAN_Modificar->setEnabled(true);
+    ui->pushButton_PLAN_GenerarPlan->setEnabled(true);
+
+    QList<QCheckBox *> allcheckbox = ui->tabWidget_PLAN_alerg_incomp->findChildren<QCheckBox *>();     //habilita todos los checkbox
+    for(int i = 0; i < allcheckbox.size(); i++)
+        allcheckbox.at(i)->setEnabled(true);
 }
 
 
@@ -29,6 +40,17 @@ void MainWindowMenuPlan::disablePLANElements()
     ui->label_PLAN_SP->setText("");
     ui->label_PLAN_P->setText("");
     disablePLANLabelsSelec();
+    ui->calendarWidget->setEnabled(false);
+    ui->radioButton_PLAN_desde->setEnabled(false);
+    ui->radioButton_PLAN_hasta->setEnabled(false);
+    ui->dateEdit_desde->setEnabled(false);
+    ui->dateEdit_hasta->setEnabled(false);
+    ui->pushButton_PLAN_Modificar->setEnabled(false);
+    ui->pushButton_PLAN_GenerarPlan->setEnabled(false);
+
+    QList<QCheckBox *> allcheckbox = ui->tabWidget_PLAN_alerg_incomp->findChildren<QCheckBox *>();     //habilita todos los checkbox
+    for(int i = 0; i < allcheckbox.size(); i++)
+        allcheckbox.at(i)->setEnabled(false);
 }
 
 

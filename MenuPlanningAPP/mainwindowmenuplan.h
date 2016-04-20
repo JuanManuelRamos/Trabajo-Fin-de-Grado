@@ -58,6 +58,11 @@ class MainWindowMenuPlan : public QMainWindow
         void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
         void mostrar_alergenosIncom(CHECKBOX CB, QString array);                //Muestra en la aplicacion los alergenos y/o las incompatibilidades alimenticias de un ingrediente
 
+        QString set_IngredientePrincipal();
+        QString set_GrupoAlimenticio();
+        void mostrar_IngredientePrincipal(QString str);
+        void mostrar_GrupoAlimenticio(QString grp);
+
 
         /*--------------*/
         /*--- PLATOS ---*/

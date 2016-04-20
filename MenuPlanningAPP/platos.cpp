@@ -646,7 +646,7 @@ void MainWindowMenuPlan::set_Incomp_Alerg_Plato()
 
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*------------------ CALCULA LOS MESES DE TEMPORADA DEL PLATO SEGUN SUS INGREDIENTES ----------------------*/
+/*----------------------- MUESTRA LAS INCOMPATIBILIDADES Y ALERGENOS DEL PLATO ----------------------------*/
 /*---------------------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::mostrar_Incomp_Alerg_Plato()
 {

@@ -49,6 +49,7 @@ void MainWindowMenuPlan::enableIngredientesTextBox()        //habilitar los text
     for(int i = 0; i < allcheckbox.size(); i++)
         allcheckbox.at(i)->setEnabled(true);
 
+    ui->comboBox_ING_GrupoAl->setEnabled(true);
 }
 
 void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los textbox (linedit) y checkbox del apartado Ingredientes
@@ -63,6 +64,8 @@ void MainWindowMenuPlan::disableIngredientesTextBox()       //deshabilitar los t
     QList<QCheckBox *> allcheckbox = ui->groupBox_INGalimento->findChildren<QCheckBox *>();     //deshabilita todos los checkbox
     for(int i = 0; i < allcheckbox.size(); i++)
         allcheckbox.at(i)->setEnabled(false);
+
+    ui->comboBox_ING_GrupoAl->setEnabled(false);
 }
 
 /*---------------------------------------------------------------------------------------------------------------------*/
@@ -103,6 +106,7 @@ void MainWindowMenuPlan::on_pushButton_Aniadir_clicked()
     enableGCIngredientesButtons();                                              //habilitar botones GC
     clearIngredientesTextBox();                                                 //Limpiar textbox
     enableIngredientesTextBox();                                                //habilitar textbox
+    ui->listView_Ingredientes->setEnabled(false);
 
     Q = ANIADIRING;
     ui->label_InfoQuerys->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
@@ -117,6 +121,8 @@ void MainWindowMenuPlan::on_pushButton_Modificar_clicked()
         disableAMEIngredientesButtons();                                        //deshabilitar botones AME
         enableGCIngredientesButtons();                                          //habilitar botones GC
         enableIngredientesTextBox();                                            //habilitar textbox
+        ui->listView_Ingredientes->setEnabled(false);
+
         Q = MODIFICARING;
         ui->label_InfoQuerys->setText("<html><head/><body><p><span style=\" font-weight:600; color:#0055ff;\">ADVERTENCIA: El campo </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\"> es obligatorio. Si se deja cualquier otro campo vacío se rellenará con 0 por defecto.</span></p><p><span style=\" font-weight:600; color:#0055ff;\">Todos los campos, excepto </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;Nombre&quot;</span><span style=\" font-weight:600; color:#0055ff;\">, son numéricos. El símbolo de la coma para los decimales es </span><span style=\" font-weight:600; font-style:italic; color:#0055ff;\">&quot;.&quot;</span><span style=\" font-weight:600; color:#0055ff;\">.</span></p></body></html>");
     }
@@ -173,6 +179,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
     clearIngredientesTextBox();                                 //Limpiar textbox
     ui->label_InfoQuerys->setText("");                          //Label informativo
     ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
+    ui->listView_Ingredientes->setEnabled(true);
 }
 
 void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
@@ -184,6 +191,7 @@ void MainWindowMenuPlan::on_pushButton_Cancelar_clicked()
 
     ui->label_InfoQuerys->setText("");                          //borra el label informativo
     ui->listView_Ingredientes->clearSelection();                //Desselecciona el posible ingrediente seleccionado en el listview
+    ui->listView_Ingredientes->setEnabled(true);
 }
 
 
@@ -339,7 +347,7 @@ void MainWindowMenuPlan::mostrar_alergenosIncom(CHECKBOX CB, QString array)
     switch(CB)                          //Se comprueban los checkcobx a mostrar
     {
         case INCOMPATIBILIDADES:
-            allcheckbox = ui->groupBox_incompatibilidades->findChildren<QCheckBox *>();
+            allcheckbox = ui->groupBox_incompatibilidades->findChildren<QCheckBox *>();      
         break;
 
         case ALERGENOS:
@@ -358,4 +366,41 @@ void MainWindowMenuPlan::mostrar_alergenosIncom(CHECKBOX CB, QString array)
             allcheckbox.at(i)->setChecked(false);
         }
     }
+}
+
+
+
+/*---------------------------------------------------------------------*/
+/*--------- COMPRUEBA SI EL PLATO ES INGREDIENTE PRINCIPAL ------------*/
+/*---------------------------------------------------------------------*/
+QString MainWindowMenuPlan::set_IngredientePrincipal()
+{
+    if(ui->checkBox_ING_ingredientePrinc->isChecked())
+        return "1";
+    else
+        return "0";
+}
+
+void MainWindowMenuPlan::mostrar_IngredientePrincipal(QString str)
+{
+    if(str == "1")
+        ui->checkBox_ING_ingredientePrinc->setChecked(true);
+    else
+        ui->checkBox_ING_ingredientePrinc->setChecked(false);
+}
+
+
+/*-------------------------------------------------------------------------------------*/
+/*--------- COMPRUEBA EL GRUPO ALIMENTICIO AL QUE PERTENECE EL INGREDIENTE ------------*/
+/*-------------------------------------------------------------------------------------*/
+QString MainWindowMenuPlan::set_GrupoAlimenticio()
+{
+    /* 0 Otros, 1 Carne, 2 Cereal, 3 Fruta, 4 Legumbre, 5 Marisco, 6 Pasta, 7 Pescado, 8 Verdura */
+    return QString::number(ui->comboBox_ING_GrupoAl->currentIndex());
+}
+
+
+void MainWindowMenuPlan::mostrar_GrupoAlimenticio(QString grp)
+{
+    ui->comboBox_ING_GrupoAl->setCurrentIndex(grp.toInt());
 }
