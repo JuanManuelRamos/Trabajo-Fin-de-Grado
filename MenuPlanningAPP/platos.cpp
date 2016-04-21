@@ -204,6 +204,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
             cleanListViewING_de_PLA();                                          //limpiar el listview ingredientes de plato
             disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
             infoPLANPlatos();                                                   //Actualizar la informacion de numero de platos
+            db1->ActualizarIDPlatos();                                          //Actualizar los ID's de platos en la base de datos
         }
     }
 }

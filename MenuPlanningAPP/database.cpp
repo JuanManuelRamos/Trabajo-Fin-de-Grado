@@ -1106,9 +1106,47 @@ QString database::queryNumPostre()
 
 
 
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------       ACTUALIZAR ID'S DE PLATOS        -------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------------------*/
 
+void database::ActualizarIDPlatos()
+{
+    int actualID = 0;
+    int numPlatos = queryNumPlatos().toInt();
 
+    QString str = "SELECT id_PlatosTAB FROM platosTAB ORDER BY id_PlatosTAB ASC";
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
 
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    for(int i = 0; i < numPlatos; i++)
+    {
+        actualID = model->index(i,0).data(Qt::DisplayRole).toInt();
+        if(actualID != 1+i)
+        {
+            str = "SET FOREIGN_KEY_CHECKS=0; UPDATE platosTAB SET id_platosTAB=";
+            str.append(QString::number(1+i));
+            str.append(" WHERE id_platosTAB=");
+            str.append(QString::number(actualID));
+            str.append("; SET FOREIGN_KEY_CHECKS=1; UPDATE ingredientesTAB SET PlatosTAB_id=");
+            str.append(QString::number(1+i));
+            str.append(" WHERE PlatosTAB_id=");
+            str.append(QString::number(actualID));
+
+            qry->prepare(str);
+            qry->exec();
+        }
+    }
+
+    delete model;
+    delete qry;
+}
 
 
 

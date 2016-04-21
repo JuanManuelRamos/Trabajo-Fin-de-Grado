@@ -80,10 +80,17 @@ class database
         /*--------------------*/
         /*--- PLANIFICADOR ---*/
         /*--------------------*/
-        QString queryNumPlatos();
-        QString queryNumPriPlato();
-        QString queryNumSegPlato();
-        QString queryNumPostre();
+        QString queryNumPlatos();                                                               //Consulta para mostrar el numero total de platos
+        QString queryNumPriPlato();                                                             //Consulta para mostrar el numero de primeros platos
+        QString queryNumSegPlato();                                                             //Consulta para mostrar el numero de segundos platos
+        QString queryNumPostre();                                                               //Consulta para mostrar el numero de postres
+
+
+
+        /*---------------------------------*/
+        /*--- ACTUALIZAR ID'S DE PLATOS ---*/
+        /*---------------------------------*/
+        void ActualizarIDPlatos();
 
 
 };

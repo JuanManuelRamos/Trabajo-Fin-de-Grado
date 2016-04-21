@@ -3,6 +3,7 @@
 #include "ingredientes.cpp"
 #include "platos.cpp"
 #include "planificador.cpp"
+#include "tablaplatos.cpp"
 
 /*-------------------------------------------------------------------------*/
 /*----------------------- CONSTRUCTOR Y DESTRUCTOR ------------------------*/
@@ -197,6 +198,12 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             enablePLANElements();                                                       //______Se habilitan los elementos en la seccion de planificador
             infoPLANPlatos();                                                           //______Mostrar la informacion de numero de platos
             getIngestaDiariaRecomendada();                                              //______Mostrar la informacion de ingestas diarias recomendadas
+
+
+
+
+            //FicheroDeTabla();
+
         }
         else                                                                            //______Si se produce un error de conexion a la base de datos...
         {

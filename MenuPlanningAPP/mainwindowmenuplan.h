@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QCloseEvent>
 #include <iostream>
+#include <fstream>
+#include <vector>
 
 #include "database.h"
 #include "enums.h"
@@ -118,6 +120,13 @@ class MainWindowMenuPlan : public QMainWindow
         void setIngestaDiariaRecomendada();
         void enableIDR();
         void disableIDR();
+
+
+        /*-----------------------*/
+        /*--- TABLA DE PLATOS ---*/
+        /*-----------------------*/
+
+        void FicheroDeTabla();
 
 
     private slots:

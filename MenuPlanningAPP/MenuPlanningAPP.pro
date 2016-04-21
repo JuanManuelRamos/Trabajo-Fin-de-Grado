@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     database.cpp \
     ingredientes.cpp \
     platos.cpp \
-    planificador.cpp
+    planificador.cpp \
+    tablaplatos.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \
