@@ -537,6 +537,55 @@ QString database::queryTemporadaING(QString nombre)
 }
 
 
+/*-------------------------------------------------------------------------------------*/
+/*------------ COMPRUEBA SI UN INGREDIENTE DETERMINADO ES PRINCIPAL O NO --------------*/
+/*-------------------------------------------------------------------------------------*/
+bool database::queryEsIngredientePrincipal(QString id)
+{
+    QString str = "SELECT ingrediente_principal FROM AlimentosTAB WHERE id_AlimentosTAB =";
+    str.append(id);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->index(0,0).data(Qt::DisplayRole).toString();
+
+    delete model;
+    delete qry;
+
+    if(str == "1")
+        return true;
+    else
+        return false;
+}
+
+
+/*----------------------------------------------------------------------------------------*/
+/*------------ MUESTRA EL GRUPO ALIMENTICIO AL QUE PERTENECE EL INGREDIENTE --------------*/
+/*----------------------------------------------------------------------------------------*/
+int database::queryMostrarGrupoAlimenticio(QString id)
+{
+    QString str = "SELECT grupo_alimenticio FROM AlimentosTAB WHERE id_AlimentosTAB =";
+    str.append(id);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    int grupo = model->index(0,0).data(Qt::DisplayRole).toInt();
+
+    delete model;
+    delete qry;
+
+    return grupo;
+}
 
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
@@ -577,10 +626,10 @@ void database::queryMostrarTiposPlatos(QString &str, QString &strID)
 }
 
 
-/*-------------------------------------------------------------------------------------*/
-/*------------------- MOSTRAR EL TIPO DE UN PLATO DETERMINADO -------------------------*/
-/*-------------------------------------------------------------------------------------*/
-QString database::queryMostrarTipoPlato(QString nombre)
+/*------------------------------------------------------------------------------------------------*/
+/*------------------- MOSTRAR EL TIPO DE UN PLATO DETERMINADO POR NOMBRE -------------------------*/
+/*------------------------------------------------------------------------------------------------*/
+QString database::queryMostrarTipoPlatoNombre(QString nombre)
 {
     QString str = "SELECT tipo FROM platosTAB WHERE nombre='";
     str.append(nombre);
@@ -601,6 +650,29 @@ QString database::queryMostrarTipoPlato(QString nombre)
     return str;
 }
 
+
+/*--------------------------------------------------------------------------------------------*/
+/*------------------- MOSTRAR EL TIPO DE UN PLATO DETERMINADO POR ID -------------------------*/
+/*--------------------------------------------------------------------------------------------*/
+int database::queryMostrarTipoPlatoID(QString id)
+{
+    QString str = "SELECT tipo FROM platosTAB WHERE id_PlatosTAB=";
+    str.append(id);
+
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    int x = model->record(0).value(0).toInt();
+
+    delete model;
+    delete qry;
+
+    return x;
+}
 
 /*-------------------------------------------------------------------------------------*/
 /*--------------------------------- AÑADIR UN PLATO -----------------------------------*/
@@ -879,7 +951,7 @@ void database::queryModificarIncompAlergPlato(QString &strID, QString &incomp, Q
 
 
 /*-------------------------------------------------------------------------------------*/
-/*------------ MOSTRAR LAS INCOMPATIBILIDADES DE UN PLATO ---------------*/
+/*-------------------- MOSTRAR LAS INCOMPATIBILIDADES DE UN PLATO ---------------------*/
 /*-------------------------------------------------------------------------------------*/
 QString database::queryMostrarIncompPlato(QString id)
 {
@@ -902,7 +974,7 @@ QString database::queryMostrarIncompPlato(QString id)
 }
 
 /*-------------------------------------------------------------------------------------*/
-/*-------------- MOSTRAR LOS ALERGENOS DE UN PLATO ---------------*/
+/*------------------------- MOSTRAR LOS ALERGENOS DE UN PLATO -------------------------*/
 /*-------------------------------------------------------------------------------------*/
 QString database::queryMostrarAlergPlato(QString id)
 {
@@ -1025,11 +1097,11 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
 
 
 
-/*-----------------------------------------------------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------------------------------------------------*/
-/*----------------------------------------       INGREDIENTES DE UN PLATO        ----------------------------------------*/
-/*-----------------------------------------------------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*----------------------------------------       PLANIFICADOR        ----------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------*/
+/*-----------------------------------------------------------------------------------------------------------*/
 QString database::queryNumPlatos()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB";
@@ -1150,7 +1222,11 @@ void database::ActualizarIDPlatos()
 
 
 
-
+/*-------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------       TABLA DE PLATOS        -------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
 
 
 

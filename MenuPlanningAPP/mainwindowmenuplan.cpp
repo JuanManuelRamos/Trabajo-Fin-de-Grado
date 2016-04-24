@@ -202,7 +202,7 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
 
 
 
-            //FicheroDeTabla();
+
 
         }
         else                                                                            //______Si se produce un error de conexion a la base de datos...

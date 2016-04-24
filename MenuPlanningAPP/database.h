@@ -4,7 +4,6 @@
 #include "mainwindowmenuplan.h"
 #include "enums.h"
 
-
 class database
 {
     private:
@@ -41,6 +40,9 @@ class database
         QString queryAlergenosING(QString nombre);
         QString queryTemporadaING(QString nombre);
 
+        bool queryEsIngredientePrincipal(QString id);
+        int queryMostrarGrupoAlimenticio(QString id);
+
 
         /*--------------*/
         /*--- PLATOS ---*/
@@ -48,7 +50,8 @@ class database
         void queryMostrarPlatos(QString &str);                                                  //Consulta para mostrar los platos disponibles en la base de datos
         void queryMostrarInfoPlatos(QString &str, QString &strID);                              //Consulta para mostrar la informacion de un plato
         void queryMostrarTiposPlatos(QString &str, QString &strID);                             //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
-        QString queryMostrarTipoPlato(QString nombre);                                          //Consulta para mostrar de que tipo es un plato determinado (primer plato, segundo plato o postre)
+        QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
+        int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
 
         void addPLAQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo plato
         void modPLAQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un plato
@@ -91,6 +94,11 @@ class database
         /*--- ACTUALIZAR ID'S DE PLATOS ---*/
         /*---------------------------------*/
         void ActualizarIDPlatos();
+
+
+        /*-----------------------*/
+        /*--- TABLA DE PLATOS ---*/
+        /*-----------------------*/
 
 
 };

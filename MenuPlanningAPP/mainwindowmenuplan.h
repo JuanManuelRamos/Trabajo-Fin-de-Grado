@@ -16,7 +16,7 @@
 #include <QtWidgets>
 
 
-using namespace std;
+
 
 namespace Ui {class MainWindowMenuPlan;}
 
@@ -127,6 +127,7 @@ class MainWindowMenuPlan : public QMainWindow
         /*-----------------------*/
 
         void FicheroDeTabla();
+        void rellenarTablaPlatos(std::vector< std::vector<int> > &vec);
 
 
     private slots:

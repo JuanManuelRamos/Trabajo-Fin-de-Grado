@@ -167,7 +167,7 @@ void MainWindowMenuPlan::infoPLANPlatosSelec()
 
     for(int i = 0; i < rows; i++)
     {
-        tipo = db1->queryMostrarTipoPlato(ui->listWidget_PLAN_PlatosSelec->model()->index(i, 0).data(Qt::DisplayRole).toString()).toInt();
+        tipo = db1->queryMostrarTipoPlatoNombre(ui->listWidget_PLAN_PlatosSelec->model()->index(i, 0).data(Qt::DisplayRole).toString()).toInt();
 
         switch(tipo)
         {
