@@ -246,9 +246,7 @@ void database::queryEliminarIngrediente(QString &strID)
     str.append(strID);
     str.append(";");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -320,9 +318,7 @@ void database::modINGQuerys(QStringList &strl)
     str.append(" WHERE id_AlimentosTAB=");
     str.append(strl.at(0));
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -393,9 +389,7 @@ void database::addINGQuerys(QStringList &strl)
     str.append(strl.at(30));
     str.append(");");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -406,23 +400,11 @@ void database::addINGQuerys(QStringList &strl)
 
 QString database::queryMostrarCantidadING(QString &nombre)
 {
-    QString query = "SELECT cantidad_gramos FROM AlimentosTAB WHERE nombre='";
-    query.append(nombre);
-    query.append("'");
+    QString str = "SELECT cantidad_gramos FROM AlimentosTAB WHERE nombre='";
+    str.append(nombre);
+    str.append("'");
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(query);
-    qry->exec();
-    model->setQuery(*qry);
-
-    QString resultado = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return resultado;
+    return querysQString(str);
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -471,19 +453,7 @@ QString database::queryIncompatibilidadesING(QString nombre)
     str.append(nombre);
     str.append("\"");
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 
@@ -496,26 +466,14 @@ QString database::queryAlergenosING(QString nombre)
     str.append(nombre);
     str.append("\"");
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 
 /*-------------------------------------------------------------------------------------*/
 /*------------ MOSTRAR LOS MESES DE TEMPORADA DE UN INGREDIENTE CONCRETO --------------*/
 /*-------------------------------------------------------------------------------------*/
-QString database::queryTemporadaING(QString nombre)
+/*QString database::queryTemporadaING(QString nombre)
 {
     QString str = "SELECT temporada FROM AlimentosTAB WHERE nombre = \"";
     str.append(nombre);
@@ -534,7 +492,9 @@ QString database::queryTemporadaING(QString nombre)
     delete qry;
 
     return str;
-}
+
+    return querysQString(str);
+}*/
 
 
 /*-------------------------------------------------------------------------------------*/
@@ -544,18 +504,7 @@ bool database::queryEsIngredientePrincipal(QString id)
 {
     QString str = "SELECT ingrediente_principal FROM AlimentosTAB WHERE id_AlimentosTAB =";
     str.append(id);
-
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
+    str = querysQString(str);
 
     if(str == "1")
         return true;
@@ -572,19 +521,7 @@ int database::queryMostrarGrupoAlimenticio(QString id)
     QString str = "SELECT grupo_alimenticio FROM AlimentosTAB WHERE id_AlimentosTAB =";
     str.append(id);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    int grupo = model->index(0,0).data(Qt::DisplayRole).toInt();
-
-    delete model;
-    delete qry;
-
-    return grupo;
+    return querysQString(str).toInt();
 }
 
 
@@ -635,19 +572,7 @@ QString database::queryMostrarTipoPlatoNombre(QString nombre)
     str.append(nombre);
     str.append("'");
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 
@@ -659,19 +584,7 @@ int database::queryMostrarTipoPlatoID(QString id)
     QString str = "SELECT tipo FROM platosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    int x = model->record(0).value(0).toInt();
-
-    delete model;
-    delete qry;
-
-    return x;
+    return querysQString(str).toInt();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -733,9 +646,7 @@ void database::addPLAQuerys(QStringList &strl)
     str.append(strl.at(26));
     str.append(");");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -799,9 +710,7 @@ void database::modPLAQuerys(QStringList &strl)
     str.append(" WHERE id_PlatosTAB=");
     str.append(strl.at(0));
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -816,9 +725,7 @@ void database::queryEliminarPlato(QString &strID)
     str.append(strID);
     str.append(";");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -873,12 +780,7 @@ void database::queryUpdateInfoNING(QStringList &strl, QString &id)
     str.append(" WHERE id_PlatosTAB=");
     str.append(id);
 
-    qry = new QSqlQuery();
-
-    qry->prepare(str);
-    qry->exec();
-
-    delete qry;
+    querysVOID(str);
 }
 
 
@@ -892,15 +794,7 @@ void database::queryModificarCantidadPlato(QString &strID, QString &cantidad)
     str.append(" WHERE id_PlatosTAB=");
     str.append(strID);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    delete model;
-    delete qry;
+    querysVOID(str);
 }
 
 
@@ -914,15 +808,7 @@ void database::queryModificarPrecioPlato(QString &strID, QString &precio)
     str.append(" WHERE id_PlatosTAB=");
     str.append(strID);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    delete model;
-    delete qry;
+    querysVOID(str);
 }
 
 
@@ -938,15 +824,7 @@ void database::queryModificarIncompAlergPlato(QString &strID, QString &incomp, Q
     str.append("' WHERE id_PlatosTAB=");
     str.append(strID);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    delete model;
-    delete qry;
+    querysVOID(str);
 }
 
 
@@ -958,19 +836,7 @@ QString database::queryMostrarIncompPlato(QString id)
     QString str = "SELECT incompatibilidades FROM PlatosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -981,19 +847,7 @@ QString database::queryMostrarAlergPlato(QString id)
     QString str = "SELECT alergenos FROM PlatosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 
@@ -1026,19 +880,7 @@ QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
     str.append(nombre);
     str.append("')");
 
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    QString resultado = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return resultado;
+    return querysQString(str);
 }
 
 
@@ -1055,9 +897,7 @@ void database::addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &can
     str.append(strIDPLA);
     str.append(")");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -1073,9 +913,7 @@ void database::modINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &can
     str.append("') AND PlatosTAB_id=");
     str.append(strIDPLA);
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -1090,9 +928,7 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
     str.append(nombre);
     str.append("')");
 
-    qry = new QSqlQuery();
-    qry->prepare(str);
-    qry->exec();
+    querysVOID(str);
 }
 
 
@@ -1105,73 +941,25 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
 QString database::queryNumPlatos()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB";
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 QString database::queryNumPriPlato()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=1";
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 QString database::queryNumSegPlato()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=2";
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 QString database::queryNumPostre()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=3";
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->record(0).value(0).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
+    return querysQString(str);
 }
 
 
@@ -1222,11 +1010,35 @@ void database::ActualizarIDPlatos()
 
 
 
-/*-------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------*/
-/*------------------------------------       TABLA DE PLATOS        -------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------*/
-/*-------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------       FUNCIONES OPTIMIZADAS        -------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------------*/
 
 
+void database::querysVOID(QString str)
+{
+    qry = new QSqlQuery();
+    qry->prepare(str);
+    qry->exec();
+    delete qry;
+}
 
+
+QString database::querysQString(QString str)
+{
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    str = model->record(0).value(0).toString();
+
+    delete model;
+    delete qry;
+
+    return str;
+}

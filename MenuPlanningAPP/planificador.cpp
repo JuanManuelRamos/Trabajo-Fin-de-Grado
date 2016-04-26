@@ -355,3 +355,15 @@ void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
     disableIDR();
     ui->pushButton_PLAN_Modificar->setEnabled(true);
 }
+
+
+
+
+
+/*---------------------------------------------------------------------*/
+/*--------------- EVENTO CLICK DEL BOTON GENERAR PLAN -----------------*/
+/*---------------------------------------------------------------------*/
+void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
+{
+    FicheroDeTabla();                                                               //Actualizar el fichero de tabla de platos
+}

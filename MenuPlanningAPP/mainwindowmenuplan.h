@@ -167,6 +167,8 @@ class MainWindowMenuPlan : public QMainWindow
 
         void on_pushButton_PLAN_Cancelar_clicked();
 
+        void on_pushButton_PLAN_GenerarPlan_clicked();
+
 private:
         Ui::MainWindowMenuPlan *ui;
         database *db1;

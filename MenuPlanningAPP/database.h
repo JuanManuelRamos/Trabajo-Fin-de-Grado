@@ -38,7 +38,7 @@ class database
         float queryMostrarPrecioING(QString &nombre, float cantidad);                           //Consulta para mostrar el precio de un ingrediente en base a su cantidad
         QString queryIncompatibilidadesING(QString nombre);
         QString queryAlergenosING(QString nombre);
-        QString queryTemporadaING(QString nombre);
+        //QString queryTemporadaING(QString nombre);
 
         bool queryEsIngredientePrincipal(QString id);
         int queryMostrarGrupoAlimenticio(QString id);
@@ -96,9 +96,11 @@ class database
         void ActualizarIDPlatos();
 
 
-        /*-----------------------*/
-        /*--- TABLA DE PLATOS ---*/
-        /*-----------------------*/
+        /*-----------------------------*/
+        /*--- FUNCIONES OPTIMIZADAS ---*/
+        /*-----------------------------*/
+        void querysVOID(QString str);
+        QString querysQString(QString str);
 
 
 };
