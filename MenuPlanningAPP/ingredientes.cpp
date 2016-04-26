@@ -146,7 +146,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_clicked()
         if(msgBox.clickedButton() == myYesButton)
         {
             db1->queryEliminarIngrediente(ui->label_INGid->text());                         //Consulta de eliminacion de ingrediente
-            ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));               //Consulta para mostrar los ingredientes
+            ui->listView_Ingredientes->setModel(db1->queryMostrarIngredientes());           //Consulta para mostrar los ingredientes
             ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());    //Mostrar los ingredientes actualizados en el listview de ingredientes en el apartado platos
             clearIngredientesTextBox();                                                     //Limpiar los textbox
         }
@@ -172,7 +172,7 @@ void MainWindowMenuPlan::on_pushButton_Guardar_clicked()
         else if(Q == ANIADIRING)
             db1->addINGQuerys(captureTextBoxText(INGREDIENTES));                                //Consulta para añadir ingrediente
 
-        ui->listView_Ingredientes->setModel(db1->makeQuerys(MOSTRARING));                       //Consulta para mostrar ingredientes
+        ui->listView_Ingredientes->setModel(db1->queryMostrarIngredientes());                   //Consulta para mostrar ingredientes
         ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());            //Mostrar los ingredientes actualizados en el listview de ingredientes en el apartado platos
     }
 
@@ -228,10 +228,10 @@ void MainWindowMenuPlan::checkboxClicked()
 
 void MainWindowMenuPlan::on_listView_Ingredientes_clicked(const QModelIndex &index)
 {
-    QString str = index.data(Qt::DisplayRole).toString();           //Elemento del listview al que se ha hecho click
-    QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOING, str);   //Consulta para mostrar los datos del ingrediente seleccionado
+    QString str = index.data(Qt::DisplayRole).toString();               //Elemento del listview al que se ha hecho click
+    QSqlQueryModel *model = db1->queryMostrarInfoIngredientes(str);     //Consulta para mostrar los datos del ingrediente seleccionado
 
-    fillIngPlaTextBox(model, INGREDIENTES);                         //Rellenar los textbox con la informacion del ingrediente
+    fillIngPlaTextBox(model, INGREDIENTES);                             //Rellenar los textbox con la informacion del ingrediente
 
     delete model;
 }

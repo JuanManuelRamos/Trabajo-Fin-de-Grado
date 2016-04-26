@@ -63,56 +63,6 @@ void database::finishQuery()
     delete model;
 }
 
-/*-------------------------------------------------------------------------------------*/
-/*-------------------------- FUNCION GENERAL PARA CONSULTAS ---------------------------*/
-/*-------------------------------------------------------------------------------------*/
-
-QSqlQueryModel * database::makeQuerys(QUERYS Q, QString strID)
-{
-    QString str;
-
-    switch(Q)
-    {
-        case MOSTRARING:
-            queryMostrarIngredientes(str);
-        break;
-
-        case MOSTRARINFOING:
-            queryMostrarInfoIngredientes(str, strID);
-        break;
-
-        case MOSTRARPLA:
-            queryMostrarPlatos(str);
-        break;
-
-        case MOSTRARINFOPLA:
-            queryMostrarInfoPlatos(str, strID);
-        break;
-
-        case MOSTRARINGPLA:
-            queryMostrarIngredientesPlatos(str, strID);
-        break;
-
-        case MOSTRARINFONUTR:
-            queryMostrarInfoNING(str, strID);
-        break;
-
-        case MOSTRARTIPOPLA:
-            queryMostrarTiposPlatos(str, strID);
-        break;
-    }
-
-    //qDebug() << str;
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    return model;
-}
-
 
 /*-------------------------------------------------------------------------------------*/
 /*--------------- CONTROLAR LA REPETICIÓN DE INGREDIENTES O PLATOS --------------------*/
@@ -218,20 +168,22 @@ ACTION database::controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString
 /*-------------------------------------------------------------------------------------*/
 /*------------------------------- MOSTRAR INGREDIENTES --------------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarIngredientes(QString &str)
+QSqlQueryModel* database::queryMostrarIngredientes()
 {
-    str = "SELECT nombre FROM AlimentosTAB ORDER BY nombre ASC";
+    return querysQSQLQUERYMODEL("SELECT nombre FROM AlimentosTAB ORDER BY nombre ASC");
 }
 
 
 /*-------------------------------------------------------------------------------------*/
 /*----------------------- MOSTRAR INFORMACION DE INGREDIENTES -------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarInfoIngredientes(QString &str, QString &strID)
+QSqlQueryModel* database::queryMostrarInfoIngredientes(QString strID)
 {
-    str = "SELECT * FROM AlimentosTAB WHERE nombre = \"";
+    QString str = "SELECT * FROM AlimentosTAB WHERE nombre = \"";
     str.append(strID);
     str.append("\"");
+
+    return querysQSQLQUERYMODEL(str);
 }
 
 
@@ -404,18 +356,20 @@ QString database::queryMostrarCantidadING(QString &nombre)
     str.append(nombre);
     str.append("'");
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 /*-------------------------------------------------------------------------------------*/
 /*------------------ MOSTRAR INF NUTRICIONAL DE UN INGREDIENTE ------------------------*/
 /*-------------------------------------------------------------------------------------*/
 
-void database::queryMostrarInfoNING(QString &str, QString &nombre)
+QSqlQueryModel* database::queryMostrarInfoNING(QString nombre)
 {
-    str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
+    QString str = "SELECT acido_folico_ug, calcio_mg, energia_kcal, fosforo_mg, grasa_total_g, hierro_mg, magnesio_mg, potasio_mg, proteinas_g, selenio_ug, sodio_mg, vit_a_ug, vit_b1_tiamina_mg, vit_b2_riboflavina_mg, vit_b6_piridoxina_mg, vit_b12_cianocobalamina_ug, vit_c_mg, vit_d_ug, vit_e_mg, yodo_ug, zinc_mg FROM AlimentosTAB WHERE nombre='";
     str.append(nombre);
     str.append("'");
+
+    return querysQSQLQUERYMODEL(str);
 }
 
 
@@ -453,7 +407,7 @@ QString database::queryIncompatibilidadesING(QString nombre)
     str.append(nombre);
     str.append("\"");
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -466,7 +420,7 @@ QString database::queryAlergenosING(QString nombre)
     str.append(nombre);
     str.append("\"");
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -504,7 +458,7 @@ bool database::queryEsIngredientePrincipal(QString id)
 {
     QString str = "SELECT ingrediente_principal FROM AlimentosTAB WHERE id_AlimentosTAB =";
     str.append(id);
-    str = querysQString(str);
+    str = querysQSTRING(str);
 
     if(str == "1")
         return true;
@@ -521,7 +475,7 @@ int database::queryMostrarGrupoAlimenticio(QString id)
     QString str = "SELECT grupo_alimenticio FROM AlimentosTAB WHERE id_AlimentosTAB =";
     str.append(id);
 
-    return querysQString(str).toInt();
+    return querysQSTRING(str).toInt();
 }
 
 
@@ -535,31 +489,35 @@ int database::queryMostrarGrupoAlimenticio(QString id)
 /*-------------------------------------------------------------------------------------*/
 /*--------------------------------- MOSTRAR PLATOS ------------------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarPlatos(QString &str)
+QSqlQueryModel* database::queryMostrarPlatos()
 {
-    str = "SELECT nombre FROM PlatosTAB ORDER BY nombre ASC";
+    return querysQSQLQUERYMODEL("SELECT nombre FROM PlatosTAB ORDER BY nombre ASC");
 }
 
 
 /*-------------------------------------------------------------------------------------*/
 /*-------------------------- MOSTRAR INFORMACION DE PLATOS ----------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarInfoPlatos(QString &str, QString &strID)
+QSqlQueryModel* database::queryMostrarInfoPlatos(QString strID)
 {
-    str = "SELECT * FROM PlatosTAB WHERE nombre = '";
+    QString str = "SELECT * FROM PlatosTAB WHERE nombre = '";
     str.append(strID);
     str.append("'");
+
+    return querysQSQLQUERYMODEL(str);
 }
 
 
 /*-------------------------------------------------------------------------------------*/
 /*------------------------ MOSTRAR LOS PLATOS SEGUN SU TIPO ---------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarTiposPlatos(QString &str, QString &strID)
+QSqlQueryModel* database::queryMostrarTiposPlatos(QString strID)
 {
-    str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
+    QString str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
     str.append(strID);
     str.append("' ORDER BY nombre ASC");
+
+    return querysQSQLQUERYMODEL(str);
 }
 
 
@@ -572,7 +530,7 @@ QString database::queryMostrarTipoPlatoNombre(QString nombre)
     str.append(nombre);
     str.append("'");
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -584,7 +542,7 @@ int database::queryMostrarTipoPlatoID(QString id)
     QString str = "SELECT tipo FROM platosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    return querysQString(str).toInt();
+    return querysQSTRING(str).toInt();
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -836,7 +794,7 @@ QString database::queryMostrarIncompPlato(QString id)
     QString str = "SELECT incompatibilidades FROM PlatosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -847,7 +805,7 @@ QString database::queryMostrarAlergPlato(QString id)
     QString str = "SELECT alergenos FROM PlatosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -861,11 +819,13 @@ QString database::queryMostrarAlergPlato(QString id)
 /*-------------------------------------------------------------------------------------*/
 /*---------------------- MOSTRAR LOS INGREDIENTES DE UN PLATO -------------------------*/
 /*-------------------------------------------------------------------------------------*/
-void database::queryMostrarIngredientesPlatos(QString &str, QString &strID)
+QSqlQueryModel* database::queryMostrarIngredientesPlatos(QString strID)
 {
-    str = "SELECT nombre FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
+    QString str = "SELECT nombre FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
     str.append(strID);
     str.append(") ORDER BY nombre ASC");
+
+    return querysQSQLQUERYMODEL(str);
 }
 
 
@@ -880,7 +840,7 @@ QString database::queryMostrarCantidadInGPlatos(QString &strID, QString &nombre)
     str.append(nombre);
     str.append("')");
 
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -941,25 +901,25 @@ void database::removeINGtoPLAQuery(QString &strIDPLA, QString &nombre)
 QString database::queryNumPlatos()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB";
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 QString database::queryNumPriPlato()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=1";
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 QString database::queryNumSegPlato()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=2";
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 QString database::queryNumPostre()
 {
     QString str = "SELECT COUNT(*) FROM platosTAB WHERE tipo=3";
-    return querysQString(str);
+    return querysQSTRING(str);
 }
 
 
@@ -1016,7 +976,9 @@ void database::ActualizarIDPlatos()
 /*-------------------------------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------------------------------*/
 
-
+/*------------------------------------------------------------------------------------------------*/
+/*--------------------- FUNCION BASE PARA FUNCIONES QUE DEVUELVEN VOID ---------------------------*/
+/*------------------------------------------------------------------------------------------------*/
 void database::querysVOID(QString str)
 {
     qry = new QSqlQuery();
@@ -1026,7 +988,10 @@ void database::querysVOID(QString str)
 }
 
 
-QString database::querysQString(QString str)
+/*---------------------------------------------------------------------------------------------------*/
+/*--------------------- FUNCION BASE PARA FUNCIONES QUE DEVUELVEN QSTRING ---------------------------*/
+/*---------------------------------------------------------------------------------------------------*/
+QString database::querysQSTRING(QString str)
 {
     qry = new QSqlQuery();
     model = new QSqlQueryModel();
@@ -1041,4 +1006,22 @@ QString database::querysQString(QString str)
     delete qry;
 
     return str;
+}
+
+
+/*----------------------------------------------------------------------------------------------------------*/
+/*--------------------- FUNCION BASE PARA FUNCIONES QUE DEVUELVEN QSQLQUERYMODEL ---------------------------*/
+/*----------------------------------------------------------------------------------------------------------*/
+QSqlQueryModel* database::querysQSQLQUERYMODEL(QString str)
+{
+    qry = new QSqlQuery();
+    model = new QSqlQueryModel();
+
+    qry->prepare(str);
+    qry->exec();
+    model->setQuery(*qry);
+
+    delete qry;
+
+    return model;
 }

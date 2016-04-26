@@ -22,14 +22,13 @@ class database
         QString errorMsg();                                                                     //Retornar mensajes de error
         void finishQuery();                                                                     //Funcion para liberar la memoria correspondiente a las variables *qry y *model
 
-        QSqlQueryModel * makeQuerys(QUERYS Q, QString strID=NULL);                              //Funcion para hacer consultas (mostrar y eliminar)
         ACTION controllQuerys(QUERYS Q, APARTADOS AP, QString &strID1, QString strID2=NULL);    //Metodo para controlar la repeticion de ingredientes, platos o ingredientes de un plato
 
         /*--------------------*/
         /*--- INGREDIENTES ---*/
         /*--------------------*/
-        void queryMostrarIngredientes(QString &str);                                            //Consulta para mostrar los ingredientes disponibles en la base de datos
-        void queryMostrarInfoIngredientes(QString &str, QString &strID);                        //Consulta para mostrar la informacion de un ingrediente
+        QSqlQueryModel* queryMostrarIngredientes();                                            //Consulta para mostrar los ingredientes disponibles en la base de datos
+        QSqlQueryModel* queryMostrarInfoIngredientes(QString strID);                            //Consulta para mostrar la informacion de un ingrediente
 
         void addINGQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo ingrediente
         void modINGQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un ingrediente
@@ -47,9 +46,9 @@ class database
         /*--------------*/
         /*--- PLATOS ---*/
         /*--------------*/
-        void queryMostrarPlatos(QString &str);                                                  //Consulta para mostrar los platos disponibles en la base de datos
-        void queryMostrarInfoPlatos(QString &str, QString &strID);                              //Consulta para mostrar la informacion de un plato
-        void queryMostrarTiposPlatos(QString &str, QString &strID);                             //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
+        QSqlQueryModel* queryMostrarPlatos();                                                   //Consulta para mostrar los platos disponibles en la base de datos
+        QSqlQueryModel* queryMostrarInfoPlatos(QString strID);                                  //Consulta para mostrar la informacion de un plato
+        QSqlQueryModel* queryMostrarTiposPlatos(QString strID);                                 //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
         QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
         int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
 
@@ -65,14 +64,14 @@ class database
 
 
         void queryUpdateInfoNING(QStringList &strl, QString &id);                               //Calculo de la informacion nutricional de un plato
-        void queryMostrarInfoNING(QString &str, QString &nombre);                               //---
+        QSqlQueryModel* queryMostrarInfoNING(QString nombre);                                   //---
         QString queryMostrarCantidadING(QString &nombre);                                       //---
 
 
         /*--------------------------------*/
         /*--- INGREDIENTES DE UN PLATO ---*/
         /*--------------------------------*/
-        void queryMostrarIngredientesPlatos(QString &str, QString &strID);                      //Consulta para mostrar los ingredientes de un plato
+        QSqlQueryModel* queryMostrarIngredientesPlatos(QString strID);                          //Consulta para mostrar los ingredientes de un plato
         QString queryMostrarCantidadInGPlatos(QString &strID, QString &nombre);                 //Consulta para mostrar la cantidad de un ingrediente en el plato seleccionado
 
         void addINGtoPLAQuery(QString &strIDPLA, QString &nombre, QString &cantidad);           //Consulta para añadir un ingrediente a un plato
@@ -100,8 +99,8 @@ class database
         /*--- FUNCIONES OPTIMIZADAS ---*/
         /*-----------------------------*/
         void querysVOID(QString str);
-        QString querysQString(QString str);
-
+        QString querysQSTRING(QString str);
+        QSqlQueryModel* querysQSQLQUERYMODEL(QString str);
 
 };
 

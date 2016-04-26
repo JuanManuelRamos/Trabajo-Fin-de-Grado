@@ -199,7 +199,7 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
         if(msgBox.clickedButton() == myYesButton)
         {
             db1->queryEliminarPlato(ui->label_PLAid->text());                   //consulta para eliminar un plato
-            ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));         //consulta para mostrar los platos
+            ui->listView_Platos->setModel(db1->queryMostrarPlatos());           //consulta para mostrar los platos
             clearPlatosTextBox();                                               //limpiar los textbox
             cleanListViewING_de_PLA();                                          //limpiar el listview ingredientes de plato
             disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
@@ -222,16 +222,16 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             ACTION B = controllDataTextBoxNum(*ui->groupBox_Plato, 1);                                              //comprobar si el textbox numerico es correcto
             ACTION C = db1->controllQuerys(Q, PLATOS, ui->lineEdit_PLAnombre->text(), ui->label_PLAid->text());     //comprobar que no se inserte un plato ya existente
 
-            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                                       //__Si todo es correcto
+            if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                                                           //__Si todo es correcto
             {
-                db1->addPLAQuerys(captureTextBoxText(PLATOS));                                                  //consulta para añadir un plato
-                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                     //consulta para mostrar los platos
-                ui->comboBox_platos->setCurrentIndex(0);                                                        //Poner el combobox en el apartado Todos
-                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());        //consulta para mostrar la informacion recien añadida del plato
-                fillIngPlaTextBox(model, PLATOS);                                                               //rellenar los textbox con la informacion
-                infoPLANPlatos();                                                                               //Actualizar la informacion de numero de platos
+                db1->addPLAQuerys(captureTextBoxText(PLATOS));                                                      //consulta para añadir un plato
+                ui->listView_Platos->setModel(db1->queryMostrarPlatos());                                           //consulta para mostrar los platos
+                ui->comboBox_platos->setCurrentIndex(0);                                                            //Poner el combobox en el apartado Todos
+                QSqlQueryModel *model = db1->queryMostrarInfoPlatos(ui->lineEdit_PLAnombre->text());                //consulta para mostrar la informacion recien añadida del plato
+                fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
+                infoPLANPlatos();                                                                                   //Actualizar la informacion de numero de platos
 
-                QMessageBox msgBox;                                                                             //mensaje informativo para añadir ingredientes al plato
+                QMessageBox msgBox;                                                                                 //mensaje informativo para añadir ingredientes al plato
                 msgBox.setIcon(QMessageBox::Information);
                 msgBox.setText("Un plato ha sido añadido a la base de datos.");
                 msgBox.setInformativeText("¿Quiere añadir ingredientes al plato creado?");
@@ -294,8 +294,8 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
             if(A == ACCEPT && B == ACCEPT && C == ACCEPT)                       //__Si los datos introducidos son correctos
             {
                 db1->modPLAQuerys(captureTextBoxText(PLATOS));                                                      //consulta para modificar un plato
-                ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                                         //consulta para mostrar los platos
-                QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text());            //consulta para mostrar la informacion recien modificada del plato
+                ui->listView_Platos->setModel(db1->queryMostrarPlatos());                                           //consulta para mostrar los platos
+                QSqlQueryModel *model = db1->queryMostrarInfoPlatos(ui->lineEdit_PLAnombre->text());                //consulta para mostrar la informacion recien modificada del plato
                 fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
                 ui->comboBox_platos->setCurrentIndex(0);                                                            //Poner el combobox en el apartado Todos
             }
@@ -355,7 +355,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
         if(A == ACCEPT && B == ACCEPT && C == ACCEPT)
         {
             db1->addINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text());   //Consulta para añadir ingrediente
-            ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));                                         //Consulta para mostrar los ingredientes del plato
+            ui->listView_INGPLA->setModel(db1->queryMostrarIngredientesPlatos(ui->label_PLAid->text()));                                    //Consulta para mostrar los ingredientes del plato
             ui->lineEdit_PLAING_cantidad->setText("");                                                                                      //Limpiar el textbox cantidad
             nutricionalInfo();                                                                                                              //Calcular la informacion nutricional del plato
             setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
@@ -377,7 +377,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_modificar_clicked()
         const QModelIndex index = indexL.at(0);
 
         db1->modINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString(), ui->lineEdit_PLAING_cantidad->text());   //Consulta para modificar un ingrediente de un plato
-        ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));                                         //Consulta para mostrar los ingredientes del plato
+        ui->listView_INGPLA->setModel(db1->queryMostrarIngredientesPlatos(ui->label_PLAid->text()));                                    //Consulta para mostrar los ingredientes del plato
         nutricionalInfo();                                                                                                              //Calcular la informacion nutricional del plato
         setCantidadPlato();                                                                                                             //Calcular la cantidad del plato
         setPrecioPlato();                                                                                                               //Calcular el precio del plato
@@ -409,7 +409,7 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
             const QModelIndex index = indexL.at(0);
 
             db1->removeINGtoPLAQuery(ui->label_PLAid->text(), index.data(Qt::DisplayRole).toString());              //Consulta para eliminar un ingrediente de un plato
-            ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));                 //Consulta para mostrar los ingredientes de un plato
+            ui->listView_INGPLA->setModel(db1->queryMostrarIngredientesPlatos(ui->label_PLAid->text()));            //Consulta para mostrar los ingredientes de un plato
             ui->lineEdit_PLAING_cantidad->setText("");                                                              //Limpiar el textbox cantidad
             nutricionalInfo();                                                                                      //Calcular la informacion nutricional del plato
             setCantidadPlato();                                                                                     //Calcular la cantidad del plato
@@ -427,13 +427,13 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
 
 void MainWindowMenuPlan::on_listView_Platos_clicked(const QModelIndex &index)
 {
-    QString str = index.data(Qt::DisplayRole).toString();                                       //Elemento del listview al que se ha hecho click
-    QSqlQueryModel *model = db1->makeQuerys(MOSTRARINFOPLA, str);                               //Consulta para mostrar los datos del plato seleccionado
+    QString str = index.data(Qt::DisplayRole).toString();                                               //Elemento del listview al que se ha hecho click
+    QSqlQueryModel *model = db1->queryMostrarInfoPlatos(str);                                           //Consulta para mostrar los datos del plato seleccionado
 
     fillIngPlaTextBox(model, PLATOS);
 
-    ui->listView_INGPLA->setModel(db1->makeQuerys(MOSTRARINGPLA, ui->label_PLAid->text()));     //Consulta para mostrar los ingredientes del plato
-    ui->lineEdit_PLAING_cantidad->setText("");                                                  //Limpiar el textbox cantidad
+    ui->listView_INGPLA->setModel(db1->queryMostrarIngredientesPlatos(ui->label_PLAid->text()));        //Consulta para mostrar los ingredientes del plato
+    ui->lineEdit_PLAING_cantidad->setText("");                                                          //Limpiar el textbox cantidad
 
     delete model;
 }
@@ -493,7 +493,7 @@ void MainWindowMenuPlan::nutricionalInfo()
         cantidadIngBD = db1->queryMostrarCantidadING(ing).toFloat();                                        //Captura la cantidad de dicho ingrediente en la base de datos donde se almacena la informacion de ese ingrediente
 
         model2 = new QSqlQueryModel;
-        model2 = db1->makeQuerys(MOSTRARINFONUTR, ing);                                                     //Consulta para guardar en un modelo la informacion nutricional del ingrediente
+        model2 = db1->queryMostrarInfoNING(ing);                                                            //Consulta para guardar en un modelo la informacion nutricional del ingrediente
 
         for(int i = 0; i < NumInfN; i++)       
             temp << model2->index(0,i).data(Qt::DisplayRole).toString();                                    //Guardar la inf nutricional en una lista temporal
@@ -531,7 +531,7 @@ void MainWindowMenuPlan::initializeInfoN(QStringList &infoN)
 void MainWindowMenuPlan::showInfoN(QStringList &infoN)
 {
     db1->queryUpdateInfoNING(infoN, ui->label_PLAid->text());                                       //Consulta para actualizar los datos   
-    fillIngPlaTextBox(db1->makeQuerys(MOSTRARINFOPLA, ui->lineEdit_PLAnombre->text()), PLATOS);     //Rellenar los textbox con los datos consultados
+    fillIngPlaTextBox(db1->queryMostrarInfoPlatos(ui->lineEdit_PLAnombre->text()), PLATOS);         //Rellenar los textbox con los datos consultados
 }
 
 
@@ -572,16 +572,16 @@ void MainWindowMenuPlan::mostrarTipoPlato(QString tipo)
 void MainWindowMenuPlan::on_comboBox_platos_activated(const QString &arg1)
 {
     if(arg1 == "Todos")
-        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARPLA));                     //Consulta de todos los platos
+        ui->listView_Platos->setModel(db1->queryMostrarPlatos());                       //Consulta de todos los platos
 
     else if(arg1 == "Primer plato")
-        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('1')));   //Consulta de solo los primeros platos
+        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('1')));      //Consulta de solo los primeros platos
 
     else if(arg1 == "Segundo plato")
-        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('2')));   //Consulta de solo los segundos platos
+        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('2')));      //Consulta de solo los segundos platos
 
     else if(arg1 == "Postre")
-        ui->listView_Platos->setModel(db1->makeQuerys(MOSTRARTIPOPLA, QString('3')));   //Consulta de solo los postres
+        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('3')));      //Consulta de solo los postres
 }
 
 
