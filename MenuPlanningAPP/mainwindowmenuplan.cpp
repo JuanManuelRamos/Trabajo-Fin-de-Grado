@@ -4,14 +4,13 @@
 #include "platos.cpp"
 #include "planificador.cpp"
 #include "tablaplatos.cpp"
+#include "individuo.cpp"
 
 /*-------------------------------------------------------------------------*/
 /*----------------------- CONSTRUCTOR Y DESTRUCTOR ------------------------*/
 /*-------------------------------------------------------------------------*/
 
-MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindowMenuPlan)
+MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindowMenuPlan)
 {
     ui->setupUi(this);
     db1 = new database;
@@ -159,6 +158,111 @@ MainWindowMenuPlan::~MainWindowMenuPlan()
 }
 
 
+/*--------------------------------------------------------------------------*/
+/*----------------------- SETTERS DE TIPOS DE PLATO ------------------------*/
+/*--------------------------------------------------------------------------*/
+void MainWindowMenuPlan::setPlatos()
+{
+    setPrimerosPlatos();
+    setSegundosPlatos();
+    setPostres();
+}
+
+void MainWindowMenuPlan::setPrimerosPlatos()
+{
+    PrimerosPlatos.clear();                                                             //Se limpia el vector
+    std::tuple<int,int,std::vector<int>> tpl;
+    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('1'));             //Consulta de los primeros platos
+    QSqlQueryModel *model2;
+
+    for(int i = 0; i < model->rowCount(); i++)
+    {
+        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
+        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
+        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+        for(int j = 0; j < model2->rowCount(); j++)
+            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
+
+        PrimerosPlatos.push_back(tpl);                                                              //Se inserta toda la informacion en el vector de platos
+
+        /*qDebug() << "id: " << std::get<0>(tpl) << " nDias: " << std::get<1>(tpl);
+        for(int z = 0; z < std::get<2>(tpl).size(); z++)
+        {
+            qDebug() << std::get<2>(tpl)[z];
+        }
+        qDebug() << "---";*/
+
+        std::get<2>(tpl).clear();
+    }
+    //qDebug() << "==========";
+    delete model;
+    delete model2;
+}
+
+void MainWindowMenuPlan::setSegundosPlatos()
+{
+    SegundosPlatos.clear();                                                             //Se limpia el vector
+    std::tuple<int,int,std::vector<int>> tpl;
+    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('2'));             //Consulta de los primeros platos
+    QSqlQueryModel *model2;
+
+    for(int i = 0; i < model->rowCount(); i++)
+    {
+        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
+        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
+        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+        for(int j = 0; j < model2->rowCount(); j++)
+            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
+
+        SegundosPlatos.push_back(tpl);                                                              //Se inserta toda la informacion en el vector de platos
+
+
+
+        std::get<2>(tpl).clear();
+
+    }
+    //qDebug() << "======";
+    delete model;
+    delete model2;
+}
+
+void MainWindowMenuPlan::setPostres()
+{
+    Postres.clear();                                                                    //Se limpia el vector
+    std::tuple<int,int,std::vector<int>> tpl;
+    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('3'));             //Consulta de los primeros platos
+    QSqlQueryModel *model2;
+
+    for(int i = 0; i < model->rowCount(); i++)
+    {
+        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
+        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
+        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+        for(int j = 0; j < model2->rowCount(); j++)
+            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
+
+        Postres.push_back(tpl);                                                                     //Se inserta toda la informacion en el vector de platos
+        std::get<2>(tpl).clear();
+
+    }
+    //qDebug() << "----";
+    delete model;
+    delete model2;
+}
+
+
+/*--------------------------------------------------------------------------*/
+/*----------------------- GETTERS DE TIPOS DE PLATO ------------------------*/
+/*--------------------------------------------------------------------------*/
+//std::vector<vectorPlatos> MainWindowMenuPlan::getPrimerosPlatos(){ return PrimerosPlatos; }
+//std::vector<vectorPlatos> MainWindowMenuPlan::getSegundosPlatos(){ return SegundosPlatos; }
+//std::vector<vectorPlatos> MainWindowMenuPlan::getPostres(){ return Postres; }
+
+
+
 /*-------------------------------------------------------------------------*/
 /*------------------------ CIERRE DE LA APLICACION ------------------------*/
 /*-------------------------------------------------------------------------*/
@@ -190,14 +294,14 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             ui->pushButton_ConectarBD->setText("Desconectar");
 
             ui->listView_Ingredientes->setModel(db1->queryMostrarIngredientes());           //______Se hace una consulta de los ingredientes para mostrarse en el apartado ingredientes
-            ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());//______Se muestran los ingredientes en el apartado platos
-            ui->listView_Platos->setModel(db1->queryMostrarPlatos());                 //______Se hace una consulta de los platos para mostrarse
-            ui->listView_PLAN_Platos->setModel(ui->listView_Platos->model());           //______Se muestran los platos en el apartado platos de la seccion Planificador
-            enableAMEIngredientesButtons();                                             //______Se habilitan los botones de edicion en el panel de ingredientes
-            enableAMEPlatosButtons();                                                   //______Se habilitan los botones de edicion en el panel de platos
-            enablePLANElements();                                                       //______Se habilitan los elementos en la seccion de planificador
-            infoPLANPlatos();                                                           //______Mostrar la informacion de numero de platos
-            getIngestaDiariaRecomendada();                                              //______Mostrar la informacion de ingestas diarias recomendadas
+            ui->listView_Ingredientes_PLA->setModel(ui->listView_Ingredientes->model());    //______Se muestran los ingredientes en el apartado platos
+            ui->listView_Platos->setModel(db1->queryMostrarPlatos());                       //______Se hace una consulta de los platos para mostrarse
+            ui->listView_PLAN_Platos->setModel(ui->listView_Platos->model());               //______Se muestran los platos en el apartado platos de la seccion Planificador
+            enableAMEIngredientesButtons();                                                 //______Se habilitan los botones de edicion en el panel de ingredientes
+            enableAMEPlatosButtons();                                                       //______Se habilitan los botones de edicion en el panel de platos
+            enablePLANElements();                                                           //______Se habilitan los elementos en la seccion de planificador
+            infoPLANPlatos();                                                               //______Mostrar la informacion de numero de platos
+            getIngestaDiariaRecomendada();                                                  //______Mostrar la informacion de ingestas diarias recomendadas
 
 
 

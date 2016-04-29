@@ -9,9 +9,13 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <limits>
 
 #include "database.h"
 #include "enums.h"
+#include "individuo.h"
 #include <QGroupBox>
 #include <QtWidgets>
 
@@ -21,11 +25,58 @@
 namespace Ui {class MainWindowMenuPlan;}
 
 class database;
+class individuo;
 
 
 class MainWindowMenuPlan : public QMainWindow
 {
     Q_OBJECT
+
+private:
+        Ui::MainWindowMenuPlan *ui;
+        database *db1;
+        QUERYS Q;
+        const int maxNumSize = 6;                   //Numero maximo de digitos en un campo numerico
+        const int NumInfN = 21;                     //Numero de datos nutricionales
+        const static int NumMesesTemp = 12;         //Numero de meses de temporada
+        const static int NumAlergenos = 7;          //Numero de alergenos
+        const static int NumIncomp = 5;             //Numero de incompatibilidades alimenticias
+
+        char mesesTemporada[NumMesesTemp];          //Array de meses de temporada
+        char ary_alergenos[NumAlergenos];           //Array de alergenos
+        char ary_incomp[NumIncomp];                 //Array de incompatibilidades alimenticias
+
+        //Checkbox correspondientes a los meses de temporada y layout que los contiene
+        QVBoxLayout *lay = new QVBoxLayout(this);
+        QCheckBox *check = new QCheckBox("Todos / ninguno");
+        QCheckBox *check1 = new QCheckBox("Enero");
+        QCheckBox *check2 = new QCheckBox("Febrero");
+        QCheckBox *check3 = new QCheckBox("Marzo");
+        QCheckBox *check4 = new QCheckBox("Abril");
+        QCheckBox *check5 = new QCheckBox("Mayo");
+        QCheckBox *check6 = new QCheckBox("Junio");
+        QCheckBox *check7 = new QCheckBox("Julio");
+        QCheckBox *check8 = new QCheckBox("Agosto");
+        QCheckBox *check9 = new QCheckBox("Septiembre");
+        QCheckBox *check10 = new QCheckBox("Octubre");
+        QCheckBox *check11 = new QCheckBox("Noviembre");
+        QCheckBox *check12 = new QCheckBox("Diciembre");
+
+        struct idr      //Ingesta diaria recomendada
+        {
+            float acidoFol, calcio, energia, fosforo, grasa, hierro, magnesio, potasio, proteinas, selenio, sodio, vitA, vitB1, vitB2, vitB6, vitB12, vitC, vitD, vitE, yodo, zinc;
+        }idrN;
+
+
+
+        const int imax = std::numeric_limits<int>::max();                       //Constante que almacena el numero maximo posible para un int
+        std::vector<std::tuple<int,int,std::vector<int>>> PrimerosPlatos;       //Vector de tupla (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato)
+        std::vector<std::tuple<int,int,std::vector<int>>> SegundosPlatos;
+        std::vector<std::tuple<int,int,std::vector<int>>> Postres;
+        std::vector<std::pair<int,int>> vectorGruposAlimenticios;               //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
+
+
+
 
     public:
         explicit MainWindowMenuPlan(QWidget *parent = 0);
@@ -38,6 +89,12 @@ class MainWindowMenuPlan : public QMainWindow
         ACTION controllDataTextBoxName(QLineEdit &le);                          //Controla si el campo "nombre" de un ingrediente o plato esta vacio o no
         ACTION controllDataTextBoxNum(QGroupBox &gb, int indexFor);             //Controla que los datos numericos introducidos o modificados por el usuario sean validos
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
+
+        void setPlatos();
+        void setPrimerosPlatos();
+        void setSegundosPlatos();
+        void setPostres();
+        void setVectorGruposAlimenticios();
 
 
         /*--------------------*/
@@ -126,8 +183,14 @@ class MainWindowMenuPlan : public QMainWindow
         /*--- TABLA DE PLATOS ---*/
         /*-----------------------*/
 
-        void FicheroDeTabla();
+        void ficheroDeTabla();
         void rellenarTablaPlatos(std::vector< std::vector<int> > &vec);
+
+
+        /*-------------------*/
+        /*---- POBLACION ----*/
+        /*-------------------*/
+        void crearPoblacion();
 
 
     private slots:
@@ -160,49 +223,11 @@ class MainWindowMenuPlan : public QMainWindow
         void on_calendarWidget_clicked(const QDate &date);
         void on_radioButton_PLAN_desde_clicked();
         void on_radioButton_PLAN_hasta_clicked();
-
         void on_pushButton_PLAN_Modificar_clicked();
-
         void on_pushButton_PLAN_Guardar_clicked();
-
         void on_pushButton_PLAN_Cancelar_clicked();
-
         void on_pushButton_PLAN_GenerarPlan_clicked();
 
-private:
-        Ui::MainWindowMenuPlan *ui;
-        database *db1;
-        QUERYS Q;
-        const int maxNumSize = 6;                   //Numero maximo de digitos en un campo numerico
-        const int NumInfN = 21;                     //Numero de datos nutricionales
-        const static int NumMesesTemp = 12;         //Numero de meses de temporada
-        const static int NumAlergenos = 7;          //Numero de alergenos
-        const static int NumIncomp = 5;             //Numero de incompatibilidades alimenticias
-
-        char mesesTemporada[NumMesesTemp];          //Array de meses de temporada
-        char ary_alergenos[NumAlergenos];           //Array de alergenos
-        char ary_incomp[NumIncomp];                 //Array de incompatibilidades alimenticias
-
-        //Checkbox correspondientes a los meses de temporada y layout que los contiene
-        QVBoxLayout *lay = new QVBoxLayout(this);
-        QCheckBox *check = new QCheckBox("Todos / ninguno");
-        QCheckBox *check1 = new QCheckBox("Enero");
-        QCheckBox *check2 = new QCheckBox("Febrero");
-        QCheckBox *check3 = new QCheckBox("Marzo");
-        QCheckBox *check4 = new QCheckBox("Abril");
-        QCheckBox *check5 = new QCheckBox("Mayo");
-        QCheckBox *check6 = new QCheckBox("Junio");
-        QCheckBox *check7 = new QCheckBox("Julio");
-        QCheckBox *check8 = new QCheckBox("Agosto");
-        QCheckBox *check9 = new QCheckBox("Septiembre");
-        QCheckBox *check10 = new QCheckBox("Octubre");
-        QCheckBox *check11 = new QCheckBox("Noviembre");
-        QCheckBox *check12 = new QCheckBox("Diciembre");
-
-        struct idr      //Ingesta diaria recomendada
-        {
-            float acidoFol, calcio, energia, fosforo, grasa, hierro, magnesio, potasio, proteinas, selenio, sodio, vitA, vitB1, vitB2, vitB6, vitB12, vitC, vitD, vitE, yodo, zinc;
-        }idrN;
 };
 
 #endif // MAINWINDOWMENUPLAN_H

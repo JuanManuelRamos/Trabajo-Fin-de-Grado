@@ -365,5 +365,12 @@ void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
 /*---------------------------------------------------------------------*/
 void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
 {
-    FicheroDeTabla();                                                               //Actualizar el fichero de tabla de platos
+    //PENDIENTE DE ACTUALIZAR - utilizar solo cuano se haga modificacion de los platos
+    //ficheroDeTabla();                                                               //Actualizar el fichero de tabla de platos
+
+    qDebug() << "setplatos";
+    setPlatos();                                                                    //Actualiza las tres listas correspondientes a los tres tipos de platos
+
+
+    crearPoblacion();
 }

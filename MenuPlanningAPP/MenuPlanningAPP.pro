@@ -18,12 +18,15 @@ SOURCES += main.cpp\
     ingredientes.cpp \
     platos.cpp \
     planificador.cpp \
-    tablaplatos.cpp
+    tablaplatos.cpp \
+    individuo.cpp \
+    poblacion.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \
     database.h \
-    enums.h
+    enums.h \
+    individuo.h
 
 FORMS    += mainwindowmenuplan.ui
 

@@ -572,16 +572,16 @@ void MainWindowMenuPlan::mostrarTipoPlato(QString tipo)
 void MainWindowMenuPlan::on_comboBox_platos_activated(const QString &arg1)
 {
     if(arg1 == "Todos")
-        ui->listView_Platos->setModel(db1->queryMostrarPlatos());                       //Consulta de todos los platos
+        ui->listView_Platos->setModel(db1->queryMostrarPlatos());                               //Consulta de todos los platos
 
     else if(arg1 == "Primer plato")
-        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('1')));      //Consulta de solo los primeros platos
+        ui->listView_Platos->setModel(db1->queryMostrarNombrePlatosPorTipo(QString('1')));      //Consulta de solo los primeros platos
 
     else if(arg1 == "Segundo plato")
-        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('2')));      //Consulta de solo los segundos platos
+        ui->listView_Platos->setModel(db1->queryMostrarNombrePlatosPorTipo(QString('2')));      //Consulta de solo los segundos platos
 
     else if(arg1 == "Postre")
-        ui->listView_Platos->setModel(db1->queryMostrarTiposPlatos(QString('3')));      //Consulta de solo los postres
+        ui->listView_Platos->setModel(db1->queryMostrarNombrePlatosPorTipo(QString('3')));      //Consulta de solo los postres
 }
 
 

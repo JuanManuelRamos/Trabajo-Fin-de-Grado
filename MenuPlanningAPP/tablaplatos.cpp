@@ -4,7 +4,7 @@
 
 
 
-void MainWindowMenuPlan::FicheroDeTabla()
+void MainWindowMenuPlan::ficheroDeTabla()
 {
     std::fstream fs;
     fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in);                                   //Si el archivo existe se abre
@@ -34,7 +34,7 @@ void MainWindowMenuPlan::rellenarTablaPlatos(std::vector< std::vector<int> > &ve
 {
     int sz = 1;
     bool variedad = true;
-    QSqlQueryModel model;
+    QSqlQueryModel *model;
 
     std::vector<int> grupoAl_1;
     std::vector<int> grupoAl_2;
@@ -42,15 +42,12 @@ void MainWindowMenuPlan::rellenarTablaPlatos(std::vector< std::vector<int> > &ve
 
     for(int i = 0; i < vec.size(); i++)
     {
-        QString str = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";        //Ingredientes del plato i
-        str.append(QString::number(1+i));
-        str.append(")");
-        model.setQuery(str);
+        //Consulta para mostrar los ingredientes principales de un plato
+        model = db1->queryMostrarGruposAldeIngPrincipales(QString::number(1+i));
 
-        for(int k = 0; k < model.rowCount(); k++)
-            if(db1->queryEsIngredientePrincipal(model.index(k,0).data(Qt::DisplayRole).toString()))                                                                 //Comprobar si el ingrediente k del plato i es principal
-                grupoAl_1.push_back(db1->queryMostrarGrupoAlimenticio(model.index(k,0).data(Qt::DisplayRole).toString()));                                          //Si lo es, guardar su grupo alimenticio
-
+        for(int k = 0; k < model->rowCount(); k++)
+            grupoAl_1.push_back(model->index(k,0).data(Qt::DisplayRole).toInt());                                                                                   //Guardar su grupo alimenticio
+        delete model;
 
         for(int j = 0; j < sz; j++)                                                                                                                                 //__Para cada plato i, comprarlo con el resto de platos j
         {
@@ -64,14 +61,11 @@ void MainWindowMenuPlan::rellenarTablaPlatos(std::vector< std::vector<int> > &ve
                     vec[i][j] = 0;
                 else                                                                                                                                                //Si la celda corresponde a un primer plato y un segundo plato...
                 {
-                    str = "SELECT id_AlimentosTAB FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";    //Ingredientes del plato j
-                    str.append(QString::number(1+j));
-                    str.append(")");
-                    model.setQuery(str);
+                    model = db1->queryMostrarGruposAldeIngPrincipales(QString::number(1+j));
 
-                    for(int l = 0; l < model.rowCount(); l++)
-                        if(db1->queryEsIngredientePrincipal(model.index(l,0).data(Qt::DisplayRole).toString()))                                                     //Comprobar si el ingrediente l del plato j es principal
-                            grupoAl_2.push_back(db1->queryMostrarGrupoAlimenticio(model.index(l,0).data(Qt::DisplayRole).toString()));                              //Si lo es, guardar su grupo alimenticio
+                    for(int l = 0; l < model->rowCount(); l++)
+                        grupoAl_2.push_back(model->index(l,0).data(Qt::DisplayRole).toInt());                                                                       //Guardar su grupo alimenticio
+                    delete model;
 
                     if(grupoAl_1.size() > 0 && grupoAl_2.size() > 0)                                                                                                //Si el plato i y j tienen ingredientes principales
                     {

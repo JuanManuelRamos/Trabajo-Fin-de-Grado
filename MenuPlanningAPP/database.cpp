@@ -43,7 +43,11 @@ bool database::connectBD()
 
 void database::disconnectBD()
 {
+    QString connection;
+    connection = db.connectionName();
     db.close();
+    db = QSqlDatabase();
+    db.removeDatabase(connection);
 }
 
 /*-------------------------------------------------------------------------*/
@@ -508,14 +512,27 @@ QSqlQueryModel* database::queryMostrarInfoPlatos(QString strID)
 }
 
 
-/*-------------------------------------------------------------------------------------*/
-/*------------------------ MOSTRAR LOS PLATOS SEGUN SU TIPO ---------------------------*/
-/*-------------------------------------------------------------------------------------*/
-QSqlQueryModel* database::queryMostrarTiposPlatos(QString strID)
+/*----------------------------------------------------------------------------------------------------*/
+/*------------------------ MOSTRAR LOS NOMBRES DE LOS PLATOS SEGUN SU TIPO ---------------------------*/
+/*----------------------------------------------------------------------------------------------------*/
+QSqlQueryModel* database::queryMostrarNombrePlatosPorTipo(QString strID)
 {
     QString str = "SELECT nombre FROM PlatosTAB WHERE tipo ='";
     str.append(strID);
     str.append("' ORDER BY nombre ASC");
+
+    return querysQSQLQUERYMODEL(str);
+}
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*------------------------ MOSTRAR LOS ID'S DE LOS PLATOS SEGUN SU TIPO ---------------------------*/
+/*-------------------------------------------------------------------------------------------------*/
+QSqlQueryModel* database::queryMostrarIdPlatosPorTipo(QString strID)
+{
+    QString str = "SELECT id_PlatosTAB FROM PlatosTAB WHERE tipo ='";
+    str.append(strID);
+    str.append("' ORDER BY id_PlatosTAB ASC");
 
     return querysQSQLQUERYMODEL(str);
 }
@@ -969,6 +986,17 @@ void database::ActualizarIDPlatos()
 }
 
 
+/*-----------------------------------------------------------------------------------------------*/
+/*-------- MOSTRAR LOS GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DE UN PLATO ----------*/
+/*-----------------------------------------------------------------------------------------------*/
+QSqlQueryModel* database::queryMostrarGruposAldeIngPrincipales(QString idPlato)
+{
+    QString str = "SELECT DISTINCT grupo_alimenticio FROM AlimentosTAB WHERE ingrediente_principal='1' AND id_AlimentosTAB IN (SELECT id_AlimentosTAB FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
+    str.append(idPlato);
+    str.append("))");
+
+    return querysQSQLQUERYMODEL(str);
+}
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------------------------------*/

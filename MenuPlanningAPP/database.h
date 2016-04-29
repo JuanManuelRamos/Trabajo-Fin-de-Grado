@@ -27,7 +27,7 @@ class database
         /*--------------------*/
         /*--- INGREDIENTES ---*/
         /*--------------------*/
-        QSqlQueryModel* queryMostrarIngredientes();                                            //Consulta para mostrar los ingredientes disponibles en la base de datos
+        QSqlQueryModel* queryMostrarIngredientes();                                             //Consulta para mostrar los ingredientes disponibles en la base de datos
         QSqlQueryModel* queryMostrarInfoIngredientes(QString strID);                            //Consulta para mostrar la informacion de un ingrediente
 
         void addINGQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo ingrediente
@@ -48,7 +48,8 @@ class database
         /*--------------*/
         QSqlQueryModel* queryMostrarPlatos();                                                   //Consulta para mostrar los platos disponibles en la base de datos
         QSqlQueryModel* queryMostrarInfoPlatos(QString strID);                                  //Consulta para mostrar la informacion de un plato
-        QSqlQueryModel* queryMostrarTiposPlatos(QString strID);                                 //Consulta para mostrar los platos segun su tipo (primer plato, segundo plato o postre)
+        QSqlQueryModel* queryMostrarNombrePlatosPorTipo(QString strID);                         //Consulta para mostrar los nombres de los platos segun su tipo (primer plato, segundo plato o postre)
+        QSqlQueryModel* queryMostrarIdPlatosPorTipo(QString strID);                             //Consulta para mostrar los id's de los platos segun su tipo (primer plato, segundo plato o postre)
         QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
         int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
 
@@ -93,6 +94,7 @@ class database
         /*--- ACTUALIZAR ID'S DE PLATOS ---*/
         /*---------------------------------*/
         void ActualizarIDPlatos();
+        QSqlQueryModel* queryMostrarGruposAldeIngPrincipales(QString idPlato);
 
 
         /*-----------------------------*/
