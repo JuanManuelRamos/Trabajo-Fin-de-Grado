@@ -19,7 +19,16 @@
 #include <QGroupBox>
 #include <QtWidgets>
 
-
+struct infoPlatos                       //Struct que almacena informacion de los platos utilizada en el proceso de creacion del plan
+{
+    int id;                             //Id del plato
+    int nDias;                          //Numero de dias desde que se eligio el plato en el plan por ultima vez
+    float precio;                       //Precio del plato
+    std::vector<int> gruposAl;          //Grupos alimenticios correspondientes a los ingredientes principales del plato
+    std::vector<float> infoN;           //Informacion nutricional del plato
+    std::vector<QString> alerg;         //Alergenos del plato
+    std::vector<QString> incomp;        //Incompatibilidades del plato
+};
 
 
 namespace Ui {class MainWindowMenuPlan;}
@@ -28,25 +37,31 @@ class database;
 class individuo;
 
 
+
+
 class MainWindowMenuPlan : public QMainWindow
 {
     Q_OBJECT
 
 private:
-        Ui::MainWindowMenuPlan *ui;
-        database *db1;
-        QUERYS Q;
-        const int maxNumSize = 6;                   //Numero maximo de digitos en un campo numerico
-        const int NumInfN = 21;                     //Numero de datos nutricionales
-        const static int NumMesesTemp = 12;         //Numero de meses de temporada
-        const static int NumAlergenos = 7;          //Numero de alergenos
-        const static int NumIncomp = 5;             //Numero de incompatibilidades alimenticias
+        Ui::MainWindowMenuPlan *ui;                 //Objeto de interfaz
+        database *db1;                              //Objeto de base de datos
+        QUERYS Q;                                   //Objeto de enum
 
+        /*-- Variables de control de datos --*/
+        const int maxNumSize = 6;                       //Numero maximo de digitos en un campo numerico
+        const int NumInfN = 21;                         //Numero de datos nutricionales
+        const static int NumMesesTemp = 12;             //Numero de meses de temporada
+        const static int NumAlergenos = 7;              //Numero de alergenos
+        const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
+        const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
+
+        /*-- Arrays de datos--*/
         char mesesTemporada[NumMesesTemp];          //Array de meses de temporada
         char ary_alergenos[NumAlergenos];           //Array de alergenos
         char ary_incomp[NumIncomp];                 //Array de incompatibilidades alimenticias
 
-        //Checkbox correspondientes a los meses de temporada y layout que los contiene
+        /*-- Checkbox correspondientes a los meses de temporada y layout que los contiene --*/
         QVBoxLayout *lay = new QVBoxLayout(this);
         QCheckBox *check = new QCheckBox("Todos / ninguno");
         QCheckBox *check1 = new QCheckBox("Enero");
@@ -62,18 +77,25 @@ private:
         QCheckBox *check11 = new QCheckBox("Noviembre");
         QCheckBox *check12 = new QCheckBox("Diciembre");
 
-        struct idr      //Ingesta diaria recomendada
+        /*-- Struct correspondiente a la ingesta diaria recomendada --*/
+        struct idr
         {
             float acidoFol, calcio, energia, fosforo, grasa, hierro, magnesio, potasio, proteinas, selenio, sodio, vitA, vitB1, vitB2, vitB6, vitB12, vitC, vitD, vitE, yodo, zinc;
         }idrN;
 
 
+        /*-- Constante y vectores para la generacion del menu --*/
+        bool actualizarFicheroDeTabla;                                                      //Variable booleana para decidir si se actualiza el fichero de tabla al generar el plan
+        const int imax = std::numeric_limits<int>::max();                                   //Constante que almacena el numero maximo posible para un int
+        std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
+        std::vector<infoPlatos> SegundosPlatos;                                             //...
+        std::vector<infoPlatos> Postres;                                                    //...
+        std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
+        std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en fichero
 
-        const int imax = std::numeric_limits<int>::max();                       //Constante que almacena el numero maximo posible para un int
-        std::vector<std::tuple<int,int,std::vector<int>>> PrimerosPlatos;       //Vector de tupla (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato)
-        std::vector<std::tuple<int,int,std::vector<int>>> SegundosPlatos;
-        std::vector<std::tuple<int,int,std::vector<int>>> Postres;
-        std::vector<std::pair<int,int>> vectorGruposAlimenticios;               //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
+
+
+
 
 
 
@@ -89,12 +111,6 @@ private:
         ACTION controllDataTextBoxName(QLineEdit &le);                          //Controla si el campo "nombre" de un ingrediente o plato esta vacio o no
         ACTION controllDataTextBoxNum(QGroupBox &gb, int indexFor);             //Controla que los datos numericos introducidos o modificados por el usuario sean validos
         ACTION controllSelectionElement(QListView &lv);                         //Controla si se ha seleccionado un elemento de un listview para su posterior manipulacion
-
-        void setPlatos();
-        void setPrimerosPlatos();
-        void setSegundosPlatos();
-        void setPostres();
-        void setVectorGruposAlimenticios();
 
 
         /*--------------------*/
@@ -117,10 +133,10 @@ private:
         void mostrar_mesesTemporada(QString meses);                             //Muestra en la aplicacion los meses en los que un ingrediente esta de temporada
         void mostrar_alergenosIncom(CHECKBOX CB, QString array);                //Muestra en la aplicacion los alergenos y/o las incompatibilidades alimenticias de un ingrediente
 
-        QString set_IngredientePrincipal();
-        QString set_GrupoAlimenticio();
-        void mostrar_IngredientePrincipal(QString str);
-        void mostrar_GrupoAlimenticio(QString grp);
+        QString set_IngredientePrincipal();                                     //Establece si un ingrediente es principal o no
+        QString set_GrupoAlimenticio();                                         //Establece el grupo alimenticio de un ingrediente
+        void mostrar_IngredientePrincipal(QString str);                         //Muestra si un ingrediente es principal o no
+        void mostrar_GrupoAlimenticio(QString grp);                             //Muestra el grupo alimenticio al que pertenece un ingrediente
 
 
         /*--------------*/
@@ -166,31 +182,52 @@ private:
         /*--------------------*/
         /*--- PLANIFICADOR ---*/
         /*--------------------*/
-        void enablePLANElements();
-        void disablePLANElements();
-        void disablePLANLabelsSelec();
+        void enablePLANElements();                              //Funciones de activacion o desactivacion de elementos de la seccion Planificador
+        void disablePLANElements();                             //...
+        void disablePLANLabelsSelec();                          //...
 
-        void infoPLANPlatos();
-        void infoPLANPlatosSelec();
+        void infoPLANPlatos();                                  //Muestra el numero de platos existentes
+        void infoPLANPlatosSelec();                             //Muestra el numero de platos seleccionados para el plan
 
-        void getIngestaDiariaRecomendada();
-        void setIngestaDiariaRecomendada();
-        void enableIDR();
-        void disableIDR();
+        void getIngestaDiariaRecomendada();                     //Muestra los datos de ingestas diarias recomendadas
+        void setIngestaDiariaRecomendada();                     //Edita los datos de ingestas diarias recomendada
+        void enableIDR();                                       //Activa los botones correspondientes a la edicion de datos de ingesta diraria recomendada
+        void disableIDR();                                      //Desactiva los botones correspondientes a la edicion de datos de ingesta diraria recomendada
+
+        int setNumDiasPlan();                                   //Devuelve el numero de dias o menus a realizar en el plan segun lo especificado en el calendario
 
 
         /*-----------------------*/
         /*--- TABLA DE PLATOS ---*/
         /*-----------------------*/
 
-        void ficheroDeTabla();
-        void rellenarTablaPlatos(std::vector< std::vector<int> > &vec);
+        void ficheroDeTabla();                                                  //Funcion que crea el archivo "tablaPlatos.txt" y copia la tabla en el
+        void setTablaPlatos(std::vector< std::vector<int> > &vec);              //Funcion que crea la tabla comparando todos los platos entre si y dando un valor a su composicion en funcion de su compatibilidad
+        void setVectorFicheroDeTabla();                                         //Funcion que lee el arhcivo "tablaPlatos.txt" y rellena el vector vectorFicheroDeTabla para ser utilizado en la creacion del plan
+
+
+        /*-------------------------------------------------------------------*/
+        /*--- FUNCIONES DE ELEMENTOS NECESARIOS PARA LA CREACION DEL PLAN ---*/
+        /*-------------------------------------------------------------------*/
+        void setPlatos();                                                       //Ejecuta las funciones set Primeros, Segundos platos y Postres
+        void setPrimerosPlatos();                                               //Guarda en el vector PrimerosPlatos los primeros platos seleccionados para el plan
+        void setSegundosPlatos();                                               //Guarda en el vector SegundsPlatos los segundos platos seleccionados para el plan
+        void setPostres();                                                      //Guarda en el vector Postres los postres seleccionados para el plan
+        void editPrimerosPlatos();                                              //***********************************************************
+        void editSegundosPlatos();                                              //***********************************************************
+        void editPostres();                                                     //***********************************************************
+        void clearPrimerosPlatos();                                             //Dejar a imax el numero de dias desde que se eligio un plato determinado
+        void clearSegundosPlatos();                                             //...
+        void clearPostres();                                                    //...
+
+        void setVectorGruposAlimenticios();                                     //Rellena el vector vectorGruposAlimenticios para controlar el grado de repeticion de los mismos en el plan
+        void editVectorGruposAlimenticios();                                    //**************************************************************************
 
 
         /*-------------------*/
         /*---- POBLACION ----*/
         /*-------------------*/
-        void crearPoblacion();
+        void crearPoblacion(int numDiasPlan);                                  //Funcion que crea la poblacion de individuos
 
 
     private slots:

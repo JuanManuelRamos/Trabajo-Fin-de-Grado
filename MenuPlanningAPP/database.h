@@ -49,9 +49,10 @@ class database
         QSqlQueryModel* queryMostrarPlatos();                                                   //Consulta para mostrar los platos disponibles en la base de datos
         QSqlQueryModel* queryMostrarInfoPlatos(QString strID);                                  //Consulta para mostrar la informacion de un plato
         QSqlQueryModel* queryMostrarNombrePlatosPorTipo(QString strID);                         //Consulta para mostrar los nombres de los platos segun su tipo (primer plato, segundo plato o postre)
-        QSqlQueryModel* queryMostrarIdPlatosPorTipo(QString strID);                             //Consulta para mostrar los id's de los platos segun su tipo (primer plato, segundo plato o postre)
+        //QSqlQueryModel* queryMostrarIdPlatosPorTipo(QString strID);                             //Consulta para mostrar los id's de los platos segun su tipo (primer plato, segundo plato o postre)
         QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
         int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
+        //int queryMostrarIDPlatoPorNombre(QString nombre);                                       //Consulta para mostrar el id de un plato por su nombre
 
         void addPLAQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo plato
         void modPLAQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un plato

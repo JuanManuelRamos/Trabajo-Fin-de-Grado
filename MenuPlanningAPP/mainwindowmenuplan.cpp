@@ -135,6 +135,9 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) : QMainWindow(parent),ui
     //Establecer el formato del boton Generar Plan
     QFont font("Times", 12);
     ui->pushButton_PLAN_GenerarPlan->setFont(font);
+
+    //Inicializar variable actualizar fichero de tabla
+    actualizarFicheroDeTabla = false;
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
@@ -170,89 +173,224 @@ void MainWindowMenuPlan::setPlatos()
 
 void MainWindowMenuPlan::setPrimerosPlatos()
 {
-    PrimerosPlatos.clear();                                                             //Se limpia el vector
-    std::tuple<int,int,std::vector<int>> tpl;
-    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('1'));             //Consulta de los primeros platos
+    PrimerosPlatos.clear();                                                                                             //Se limpia el vector
+    infoPlatos iP;
+
+    QAbstractItemModel *model = ui->listWidget_PLAN_PlatosSelec->model();                                               //Se obtiene la lista de platos seleccionados
     QSqlQueryModel *model2;
+    QSqlQueryModel *model3;
 
     for(int i = 0; i < model->rowCount(); i++)
     {
-        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
-        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
-        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
-
-        for(int j = 0; j < model2->rowCount(); j++)
-            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
-
-        PrimerosPlatos.push_back(tpl);                                                              //Se inserta toda la informacion en el vector de platos
-
-        /*qDebug() << "id: " << std::get<0>(tpl) << " nDias: " << std::get<1>(tpl);
-        for(int z = 0; z < std::get<2>(tpl).size(); z++)
+        if(db1->queryMostrarTipoPlatoNombre(model->index(i, 0).data(Qt::DisplayRole).toString()) == "1")                //Se comprueba que el plato seleccionado sea Primer Plato
         {
-            qDebug() << std::get<2>(tpl)[z];
-        }
-        qDebug() << "---";*/
+            model3 = db1->queryMostrarInfoPlatos(model->index(i,0).data(Qt::DisplayRole).toString());
 
-        std::get<2>(tpl).clear();
+            //ID DEL PLATO
+            iP.id = model3->index(0,0).data(Qt::DisplayRole).toInt();                                                   //Consulta para obtener el id del plato
+
+            //NUMERO DE DIAS DESDE QUE SE ELIGIO EL PLATO POR ULTIMA VEZ
+            iP.nDias = imax;                                                                                            //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
+
+            //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
+            model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+            for(int j = 0; j < model2->rowCount(); j++)
+                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+
+            //PRECIO DEL PLATO
+            iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
+
+            //INFORMACION NUTRICIONAL DEL PLATO
+            for(int k = 0; k < NumInfN; k++)
+                iP.infoN.push_back(model3->index(0,9+k).data(Qt::DisplayRole).toFloat());
+
+            //ALERGENOS DEL PLATO
+            QString aler = db1->queryMostrarAlergPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int l = 0; l < NumAlergenos; l++)
+                iP.alerg.push_back(aler.at(l));
+
+            //INCOMPATIBILIDADES ALIMENTICIAS DEL PLATO
+            QString inc = db1->queryMostrarIncompPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int m = 0; m < NumIncomp; m++)
+                iP.incomp.push_back(inc.at(m));
+
+
+            PrimerosPlatos.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
+
+            /*qDebug() << "id: " <<  PrimerosPlatos[i].id << " nDias: " <<  PrimerosPlatos[i].nDias << "precio: " <<  PrimerosPlatos[i].precio;
+            for(int z = 0; z < iP.gruposAl.size(); z++)
+            {
+                qDebug() << iP.gruposAl[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.infoN.size(); z++)
+            {
+                qDebug() << iP.infoN[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.alerg.size(); z++)
+            {
+                qDebug() << iP.alerg[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.incomp.size(); z++)
+            {
+                qDebug() << iP.incomp[z];
+            }*/
+
+            iP.gruposAl.clear();
+            iP.infoN.clear();
+            iP.alerg.clear();
+            iP.incomp.clear();
+            delete model2;
+            delete model3;
+        }
+        //qDebug() << "==========";
     }
-    //qDebug() << "==========";
-    delete model;
-    delete model2;
 }
 
 void MainWindowMenuPlan::setSegundosPlatos()
 {
-    SegundosPlatos.clear();                                                             //Se limpia el vector
-    std::tuple<int,int,std::vector<int>> tpl;
-    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('2'));             //Consulta de los primeros platos
+    SegundosPlatos.clear();                                                                                             //Se limpia el vector
+    infoPlatos iP;
+
+    QAbstractItemModel *model = ui->listWidget_PLAN_PlatosSelec->model();                                               //Se obtiene la lista de platos seleccionados
     QSqlQueryModel *model2;
+    QSqlQueryModel *model3;
 
     for(int i = 0; i < model->rowCount(); i++)
     {
-        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
-        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
-        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+        if(db1->queryMostrarTipoPlatoNombre(model->index(i, 0).data(Qt::DisplayRole).toString()) == "2")                //Se comprueba que el plato seleccionado sea Primer Plato
+        {
+            model3 = db1->queryMostrarInfoPlatos(model->index(i,0).data(Qt::DisplayRole).toString());
 
-        for(int j = 0; j < model2->rowCount(); j++)
-            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
+            //ID DEL PLATO
+            iP.id = model3->index(0,0).data(Qt::DisplayRole).toInt();                                                   //Consulta para obtener el id del plato
 
-        SegundosPlatos.push_back(tpl);                                                              //Se inserta toda la informacion en el vector de platos
+            //NUMERO DE DIAS DESDE QUE SE ELIGIO EL PLATO POR ULTIMA VEZ
+            iP.nDias = imax;                                                                                            //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
+
+            //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
+            model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+            for(int j = 0; j < model2->rowCount(); j++)
+                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+
+            //PRECIO DEL PLATO
+            iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
+
+            //INFORMACION NUTRICIONAL DEL PLATO
+            for(int k = 0; k < NumInfN; k++)
+                iP.infoN.push_back(model3->index(0,9+k).data(Qt::DisplayRole).toFloat());
+
+            //ALERGENOS DEL PLATO
+            QString aler = db1->queryMostrarAlergPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int l = 0; l < NumAlergenos; l++)
+                iP.alerg.push_back(aler.at(l));
+
+            //INCOMPATIBILIDADES ALIMENTICIAS DEL PLATO
+            QString inc = db1->queryMostrarIncompPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int m = 0; m < NumIncomp; m++)
+                iP.incomp.push_back(inc.at(m));
 
 
+            SegundosPlatos.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
 
-        std::get<2>(tpl).clear();
-
+            iP.gruposAl.clear();
+            iP.infoN.clear();
+            iP.alerg.clear();
+            iP.incomp.clear();
+            delete model2;
+            delete model3;
+        }
     }
-    //qDebug() << "======";
-    delete model;
-    delete model2;
 }
 
 void MainWindowMenuPlan::setPostres()
 {
-    Postres.clear();                                                                    //Se limpia el vector
-    std::tuple<int,int,std::vector<int>> tpl;
-    QSqlQueryModel *model = db1->queryMostrarIdPlatosPorTipo(QString('3'));             //Consulta de los primeros platos
+    Postres.clear();                                                                                             //Se limpia el vector
+    infoPlatos iP;
+
+    QAbstractItemModel *model = ui->listWidget_PLAN_PlatosSelec->model();                                               //Se obtiene la lista de platos seleccionados
     QSqlQueryModel *model2;
+    QSqlQueryModel *model3;
 
     for(int i = 0; i < model->rowCount(); i++)
     {
-        std::get<0>(tpl) = model->index(i,0).data(Qt::DisplayRole).toInt();                         //Se asigna el id del plato al primer elemento del par
-        std::get<1>(tpl) = imax;                                                                    //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
-        model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(std::get<0>(tpl)));      //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+        if(db1->queryMostrarTipoPlatoNombre(model->index(i, 0).data(Qt::DisplayRole).toString()) == "3")                //Se comprueba que el plato seleccionado sea Primer Plato
+        {
+            model3 = db1->queryMostrarInfoPlatos(model->index(i,0).data(Qt::DisplayRole).toString());
 
-        for(int j = 0; j < model2->rowCount(); j++)
-            std::get<2>(tpl).push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());           //Se guardan los grupos alimenticios en el vector correspondiente
+            //ID DEL PLATO
+            iP.id = model3->index(0,0).data(Qt::DisplayRole).toInt();                                                   //Consulta para obtener el id del plato
 
-        Postres.push_back(tpl);                                                                     //Se inserta toda la informacion en el vector de platos
-        std::get<2>(tpl).clear();
+            //NUMERO DE DIAS DESDE QUE SE ELIGIO EL PLATO POR ULTIMA VEZ
+            iP.nDias = imax;                                                                                            //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
 
+            //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
+            model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
+
+            for(int j = 0; j < model2->rowCount(); j++)
+                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+
+            //PRECIO DEL PLATO
+            iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
+
+            //INFORMACION NUTRICIONAL DEL PLATO
+            for(int k = 0; k < NumInfN; k++)
+                iP.infoN.push_back(model3->index(0,9+k).data(Qt::DisplayRole).toFloat());
+
+            //ALERGENOS DEL PLATO
+            QString aler = db1->queryMostrarAlergPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int l = 0; l < NumAlergenos; l++)
+                iP.alerg.push_back(aler.at(l));
+
+            //INCOMPATIBILIDADES ALIMENTICIAS DEL PLATO
+            QString inc = db1->queryMostrarIncompPlato(model3->index(0,0).data(Qt::DisplayRole).toString());
+            for(int m = 0; m < NumIncomp; m++)
+                iP.incomp.push_back(inc.at(m));
+
+
+            Postres.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
+
+            iP.gruposAl.clear();
+            iP.infoN.clear();
+            iP.alerg.clear();
+            iP.incomp.clear();
+            delete model2;
+            delete model3;
+        }
     }
-    //qDebug() << "----";
-    delete model;
-    delete model2;
 }
 
+
+/*---------------------------------------------------------------------*/
+/*----------------------- CLEAR TIPOS DE PLATO ------------------------*/
+/*---------------------------------------------------------------------*/
+void MainWindowMenuPlan::clearPrimerosPlatos()
+{
+    for(int i = 0; i < PrimerosPlatos.size(); i++)
+        PrimerosPlatos[i].nDias = imax;
+}
+
+
+void MainWindowMenuPlan::clearSegundosPlatos()
+{
+    std::tuple<int,int,std::vector<int>> tpl;
+
+    for(int i = 0; i < SegundosPlatos.size(); i++)
+        SegundosPlatos[i].nDias = imax;
+}
+
+
+void MainWindowMenuPlan::clearPostres()
+{
+    std::tuple<int,int,std::vector<int>> tpl;
+
+    for(int i = 0; i < Postres.size(); i++)
+        Postres[i].nDias = imax;
+}
 
 /*--------------------------------------------------------------------------*/
 /*----------------------- GETTERS DE TIPOS DE PLATO ------------------------*/
@@ -260,6 +398,26 @@ void MainWindowMenuPlan::setPostres()
 //std::vector<vectorPlatos> MainWindowMenuPlan::getPrimerosPlatos(){ return PrimerosPlatos; }
 //std::vector<vectorPlatos> MainWindowMenuPlan::getSegundosPlatos(){ return SegundosPlatos; }
 //std::vector<vectorPlatos> MainWindowMenuPlan::getPostres(){ return Postres; }
+
+
+
+/*------------------------------------------------------------------------------------*/
+/*------------- SETTER DE VECTOR DE REPETICION DE GRUPOS ALIMENTICIOS ----------------*/
+/*------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::setVectorGruposAlimenticios()
+{
+    vectorGruposAlimenticios.clear();
+    std::pair<int,int> p;
+
+    for(int i = 0; i < NumGruposAlimenticios; i++)
+    {
+        p.first = i;
+        p.second = imax;
+        vectorGruposAlimenticios.push_back(p);
+    }
+}
+
+
 
 
 

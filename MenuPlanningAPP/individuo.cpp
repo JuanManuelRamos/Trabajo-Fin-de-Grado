@@ -3,11 +3,9 @@
 #include "database.h"
 #include "individuo.h"
 
-individuo::individuo()
+individuo::individuo(int numDiasPlan)
 {
-    //PENDIENTE DE ACTUALIZAR
-    numMenus = 20;
-    qDebug() << "constructor";
+    numMenus = numDiasPlan;
 }
 
 
@@ -17,19 +15,13 @@ individuo::~individuo()
 }
 
 
-void individuo::setMenuDiario(std::vector<std::tuple<int,int,std::vector<int>>> pp, std::vector<std::tuple<int,int,std::vector<int>>> sp, std::vector<std::tuple<int,int,std::vector<int>>> p)
+void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p)
 {
-    qDebug() << "set menu";
-    std::tuple<int,int,std::vector<int>> tpl;
-
     for(unsigned int i = 0; i < numMenus; i++)
-    {
-        tpl = pp[rand() % pp.size()];
-        menu.idPrimerPlato = std::get<0>(tpl);
-        tpl = sp[rand() % sp.size()];
-        menu.idSegundoPlato = std::get<0>(tpl);
-        tpl = p[rand() % p.size()];
-        menu.idPostre = std::get<0>(tpl);
+    {      
+        menu.idPrimerPlato = pp[rand() % pp.size()].id;
+        menu.idSegundoPlato = sp[rand() % sp.size()].id;
+        menu.idPostre = p[rand() % p.size()].id;
 
         planDietetico.push_back(menu);
     }

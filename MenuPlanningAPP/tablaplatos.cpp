@@ -15,7 +15,7 @@ void MainWindowMenuPlan::ficheroDeTabla()
     std::vector<int> vec(db1->queryNumPlatos().toInt(), -1);                                            //Crear vector de tamanio igual a numero de platos
     std::vector< std::vector<int> > tablaPlatos(vec.size(), vec);                                       //Crear vector bidimensional
 
-    rellenarTablaPlatos(tablaPlatos);                                                                   //Rellenar el vector bidimensional o tabla
+    setTablaPlatos(tablaPlatos);                                                                        //Rellenar el vector bidimensional o tabla
 
     for(int i = 0; i < tablaPlatos.size(); i++)                                                         //Escribir la tabla en el archivo
     {
@@ -30,7 +30,7 @@ void MainWindowMenuPlan::ficheroDeTabla()
 
 
 
-void MainWindowMenuPlan::rellenarTablaPlatos(std::vector< std::vector<int> > &vec)
+void MainWindowMenuPlan::setTablaPlatos(std::vector< std::vector<int> > &vec)
 {
     int sz = 1;
     bool variedad = true;

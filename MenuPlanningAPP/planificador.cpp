@@ -358,6 +358,26 @@ void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
 
 
 
+/*------------------------------------------------------------------------------------------------------------*/
+/*--------------- DEVUELVE EL NUMERO DE DIAS DEL PLAN SEGUN LO ESPECIFICADO EN EL CALENDARIO -----------------*/
+/*------------------------------------------------------------------------------------------------------------*/
+int MainWindowMenuPlan::setNumDiasPlan()
+{
+    int nDias = ui->dateEdit_desde->date().daysTo(ui->dateEdit_hasta->date())+1;
+    int nDiasReal = nDias;
+    QDate d = ui->dateEdit_desde->date();
+
+    for(int i = 0; i < nDias; i++)
+    {
+        if(d.dayOfWeek() == 6 || d.dayOfWeek() == 7)
+            nDiasReal--;
+
+        d = d.addDays(1);
+    }
+    return nDiasReal;
+}
+
+
 
 
 /*---------------------------------------------------------------------*/
@@ -365,12 +385,19 @@ void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
 /*---------------------------------------------------------------------*/
 void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
 {
-    //PENDIENTE DE ACTUALIZAR - utilizar solo cuano se haga modificacion de los platos
-    //ficheroDeTabla();                                                               //Actualizar el fichero de tabla de platos
+    if(actualizarFicheroDeTabla)                                //Si ha habido cambios en los platos
+        ficheroDeTabla();                                       //Actualizar el fichero de tabla de platos
+    actualizarFicheroDeTabla = false;
 
-    qDebug() << "setplatos";
-    setPlatos();                                                                    //Actualiza las tres listas correspondientes a los tres tipos de platos
-
-
-    crearPoblacion();
+    if(ui->label_PLAN_PP_2->text() == "0")
+        QMessageBox::information(this,"Información","Debe seleccionar al menos un primer plato.");
+    else if (ui->label_PLAN_SP_2->text() == "0")
+        QMessageBox::information(this,"Información","Debe seleccionar al menos un segundo plato.");
+    else if(ui->label_PLAN_P_2->text() == "0")
+        QMessageBox::information(this,"Información","Debe seleccionar al menos un postre.");
+    else
+    {
+        setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
+        crearPoblacion(setNumDiasPlan());
+    }
 }

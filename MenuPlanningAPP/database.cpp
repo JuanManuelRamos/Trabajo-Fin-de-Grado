@@ -528,14 +528,14 @@ QSqlQueryModel* database::queryMostrarNombrePlatosPorTipo(QString strID)
 /*-------------------------------------------------------------------------------------------------*/
 /*------------------------ MOSTRAR LOS ID'S DE LOS PLATOS SEGUN SU TIPO ---------------------------*/
 /*-------------------------------------------------------------------------------------------------*/
-QSqlQueryModel* database::queryMostrarIdPlatosPorTipo(QString strID)
+/*QSqlQueryModel* database::queryMostrarIdPlatosPorTipo(QString strID)
 {
     QString str = "SELECT id_PlatosTAB FROM PlatosTAB WHERE tipo ='";
     str.append(strID);
     str.append("' ORDER BY id_PlatosTAB ASC");
 
     return querysQSQLQUERYMODEL(str);
-}
+}*/
 
 
 /*------------------------------------------------------------------------------------------------*/
@@ -826,6 +826,17 @@ QString database::queryMostrarAlergPlato(QString id)
 }
 
 
+/*-------------------------------------------------------------------------------------*/
+/*--------------------- MOSTRAR EL ID DE UN PLATO POR SU NOMBRE -----------------------*/
+/*-------------------------------------------------------------------------------------*/
+/*int database::queryMostrarIDPlatoPorNombre(QString nombre)
+{
+    QString str = "SELECT id_PlatosTAB FROM PlatosTAB WHERE nombre='";
+    str.append(nombre);
+    str.append("'");
+
+    return querysQSTRING(str).toInt();
+}*/
 
 /*-----------------------------------------------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------------*/
