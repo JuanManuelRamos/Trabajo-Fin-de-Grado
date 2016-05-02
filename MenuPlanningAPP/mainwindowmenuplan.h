@@ -90,8 +90,8 @@ private:
         std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
         std::vector<infoPlatos> SegundosPlatos;                                             //...
         std::vector<infoPlatos> Postres;                                                    //...
-        std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
-        std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en fichero
+        std::vector<int> vectorGruposAlimenticios;                                          //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
+        std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
 
 
 
@@ -203,7 +203,6 @@ private:
 
         void ficheroDeTabla();                                                  //Funcion que crea el archivo "tablaPlatos.txt" y copia la tabla en el
         void setTablaPlatos(std::vector< std::vector<int> > &vec);              //Funcion que crea la tabla comparando todos los platos entre si y dando un valor a su composicion en funcion de su compatibilidad
-        void setVectorFicheroDeTabla();                                         //Funcion que lee el arhcivo "tablaPlatos.txt" y rellena el vector vectorFicheroDeTabla para ser utilizado en la creacion del plan
 
 
         /*-------------------------------------------------------------------*/

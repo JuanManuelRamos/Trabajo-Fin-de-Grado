@@ -12,9 +12,9 @@ class individuo
 
         struct menuDiario                                               //Struct correspondiente a un menu
         {
-            int idPrimerPlato;
-            int idSegundoPlato;
-            int idPostre;
+            std::pair<int,int> idPrimerPlato;
+            std::pair<int,int> idSegundoPlato;
+            std::pair<int,int> idPostre;
         }menu;
 
         std::vector<menuDiario> planDietetico;                          //Vector que almacena cada uno de los menus diarios
@@ -25,14 +25,26 @@ class individuo
         std::vector<QString> alergenos;                                 //Vector que almacena los alergenos contenidos en el plan
         std::vector<QString> incompatibilidades;                        //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
 
+        const int imax = std::numeric_limits<int>::max();
+
     public:
         individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncomp);
         ~individuo();
 
-        void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p);        //Genera un menu aleatorio para un dia
-        menuDiario getMenuDiario(const unsigned int posPlan);                                                                                                                                       //Obtiene el menu del dia de la posicion especificada del plan dietetico
+        void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<int> vectorGruposAl);       //Genera un menu aleatorio para un dia
+        void setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<int> vectorGruposAl);
+        //menuDiario getMenuDiario(const unsigned int posPlan);                                                                                                                         //Obtiene el menu del dia de la posicion especificada del plan dietetico
 
+        int getValorVectorFdeTabla(std::vector<std::vector<int>> vectorFdeTabla, int idPP, int idSP);
+        int setValorPP(std::vector<struct infoPlatos> &pp, int id);
+        int setValorSP(std::vector<struct infoPlatos> &sp, int id);
+        int setValorP(std::vector<struct infoPlatos> &p, int id);
+        void setValorGA(std::vector<int> &vectorGruposAl, int ga);
 
+        void sumValorPP(std::vector<struct infoPlatos> &pp);
+        void sumValorSP(std::vector<struct infoPlatos> &sp);
+        void sumValorP(std::vector<struct infoPlatos> &p);
+        void sumValorGA(std::vector<int> &vectorGruposAl);
 };
 
 

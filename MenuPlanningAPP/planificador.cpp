@@ -398,6 +398,8 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     else
     {
         setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
+        setVectorGruposAlimenticios();
+
         crearPoblacion(setNumDiasPlan());
     }
 }

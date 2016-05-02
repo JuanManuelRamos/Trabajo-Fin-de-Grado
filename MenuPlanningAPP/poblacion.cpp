@@ -6,5 +6,5 @@ void MainWindowMenuPlan::crearPoblacion(int numDiasPlan)
 {
     individuo *ind = new individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
 
-    ind->setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres);
+    ind->setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios);
 }

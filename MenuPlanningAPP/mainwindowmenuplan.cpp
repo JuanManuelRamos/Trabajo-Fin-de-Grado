@@ -368,7 +368,7 @@ void MainWindowMenuPlan::setPostres()
 /*---------------------------------------------------------------------*/
 /*----------------------- CLEAR TIPOS DE PLATO ------------------------*/
 /*---------------------------------------------------------------------*/
-void MainWindowMenuPlan::clearPrimerosPlatos()
+/*void MainWindowMenuPlan::clearPrimerosPlatos()
 {
     for(int i = 0; i < PrimerosPlatos.size(); i++)
         PrimerosPlatos[i].nDias = imax;
@@ -390,7 +390,7 @@ void MainWindowMenuPlan::clearPostres()
 
     for(int i = 0; i < Postres.size(); i++)
         Postres[i].nDias = imax;
-}
+}*/
 
 /*--------------------------------------------------------------------------*/
 /*----------------------- GETTERS DE TIPOS DE PLATO ------------------------*/
@@ -407,14 +407,7 @@ void MainWindowMenuPlan::clearPostres()
 void MainWindowMenuPlan::setVectorGruposAlimenticios()
 {
     vectorGruposAlimenticios.clear();
-    std::pair<int,int> p;
-
-    for(int i = 0; i < NumGruposAlimenticios; i++)
-    {
-        p.first = i;
-        p.second = imax;
-        vectorGruposAlimenticios.push_back(p);
-    }
+    vectorGruposAlimenticios.assign(NumGruposAlimenticios, imax);
 }
 
 

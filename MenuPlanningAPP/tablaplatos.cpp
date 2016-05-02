@@ -7,20 +7,28 @@
 void MainWindowMenuPlan::ficheroDeTabla()
 {
     std::fstream fs;
-    fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in);                                   //Si el archivo existe se abre
+    fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in);                                           //Si el archivo existe se abre
 
-    if(!fs.is_open())                                                                                   //Si el archivo no existe se crea
+    if(!fs.is_open())                                                                                           //Si el archivo no existe se crea
         fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in | std::fstream::trunc);
 
-    std::vector<int> vec(db1->queryNumPlatos().toInt(), -1);                                            //Crear vector de tamanio igual a numero de platos
-    std::vector< std::vector<int> > tablaPlatos(vec.size(), vec);                                       //Crear vector bidimensional
+    std::vector<int> vec(db1->queryNumPlatos().toInt(), -1);                                                    //Crear vector de tamanio igual a numero de platos
+    vectorFicheroDeTabla.assign(vec.size(), vec);                                                               //Crear vector bidimensional
 
-    setTablaPlatos(tablaPlatos);                                                                        //Rellenar el vector bidimensional o tabla
+    setTablaPlatos(vectorFicheroDeTabla);                                                                       //Rellenar el vector bidimensional o tabla
 
-    for(int i = 0; i < tablaPlatos.size(); i++)                                                         //Escribir la tabla en el archivo
+    /*for(int i = 0; i < vectorFicheroDeTabla.size(); i++)
     {
-        for(int j = 0; j < tablaPlatos.size(); j++)
-            fs << tablaPlatos[i][j] << "\t";
+        for(int j = 0; j < vectorFicheroDeTabla.size(); j++)
+            qDebug() << vectorFicheroDeTabla[i][j] << "  ";
+
+        qDebug() << "----";
+    }*/
+
+    for(int i = 0; i < vectorFicheroDeTabla.size(); i++)                                                        //Escribir la tabla en el archivo
+    {
+        for(int j = 0; j < vectorFicheroDeTabla.size(); j++)
+            fs << vectorFicheroDeTabla[i][j] << "\t";
 
         fs << "\n";
     }
