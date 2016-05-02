@@ -22,11 +22,11 @@ class individuo
         float objPrecio;                                                //Precio total de todos los platos incluidos en el plan (menor = mejor)
         double objGradoRepeticion;                                      //Valor de repeticion de platos en el plan (menor = mejor)
         std::vector<float> infNutricional;                              //Vector que almacena la suma de valores nutricionales de todos los platos incluidos en el plan
-        std::vector<int> alergenos;                                     //Vector que almacena los alergenos contenidos en el plan
-        std::vector<int> incompatibilidades;                            //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
+        std::vector<QString> alergenos;                                 //Vector que almacena los alergenos contenidos en el plan
+        std::vector<QString> incompatibilidades;                        //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
 
     public:
-        individuo(int numDiasPlan);
+        individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncomp);
         ~individuo();
 
         void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p);        //Genera un menu aleatorio para un dia
