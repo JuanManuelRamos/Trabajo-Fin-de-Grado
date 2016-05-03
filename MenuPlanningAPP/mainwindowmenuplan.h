@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <limits>
+#include <sstream>
 
 #include "database.h"
 #include "enums.h"
@@ -90,7 +91,7 @@ private:
         std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
         std::vector<infoPlatos> SegundosPlatos;                                             //...
         std::vector<infoPlatos> Postres;                                                    //...
-        std::vector<int> vectorGruposAlimenticios;                                          //Vector de pares que guarda cada grupo alimenticio y el numero de dias desde que se eligio por ultima vez
+        std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda el numero de dias desde que se eligio por ultima vez (.first) y el numero de veces en los que se repite el mismo dia (.second)
         std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
 
 

@@ -20,7 +20,7 @@ individuo::~individuo()
 }
 
 
-void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<int> vectorGruposAl)
+void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl)
 {
     int ipp, isp, ip;
     for(unsigned int i = 0; i < numMenus; i++)
@@ -60,13 +60,21 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
             if(incompatibilidades[l] == "0" && (pp[ipp].incomp[l] == "1" || sp[isp].incomp[l] == "1" || p[ip].incomp[l] == "1"))
                 incompatibilidades[l] = "1";
     }
-    /*
+
+    //qDebug() << "hola_1";
+    setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
+    //qDebug() << "hola_2";
+
+
     qDebug() << "--Menus del Plan--";
-    for(unsigned int i = 0; i < numMenus; i++)   
-        qDebug() << "PP: " << planDietetico[i].idPrimerPlato << "  SP: " << planDietetico[i].idSegundoPlato << "  P: " << planDietetico[i].idPostre;
+    for(unsigned int i = 0; i < numMenus; i++)
+        qDebug() << "PP: " << planDietetico[i].idPrimerPlato.first << "  SP: " << planDietetico[i].idSegundoPlato.first << "  P: " << planDietetico[i].idPostre.first;
 
     qDebug() << "--Precio total del plan--";
     qDebug() << objPrecio;
+
+    qDebug() << "--Grado de Repeticion del plan--";
+    qDebug() << objGradoRepeticion;
 
     qDebug() << "--Informacion nutricional--";
     for(unsigned int i = 0; i < infNutricional.size(); i++)
@@ -78,32 +86,107 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 
     qDebug() << "--Incompatibilidades--";
     for(unsigned int i = 0; i < incompatibilidades.size(); i++)
-        qDebug() << incompatibilidades[i];*/
-
-    setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
+        qDebug() << incompatibilidades[i];
 
 }
 
 
 
-void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<int> vectorGruposAl)
+void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl)
 {
-    int valPP, valGAPP;
-    int valSP, valGASP;
+    double valPP, valSP, valP, valTabla, valGAFirst, valGASecond;
+    double uno = 1;
+    double  valTotal = 0;
+    std::vector<int> gaElegidos;
 
     for(unsigned int i = 0; i < numMenus; i++)
     {
         //PRIMER PLATO
         valPP = setValorPP(pp, planDietetico[i].idPrimerPlato.second);
         for(int j = 0; j < pp[planDietetico[i].idPrimerPlato.second].gruposAl.size(); j++)
+        {
             setValorGA(vectorGruposAl, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
+            if(gaElegidosPorIteracion(gaElegidos, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]))
+                gaElegidos.push_back(pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
+        }
+
+
+        qDebug() << "pp: " << valPP;
+        for(int x = 0; x < pp.size(); x++)
+            qDebug() << pp[x].id << " - " << pp[x].nDias;
+        qDebug() << "-----";
 
         //SEGUNDO PLATO
+        valSP = setValorSP(sp, planDietetico[i].idSegundoPlato.second);
+        for(int k = 0; k < sp[planDietetico[i].idSegundoPlato.second].gruposAl.size(); k++)
+        {
+            setValorGA(vectorGruposAl, sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
+            if(gaElegidosPorIteracion(gaElegidos, sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]))
+                gaElegidos.push_back(sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
+        }
 
+        qDebug() << "sp: " << valSP;
+        for(int x = 0; x < sp.size(); x++)
+            qDebug() << sp[x].id << " - " << sp[x].nDias;
+        qDebug() << "-----";
+
+        //POSTRE
+        valP = setValorP(p, planDietetico[i].idPostre.second);
+        for(int l = 0; l < p[planDietetico[i].idPostre.second].gruposAl.size(); l++)
+        {
+            setValorGA(vectorGruposAl, p[planDietetico[i].idPostre.second].gruposAl[l]);
+            if(gaElegidosPorIteracion(gaElegidos, p[planDietetico[i].idPostre.second].gruposAl[l]))
+                gaElegidos.push_back(p[planDietetico[i].idPostre.second].gruposAl[l]);
+        }
+
+        qDebug() << "p: " << valP;
+        for(int x = 0; x < p.size(); x++)
+            qDebug() << p[x].id << " - " << p[x].nDias;
+        qDebug() << "-----";
+
+        for(int x = 0; x < vectorGruposAl.size(); x++)
+            qDebug() << x << " - " << vectorGruposAl[x].first << " --> " << vectorGruposAl[x].second;
+        qDebug() << "-----";
+
+
+
+
+        qDebug() << "pp: " << valPP;
+        qDebug() << "sp: " << valSP;
+        qDebug() << "p: " << valP;
+        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);
+        qDebug() << "tabla: " << valTabla;
+        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);
+        qDebug() << "valorGAFirst: " << valGAFirst;
+        valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);
+        qDebug() << "valorGASecond: " << valGASecond;
+
+        valTotal += uno/(valTabla + valPP + valSP + valP) + uno/valGAFirst + valGASecond;
+        qDebug() << "valorTotal: " << valTotal;
+
+        qDebug() << "=========" << i;
+
+        sumValorPP(pp);
+        sumValorSP(sp);
+        sumValorP(p);
+        sumValorGA(vectorGruposAl);
+
+        gaElegidos.clear();
     }
+
+    objGradoRepeticion = valTotal;
 }
 
 
+
+bool individuo::gaElegidosPorIteracion(std::vector<int> vec, int valor)
+{
+    bool resultado = true;
+    for(int i = 0; i < vec.size(); i++)
+        if(vec[i] == valor)
+            resultado = false;
+    return resultado;
+}
 
 
 int individuo::getValorVectorFdeTabla(std::vector<std::vector<int>> vectorFdeTabla, int idPP, int idSP)
@@ -144,14 +227,47 @@ int individuo::setValorP(std::vector<struct infoPlatos> &p, int id)
     return valor;
 }
 
-void individuo::setValorGA(std::vector<int> &vectorGruposAl, int ga)
+void individuo::setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int ga)
 {
-    if(vectorGruposAl[ga] == imax)          //Si el grupo alimenticio es igual a imax, es que no se ha repetido nunca, por lo que se pone a 0
-        vectorGruposAl[ga] = 0;
+    if(vectorGruposAl[ga].first == imax)          //Si el grupo alimenticio es igual a imax, es que no se ha repetido nunca, por lo que se pone a 0
+        vectorGruposAl[ga].first = 0;
+    if(vectorGruposAl[ga].second == imax)
+        vectorGruposAl[ga].second = 0;
+    else
+        vectorGruposAl[ga].second++;
 }
 
+
+int individuo::getValorGAFirst(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg)
+{
+    qDebug() << "-- GA Elegidos--";
+   for(int i = 0; i < gaEleg.size(); i++)
+       qDebug() << gaEleg[i];
+   qDebug() << "------";
+
+   int valor = 0;
+   for(int i = 0; i < vectorGruposAl.size(); i++)
+       if(vectorGruposAl[i].first != imax && !gaElegidosPorIteracion(gaEleg, i))
+           valor += vectorGruposAl[i].first;
+   if(valor == 0)
+       valor = imax;                                        //Si el valor es = 0 devuelve imax porque si no dara error al dividir por 0
+
+   return valor;
+}
+
+int individuo::getValorGASecond(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg)
+{
+    int valor = 0;
+    for(int i = 0; i < vectorGruposAl.size(); i++)
+        if(vectorGruposAl[i].second != imax && !gaElegidosPorIteracion(gaEleg, i))
+            valor += vectorGruposAl[i].second;
+
+    return valor;
+}
+
+
 /*
-El tema con los grupos alimenticios es que, a diferencia de los platos, un grupo alimenticio puede repetirse el mismo dia. Los tres platos del dia nunca se van a repetir
+El tema con los grupos alimenticios es que, a diferencia de los platos, un grupo alimenticio puede repetirse el mismo dia. Los tres platos del dia nunca se van a repetir el mismo dia
 porque son de diferente tipo, pero los grupos alimenticios son comunes a los tres tipos de platos. Por lo que se debe hacer una separacion entre numero de dias desde que se repitio
 un grupo alimenticio y si un grupo alimenticio determinado se repite el mismo dia
 
@@ -184,9 +300,12 @@ void individuo::sumValorP(std::vector<struct infoPlatos> &p)
             p[i].nDias++;
 }
 
-void individuo::sumValorGA(std::vector<int> &vectorGruposAl)
+void individuo::sumValorGA(std::vector<std::pair<int,int>> &vectorGruposAl)
 {
     for(int i = 0; i < vectorGruposAl.size(); i++)
-        if(vectorGruposAl[i] != imax)
-            vectorGruposAl[i]++;
+    {
+        if(vectorGruposAl[i].first != imax)
+            vectorGruposAl[i].first++;
+        vectorGruposAl[i].second = imax;
+    }
 }

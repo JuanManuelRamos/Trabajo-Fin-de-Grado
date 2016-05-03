@@ -385,8 +385,8 @@ int MainWindowMenuPlan::setNumDiasPlan()
 /*---------------------------------------------------------------------*/
 void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
 {
-    if(actualizarFicheroDeTabla)                                //Si ha habido cambios en los platos
-        ficheroDeTabla();                                       //Actualizar el fichero de tabla de platos
+    //if(actualizarFicheroDeTabla)                                //Si ha habido cambios en los platos
+
     actualizarFicheroDeTabla = false;
 
     if(ui->label_PLAN_PP_2->text() == "0")
@@ -399,6 +399,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     {
         setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
         setVectorGruposAlimenticios();
+        ficheroDeTabla();                                           //Actualizar el fichero de tabla de platos
 
         crearPoblacion(setNumDiasPlan());
     }

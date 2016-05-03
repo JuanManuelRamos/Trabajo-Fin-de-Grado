@@ -218,7 +218,7 @@ void MainWindowMenuPlan::setPrimerosPlatos()
 
             PrimerosPlatos.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
 
-            /*qDebug() << "id: " <<  PrimerosPlatos[i].id << " nDias: " <<  PrimerosPlatos[i].nDias << "precio: " <<  PrimerosPlatos[i].precio;
+            /*qDebug() << "id: " <<  iP.id << " nDias: " <<  iP.nDias << "precio: " <<  iP.precio;
             for(int z = 0; z < iP.gruposAl.size(); z++)
             {
                 qDebug() << iP.gruposAl[z];
@@ -354,6 +354,27 @@ void MainWindowMenuPlan::setPostres()
 
             Postres.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
 
+            /*qDebug() << "id: " <<  iP.id << " nDias: " <<  iP.nDias << "precio: " <<  iP.precio;
+            for(int z = 0; z < iP.gruposAl.size(); z++)
+            {
+                qDebug() << iP.gruposAl[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.infoN.size(); z++)
+            {
+                qDebug() << iP.infoN[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.alerg.size(); z++)
+            {
+                qDebug() << iP.alerg[z];
+            }
+            qDebug() << "---";
+            for(int z = 0; z < iP.incomp.size(); z++)
+            {
+                qDebug() << iP.incomp[z];
+            }*/
+
             iP.gruposAl.clear();
             iP.infoN.clear();
             iP.alerg.clear();
@@ -407,7 +428,11 @@ void MainWindowMenuPlan::clearPostres()
 void MainWindowMenuPlan::setVectorGruposAlimenticios()
 {
     vectorGruposAlimenticios.clear();
-    vectorGruposAlimenticios.assign(NumGruposAlimenticios, imax);
+    std::pair<int,int> ga;
+    ga.first = imax;
+    ga.second = imax;
+
+    vectorGruposAlimenticios.assign(NumGruposAlimenticios, ga);
 }
 
 
