@@ -205,7 +205,6 @@ void MainWindowMenuPlan::on_pushButton_Eliminar_PLA_clicked()
             disableImagenes_Incomp_Alerg();                                     //deshabilita las imagenes de alergenos e incompatibilidades
             infoPLANPlatos();                                                   //Actualizar la informacion de numero de platos
             db1->ActualizarIDPlatos();                                          //Actualizar los ID's de platos en la base de datos
-            actualizarFicheroDeTabla = true;
         }
     }
 }
@@ -230,7 +229,6 @@ void MainWindowMenuPlan::on_pushButton_Guardar_PLA_clicked()
                 QSqlQueryModel *model = db1->queryMostrarInfoPlatos(ui->lineEdit_PLAnombre->text());                //consulta para mostrar la informacion recien añadida del plato
                 fillIngPlaTextBox(model, PLATOS);                                                                   //rellenar los textbox con la informacion
                 infoPLANPlatos();                                                                                   //Actualizar la informacion de numero de platos
-                actualizarFicheroDeTabla = true;
 
                 QMessageBox msgBox;                                                                                 //mensaje informativo para añadir ingredientes al plato
                 msgBox.setIcon(QMessageBox::Information);
@@ -363,7 +361,6 @@ void MainWindowMenuPlan::on_pushButton_PLAING_aniadir_clicked()
             setPrecioPlato();                                                                                                               //Calcular el precio del plato
             set_Incomp_Alerg_Plato();                                                                                                       //Calcula las incompatibilidades y alergenos del plato
             mostrar_Incomp_Alerg_Plato();                                                                                                   //Mostrar las incompatibilidades y alergenos del plato
-            actualizarFicheroDeTabla = true;
         }
     }
 }
@@ -418,7 +415,6 @@ void MainWindowMenuPlan::on_pushButton_PLAING_eliminar_clicked()
             setPrecioPlato();                                                                                       //Calcular el precio del plato
             set_Incomp_Alerg_Plato();                                                                               //Calcula las incompatibilidades y alergenos del plato
             mostrar_Incomp_Alerg_Plato();                                                                           //Mostrar las incompatibilidades y alergenos del plato
-            actualizarFicheroDeTabla = true;
         }
     }
 }

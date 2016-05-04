@@ -4,7 +4,15 @@
 
 void MainWindowMenuPlan::crearPoblacion(int numDiasPlan)
 {
-    individuo *ind = new individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    const int numIndividuos = 100;                                                                                          //Numero de individuos totales de la poblacion
 
-    ind->setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios);
+    for(int i = 0; i < numIndividuos; i++)
+    {
+        individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                           //Crear un individuo
+        ind.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios);         //Asignarle su plan alimenticio correspondiente
+
+        indPoblacion.push_back(ind);                                                                                        //Añadir el individuo al vector de poblacion
+    }
+
+
 }

@@ -86,7 +86,6 @@ private:
 
 
         /*-- Constante y vectores para la generacion del menu --*/
-        bool actualizarFicheroDeTabla;                                                      //Variable booleana para decidir si se actualiza el fichero de tabla al generar el plan
         const int imax = std::numeric_limits<int>::max();                                   //Constante que almacena el numero maximo posible para un int
         std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
         std::vector<infoPlatos> SegundosPlatos;                                             //...
@@ -95,7 +94,7 @@ private:
         std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
 
 
-
+        std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
 
 
 

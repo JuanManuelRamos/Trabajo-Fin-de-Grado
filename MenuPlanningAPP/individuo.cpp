@@ -61,9 +61,8 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
                 incompatibilidades[l] = "1";
     }
 
-    //qDebug() << "hola_1";
+    //VALOR DE REPETICION O VARIABILIDAD DE PLATOS
     setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
-    //qDebug() << "hola_2";
 
 
     qDebug() << "--Menus del Plan--";
@@ -97,13 +96,13 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
     double valPP, valSP, valP, valTabla, valGAFirst, valGASecond;
     double uno = 1;
     double  valTotal = 0;
-    std::vector<int> gaElegidos;
+    std::vector<int> gaElegidos;                                                                                //Vector que guarda los grupos alimenticios pertenecientes a los platos elegidos
 
     for(unsigned int i = 0; i < numMenus; i++)
     {
         //PRIMER PLATO
-        valPP = setValorPP(pp, planDietetico[i].idPrimerPlato.second);
-        for(int j = 0; j < pp[planDietetico[i].idPrimerPlato.second].gruposAl.size(); j++)
+        valPP = setValorPP(pp, planDietetico[i].idPrimerPlato.second);                                          //Numero de dias desde que se repitio el plato seleccionado
+        for(int j = 0; j < pp[planDietetico[i].idPrimerPlato.second].gruposAl.size(); j++)                      //Numero de dias desde que se repitio el grupo alimenticio
         {
             setValorGA(vectorGruposAl, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
             if(gaElegidosPorIteracion(gaElegidos, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]))
@@ -154,19 +153,19 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         qDebug() << "pp: " << valPP;
         qDebug() << "sp: " << valSP;
         qDebug() << "p: " << valP;
-        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);
+        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);         //Obtener el valor de la tabla de platos de compatibilidad entre primeros y segundos platos
         qDebug() << "tabla: " << valTabla;
-        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);
+        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);                                                                                   //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios
         qDebug() << "valorGAFirst: " << valGAFirst;
-        valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);
+        valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);                                                                                 //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
         qDebug() << "valorGASecond: " << valGASecond;
 
-        valTotal += uno/(valTabla + valPP + valSP + valP) + uno/valGAFirst + valGASecond;
+        valTotal += uno/(valTabla + valPP + valSP + valP) + uno/valGAFirst + valGASecond;                                                           //Calcular el valor total
         qDebug() << "valorTotal: " << valTotal;
 
         qDebug() << "=========" << i;
 
-        sumValorPP(pp);
+        sumValorPP(pp);                                                                                                                             //Suma los valores de platos y grupos alimenticios elegidos para el siguiente dia
         sumValorSP(sp);
         sumValorP(p);
         sumValorGA(vectorGruposAl);
@@ -238,7 +237,7 @@ void individuo::setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int 
 }
 
 
-int individuo::getValorGAFirst(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg)
+int individuo::getValorGAFirst(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> gaEleg)
 {
     qDebug() << "-- GA Elegidos--";
    for(int i = 0; i < gaEleg.size(); i++)
@@ -248,7 +247,10 @@ int individuo::getValorGAFirst(std::vector<std::pair<int,int>> vectorGruposAl, s
    int valor = 0;
    for(int i = 0; i < vectorGruposAl.size(); i++)
        if(vectorGruposAl[i].first != imax && !gaElegidosPorIteracion(gaEleg, i))
+       {
            valor += vectorGruposAl[i].first;
+           vectorGruposAl[i].first = 0;
+       }
    if(valor == 0)
        valor = imax;                                        //Si el valor es = 0 devuelve imax porque si no dara error al dividir por 0
 

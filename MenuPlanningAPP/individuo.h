@@ -40,7 +40,7 @@ class individuo
         int setValorSP(std::vector<struct infoPlatos> &sp, int id);
         int setValorP(std::vector<struct infoPlatos> &p, int id);
         void setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int ga);
-        int getValorGAFirst(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg);
+        int getValorGAFirst(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> gaEleg);
         int getValorGASecond(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg);
 
         void sumValorPP(std::vector<struct infoPlatos> &pp);

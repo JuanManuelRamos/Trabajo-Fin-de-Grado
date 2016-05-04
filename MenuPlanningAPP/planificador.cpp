@@ -385,10 +385,6 @@ int MainWindowMenuPlan::setNumDiasPlan()
 /*---------------------------------------------------------------------*/
 void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
 {
-    //if(actualizarFicheroDeTabla)                                //Si ha habido cambios en los platos
-
-    actualizarFicheroDeTabla = false;
-
     if(ui->label_PLAN_PP_2->text() == "0")
         QMessageBox::information(this,"Información","Debe seleccionar al menos un primer plato.");
     else if (ui->label_PLAN_SP_2->text() == "0")
@@ -398,9 +394,9 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     else
     {
         setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
-        setVectorGruposAlimenticios();
+        setVectorGruposAlimenticios();                              //Genera el vector de grupos alimenticios
         ficheroDeTabla();                                           //Actualizar el fichero de tabla de platos
 
-        crearPoblacion(setNumDiasPlan());
+        crearPoblacion(setNumDiasPlan());                           //Comienza la creacion de individuos
     }
 }

@@ -135,9 +135,6 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) : QMainWindow(parent),ui
     //Establecer el formato del boton Generar Plan
     QFont font("Times", 12);
     ui->pushButton_PLAN_GenerarPlan->setFont(font);
-
-    //Inicializar variable actualizar fichero de tabla
-    actualizarFicheroDeTabla = false;
 }
 
 MainWindowMenuPlan::~MainWindowMenuPlan()
