@@ -20,7 +20,7 @@ individuo::~individuo()
 }
 
 
-void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl)
+void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI)
 {
     int ipp, isp, ip;
     for(unsigned int i = 0; i < numMenus; i++)
@@ -30,18 +30,33 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
         //ESTE METODO CREA LOS INDIVIDUOS DE LA PRIMERA GENERACION, YA QUE SE CREAN DE FORMA ALEATORIA, SI DESDE EL COMIENZO NO SE ELIGEN PLATOS CON DETERMINADAS
         //CARACTERISTICAS, NO DEBERIAN APARECER EN POSTERIORES GENERACIONES
 
-        ipp = rand() % pp.size();
-        isp = rand() % sp.size();
-        ip = rand() % p.size();
 
-        //ID'S
-        menu.idPrimerPlato.first = pp[ipp].id;
-        menu.idSegundoPlato.first = sp[isp].id;
-        menu.idPostre.first = p[ip].id;
-        menu.idPrimerPlato.second = ipp;
-        menu.idSegundoPlato.second = isp;
-        menu.idPostre.second = ip;
-        planDietetico.push_back(menu);
+
+        //La funcion setMenuDiario sirve tanto para crear un individuo de forma aleatoria en la primera generacion como para actualizar los datos de un nuevo individuo
+        //Por ello se debe controlar si el individuo se quiere generar de forma aleatoria o por el contrario ya existe y solo se desea actualizar sus datos
+
+        if(MI == GENERAR)
+        {
+            //ID'S - Elegir aleatoriamente los platos
+            ipp = rand() % pp.size();
+            isp = rand() % sp.size();
+            ip = rand() % p.size();
+
+            menu.idPrimerPlato.first = pp[ipp].id;
+            menu.idSegundoPlato.first = sp[isp].id;
+            menu.idPostre.first = p[ip].id;
+            menu.idPrimerPlato.second = ipp;
+            menu.idSegundoPlato.second = isp;
+            menu.idPostre.second = ip;
+            planDietetico.push_back(menu);
+        }
+        else
+        {
+            ipp = planDietetico[i].idPrimerPlato.second;
+            isp = planDietetico[i].idSegundoPlato.second;
+            ip = planDietetico[i].idPostre.second;
+        }
+
 
         //PRECIO
         objPrecio = objPrecio + pp[ipp].precio + sp[isp].precio + p[ip].precio;
@@ -69,7 +84,7 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
     for(unsigned int i = 0; i < numMenus; i++)
         qDebug() << "PP: " << planDietetico[i].idPrimerPlato.first << "  SP: " << planDietetico[i].idSegundoPlato.first << "  P: " << planDietetico[i].idPostre.first;
 
-    qDebug() << "--Precio total del plan--";
+    /*qDebug() << "--Precio total del plan--";
     qDebug() << objPrecio;
 
     qDebug() << "--Grado de Repeticion del plan--";
@@ -85,7 +100,7 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 
     qDebug() << "--Incompatibilidades--";
     for(unsigned int i = 0; i < incompatibilidades.size(); i++)
-        qDebug() << incompatibilidades[i];
+        qDebug() << incompatibilidades[i];*/
 
 }
 
@@ -110,10 +125,10 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         }
 
 
-        qDebug() << "pp: " << valPP;
+        /*qDebug() << "pp: " << valPP;
         for(int x = 0; x < pp.size(); x++)
             qDebug() << pp[x].id << " - " << pp[x].nDias;
-        qDebug() << "-----";
+        qDebug() << "-----";*/
 
         //SEGUNDO PLATO
         valSP = setValorSP(sp, planDietetico[i].idSegundoPlato.second);
@@ -124,10 +139,10 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
                 gaElegidos.push_back(sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
         }
 
-        qDebug() << "sp: " << valSP;
+        /*qDebug() << "sp: " << valSP;
         for(int x = 0; x < sp.size(); x++)
             qDebug() << sp[x].id << " - " << sp[x].nDias;
-        qDebug() << "-----";
+        qDebug() << "-----";*/
 
         //POSTRE
         valP = setValorP(p, planDietetico[i].idPostre.second);
@@ -138,32 +153,32 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
                 gaElegidos.push_back(p[planDietetico[i].idPostre.second].gruposAl[l]);
         }
 
-        qDebug() << "p: " << valP;
+        /*qDebug() << "p: " << valP;
         for(int x = 0; x < p.size(); x++)
             qDebug() << p[x].id << " - " << p[x].nDias;
-        qDebug() << "-----";
+        qDebug() << "-----";*/
 
-        for(int x = 0; x < vectorGruposAl.size(); x++)
+        /*for(int x = 0; x < vectorGruposAl.size(); x++)
             qDebug() << x << " - " << vectorGruposAl[x].first << " --> " << vectorGruposAl[x].second;
-        qDebug() << "-----";
+        qDebug() << "-----";*/
 
 
 
 
-        qDebug() << "pp: " << valPP;
+        /*qDebug() << "pp: " << valPP;
         qDebug() << "sp: " << valSP;
-        qDebug() << "p: " << valP;
+        qDebug() << "p: " << valP;*/
         valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);         //Obtener el valor de la tabla de platos de compatibilidad entre primeros y segundos platos
-        qDebug() << "tabla: " << valTabla;
+        //qDebug() << "tabla: " << valTabla;
         valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);                                                                                   //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios
-        qDebug() << "valorGAFirst: " << valGAFirst;
+        //qDebug() << "valorGAFirst: " << valGAFirst;
         valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);                                                                                 //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
-        qDebug() << "valorGASecond: " << valGASecond;
+        //qDebug() << "valorGASecond: " << valGASecond;
 
         valTotal += uno/(valTabla + valPP + valSP + valP) + uno/valGAFirst + valGASecond;                                                           //Calcular el valor total
-        qDebug() << "valorTotal: " << valTotal;
+        //qDebug() << "valorTotal: " << valTotal;
 
-        qDebug() << "=========" << i;
+        //qDebug() << "=========" << i;
 
         sumValorPP(pp);                                                                                                                             //Suma los valores de platos y grupos alimenticios elegidos para el siguiente dia
         sumValorSP(sp);
@@ -239,10 +254,10 @@ void individuo::setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int 
 
 int individuo::getValorGAFirst(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> gaEleg)
 {
-    qDebug() << "-- GA Elegidos--";
+   /*qDebug() << "-- GA Elegidos--";
    for(int i = 0; i < gaEleg.size(); i++)
        qDebug() << gaEleg[i];
-   qDebug() << "------";
+   qDebug() << "------";*/
 
    int valor = 0;
    for(int i = 0; i < vectorGruposAl.size(); i++)
@@ -271,14 +286,13 @@ int individuo::getValorGASecond(std::vector<std::pair<int,int>> vectorGruposAl, 
 /*
 El tema con los grupos alimenticios es que, a diferencia de los platos, un grupo alimenticio puede repetirse el mismo dia. Los tres platos del dia nunca se van a repetir el mismo dia
 porque son de diferente tipo, pero los grupos alimenticios son comunes a los tres tipos de platos. Por lo que se debe hacer una separacion entre numero de dias desde que se repitio
-un grupo alimenticio y si un grupo alimenticio determinado se repite el mismo dia
+un grupo alimenticio y si un grupo alimenticio determinado se repite el mismo dia.
 
 Si el grupo alimenticio X se repite 2 o mas veces el mismo dia, debe ser penalizable de forma aparte a si se repite dias despues. Por tanto, se podria volver a hacer el vector
 grupoAL como vector de pares, en el que el primer elemento hace referencia al numero de dias desde que se repitio por ultima vez, y el segundo elemento el numero de veces que se
 ha repetido ese dia. Al final de cada iteracion, este segundo elemento se resetea a 0 para todos los grupos alimenticios, y el primer elemento (el contador de dias), se utiliza de la misma
 forma que para los tipos de platos. Como el numero de repeticiones de grupo alimenticio es algo muy evitable, y cuanto mayor peor, se puede incluir en la ecuacion como la suma de este
 valor, en el numerador.
-
 */
 
 void individuo::sumValorPP(std::vector<struct infoPlatos> &pp)

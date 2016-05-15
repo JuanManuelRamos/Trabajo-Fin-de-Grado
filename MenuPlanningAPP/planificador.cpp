@@ -361,20 +361,19 @@ void MainWindowMenuPlan::on_pushButton_PLAN_Cancelar_clicked()
 /*------------------------------------------------------------------------------------------------------------*/
 /*--------------- DEVUELVE EL NUMERO DE DIAS DEL PLAN SEGUN LO ESPECIFICADO EN EL CALENDARIO -----------------*/
 /*------------------------------------------------------------------------------------------------------------*/
-int MainWindowMenuPlan::setNumDiasPlan()
+void MainWindowMenuPlan::setNumDiasPlan()
 {
     int nDias = ui->dateEdit_desde->date().daysTo(ui->dateEdit_hasta->date())+1;
-    int nDiasReal = nDias;
+    numDiasPlan = nDias;
     QDate d = ui->dateEdit_desde->date();
 
     for(int i = 0; i < nDias; i++)
     {
         if(d.dayOfWeek() == 6 || d.dayOfWeek() == 7)
-            nDiasReal--;
+            numDiasPlan--;
 
         d = d.addDays(1);
     }
-    return nDiasReal;
 }
 
 
@@ -397,6 +396,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
         setVectorGruposAlimenticios();                              //Genera el vector de grupos alimenticios
         ficheroDeTabla();                                           //Actualizar el fichero de tabla de platos
 
-        crearPoblacion(setNumDiasPlan());                           //Comienza la creacion de individuos
+        setNumDiasPlan();
+        crearPoblacion();                                           //Comienza la creacion de individuos
     }
 }

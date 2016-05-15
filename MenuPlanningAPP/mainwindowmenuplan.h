@@ -86,13 +86,13 @@ private:
 
 
         /*-- Constante y vectores para la generacion del menu --*/
+        int numDiasPlan;
         const int imax = std::numeric_limits<int>::max();                                   //Constante que almacena el numero maximo posible para un int
         std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
         std::vector<infoPlatos> SegundosPlatos;                                             //...
         std::vector<infoPlatos> Postres;                                                    //...
         std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda el numero de dias desde que se eligio por ultima vez (.first) y el numero de veces en los que se repite el mismo dia (.second)
         std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
-
 
         std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
 
@@ -194,7 +194,7 @@ private:
         void enableIDR();                                       //Activa los botones correspondientes a la edicion de datos de ingesta diraria recomendada
         void disableIDR();                                      //Desactiva los botones correspondientes a la edicion de datos de ingesta diraria recomendada
 
-        int setNumDiasPlan();                                   //Devuelve el numero de dias o menus a realizar en el plan segun lo especificado en el calendario
+        void setNumDiasPlan();                                   //Devuelve el numero de dias o menus a realizar en el plan segun lo especificado en el calendario
 
 
         /*-----------------------*/
@@ -226,7 +226,9 @@ private:
         /*-------------------*/
         /*---- POBLACION ----*/
         /*-------------------*/
-        void crearPoblacion(int numDiasPlan);                                  //Funcion que crea la poblacion de individuos
+        void crearPoblacion();                                                                                              //Funcion que crea la poblacion de individuos
+        void reproduccion(std::vector<menuDiario> P1, std::vector<menuDiario> P2, individuo &H1, individuo &H2);            //Funcion para reproducir dos Planes Dieteticos. P1 y P2 son los planes dieteticos de los padres, que se mezclaran y crearan los planes dieteticos de los hijos H1 y H2
+        void mutacion(individuo &I);
 
 
     private slots:
