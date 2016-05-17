@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     planificador.cpp \
     tablaplatos.cpp \
     individuo.cpp \
-    poblacion.cpp
+    poblacion.cpp \
+    quicksort.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \

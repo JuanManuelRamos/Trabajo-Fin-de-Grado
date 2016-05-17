@@ -24,13 +24,15 @@ class individuo
 
         std::vector<menuDiario> planDietetico;                          //Vector que almacena cada uno de los menus diarios
         unsigned int numMenus = 0;                                      //Numero de menus = numero de dias de los que esta compuesto el plan
-        float objPrecio;                                                //Precio total de todos los platos incluidos en el plan (menor = mejor)
+        double objPrecio;                                               //Precio total de todos los platos incluidos en el plan (menor = mejor)
         double objGradoRepeticion;                                      //Valor de repeticion de platos en el plan (menor = mejor)
         std::vector<float> infNutricional;                              //Vector que almacena la suma de valores nutricionales de todos los platos incluidos en el plan
         std::vector<QString> alergenos;                                 //Vector que almacena los alergenos contenidos en el plan
         std::vector<QString> incompatibilidades;                        //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
 
-        const int imax = std::numeric_limits<int>::max();
+        double iDistance;
+
+        int imax = std::numeric_limits<int>::max();                     //Entero maximo (utilizado para calculos)
 
     public:
         individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncomp);
@@ -63,12 +65,16 @@ class individuo
         /* ------------------------------------------------------------------ */
 
 
+
        std::vector<struct menuDiario> getPlanDietetico() { return planDietetico; }
-       void setPlanDietetico(std::vector<struct menuDiario> nuevoPlan)
-       {
-           planDietetico.clear();
-           planDietetico = nuevoPlan;
-       }
+       void setPlanDietetico(std::vector<struct menuDiario> nuevoPlan) { planDietetico.clear(); planDietetico = nuevoPlan; }
+
+       double get_iDistance() { return iDistance; }
+       void set_iDistance(double d) { iDistance = d; }
+
+       double get_objPrecio() { return objPrecio; }
+       double get_objGradoRepeticion() { return objGradoRepeticion; }
+
 };
 
 

@@ -11,6 +11,8 @@ individuo::individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncom
     infNutricional.assign(numInfNutr, 0);
     alergenos.assign(numAlerg, "0");
     incompatibilidades.assign(numIncomp, "0");
+
+    iDistance = 0;
 }
 
 
@@ -59,7 +61,7 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 
 
         //PRECIO
-        objPrecio = objPrecio + pp[ipp].precio + sp[isp].precio + p[ip].precio;
+        objPrecio = objPrecio + (double)pp[ipp].precio + (double)sp[isp].precio + (double)p[ip].precio;
 
         //INFORMACION NUTRICIONAL
         for(int j = 0; j < infNutricional.size(); j++)
@@ -80,9 +82,9 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
     setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
 
 
-    qDebug() << "--Menus del Plan--";
+    /*qDebug() << "--Menus del Plan--";
     for(unsigned int i = 0; i < numMenus; i++)
-        qDebug() << "PP: " << planDietetico[i].idPrimerPlato.first << "  SP: " << planDietetico[i].idSegundoPlato.first << "  P: " << planDietetico[i].idPostre.first;
+        qDebug() << "PP: " << planDietetico[i].idPrimerPlato.first << "  SP: " << planDietetico[i].idSegundoPlato.first << "  P: " << planDietetico[i].idPostre.first;*/
 
     /*qDebug() << "--Precio total del plan--";
     qDebug() << objPrecio;

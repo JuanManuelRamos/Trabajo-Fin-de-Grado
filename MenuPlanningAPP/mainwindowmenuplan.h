@@ -50,12 +50,15 @@ private:
         QUERYS Q;                                   //Objeto de enum
 
         /*-- Variables de control de datos --*/
-        const int maxNumSize = 6;                       //Numero maximo de digitos en un campo numerico
-        const int NumInfN = 21;                         //Numero de datos nutricionales
+        const static int maxNumSize = 6;                       //Numero maximo de digitos en un campo numerico
+        const static int NumInfN = 21;                         //Numero de datos nutricionales
         const static int NumMesesTemp = 12;             //Numero de meses de temporada
         const static int NumAlergenos = 7;              //Numero de alergenos
         const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
         const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
+        const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
+        const static int NumIndividuos = 10;            //Numero de individuos a generarse en la primera poblacion
+
 
         /*-- Arrays de datos--*/
         char mesesTemporada[NumMesesTemp];          //Array de meses de temporada
@@ -103,6 +106,7 @@ private:
     public:
         explicit MainWindowMenuPlan(QWidget *parent = 0);
         ~MainWindowMenuPlan();
+
 
 
         //Funciones de control de datos
@@ -229,6 +233,18 @@ private:
         void crearPoblacion();                                                                                              //Funcion que crea la poblacion de individuos
         void reproduccion(std::vector<menuDiario> P1, std::vector<menuDiario> P2, individuo &H1, individuo &H2);            //Funcion para reproducir dos Planes Dieteticos. P1 y P2 son los planes dieteticos de los padres, que se mezclaran y crearan los planes dieteticos de los hijos H1 y H2
         void mutacion(individuo &I);
+        void crowdingDistance(std::vector<individuo> &poblacionNonDom);
+
+
+        /*-------------------*/
+        /*---- QUICKSORT ----*/
+        /*-------------------*/
+        void quickSort(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
+        int pivot(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
+        double maxObj(std::vector<individuo> poblacionNonDom, int numObj);
+        double minObj(std::vector<individuo> poblacionNonDom, int numObj);
+
+
 
 
     private slots:

@@ -5,9 +5,8 @@
 void MainWindowMenuPlan::crearPoblacion()
 {
     indPoblacion.clear();
-    const int numIndividuos = 2;                                                                                              //Numero de individuos totales de la poblacion
 
-    for(int i = 0; i < numIndividuos; i++)
+    for(int i = 0; i < NumIndividuos; i++)
     {
         individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
         ind.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, GENERAR);    //Asignarle su plan alimenticio correspondiente
@@ -16,8 +15,7 @@ void MainWindowMenuPlan::crearPoblacion()
     }
 
 
-
-
+    /*
     qDebug() << "-----PADRES BIEEENNNNN------";
     individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
     individuo hijo2 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
@@ -37,7 +35,12 @@ void MainWindowMenuPlan::crearPoblacion()
     hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
     hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
 
-    qDebug() << "-----TODO BIEEENNNNN------";
+    qDebug() << "-----TODO BIEEENNNNN------";  
+    */
+
+    crowdingDistance(indPoblacion);
+
+
 }
 
 
@@ -130,3 +133,81 @@ void MainWindowMenuPlan::mutacion(individuo &I)
     if(mutado)
         I.setPlanDietetico(aux);
 }
+
+
+
+/*-----------------------------------------------------------------------------------------*/
+/*--------------- CALCULO DE CROWDING DISTANCE DE INDIVIDUOS NO DOMINADOS -----------------*/
+/*-----------------------------------------------------------------------------------------*/
+
+void MainWindowMenuPlan::crowdingDistance(std::vector<individuo> &poblacionNonDom)
+{
+    int N = static_cast<int>(poblacionNonDom.size()-1);
+    double dmax = std::numeric_limits<double>::max();
+    double aux = 0, max, min;
+
+    /*for(int j = 0; j < poblacionNonDom.size(); j++)
+        qDebug() << "Precio: " << poblacionNonDom[j].get_objPrecio() << " Repeticion: " << poblacionNonDom[j].get_objGradoRepeticion();
+
+    qDebug() << "-----------";*/
+
+    for(int i = 0; i < NumObjetivos; i++)
+    {
+        quickSort(poblacionNonDom, 0, N, 1+i);
+        poblacionNonDom[0].set_iDistance(dmax);
+        poblacionNonDom[N].set_iDistance(dmax);
+        max = maxObj(poblacionNonDom, 1+i);
+        min = minObj(poblacionNonDom, 1+i);
+
+        for(int j = 1; j < N; j++)
+        {
+            if(i == 0)
+                aux = poblacionNonDom[j].get_iDistance() + ((poblacionNonDom[1+j].get_objPrecio() - poblacionNonDom[j-1].get_objPrecio()) / (max - min));
+            else if(i == 1)
+                aux = poblacionNonDom[j].get_iDistance() + ((poblacionNonDom[1+j].get_objGradoRepeticion() - poblacionNonDom[j-1].get_objGradoRepeticion()) / (max - min));
+
+            poblacionNonDom[j].set_iDistance(aux);
+        }
+    }
+}
+
+
+
+double MainWindowMenuPlan::maxObj(std::vector<individuo> poblacionNonDom, int numObj)
+{
+    double max = 0;
+    for(int i = 0; i < poblacionNonDom.size(); i++)
+    {
+        if(numObj == 1)
+            if(poblacionNonDom[i].get_objPrecio() > max)
+                max = poblacionNonDom[i].get_objPrecio();
+        else if(numObj == 2)
+            if(poblacionNonDom[i].get_objGradoRepeticion() > max)
+                max = poblacionNonDom[i].get_objGradoRepeticion();
+    }
+    return max;
+}
+
+double MainWindowMenuPlan::minObj(std::vector<individuo> poblacionNonDom, int numObj)
+{
+    double min = std::numeric_limits<double>::max();
+    for(int i = 0; i < poblacionNonDom.size(); i++)
+    {
+        if(numObj == 1)
+            if(poblacionNonDom[i].get_objPrecio() < min)
+                min = poblacionNonDom[i].get_objPrecio();
+        else if(numObj == 2)
+            if(poblacionNonDom[i].get_objGradoRepeticion() < min)
+                min = poblacionNonDom[i].get_objGradoRepeticion();
+    }
+    return min;
+}
+
+
+
+
+
+
+
+
+
