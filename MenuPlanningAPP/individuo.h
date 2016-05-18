@@ -75,6 +75,8 @@ class individuo
        double get_objPrecio() { return objPrecio; }
        double get_objGradoRepeticion() { return objGradoRepeticion; }
 
+       void set_objPrecio(double x) { objPrecio = x; }
+       void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
 };
 
 

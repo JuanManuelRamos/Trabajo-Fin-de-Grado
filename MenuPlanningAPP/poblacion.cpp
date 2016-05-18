@@ -38,9 +38,81 @@ void MainWindowMenuPlan::crearPoblacion()
     qDebug() << "-----TODO BIEEENNNNN------";  
     */
 
+
+    /*==============================================================*/
+    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS */
+
+    indPoblacion.clear();
+
+    individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(18.5);
+    ind.set_objGradoRepeticion(2);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(15);
+    ind.set_objGradoRepeticion(4.7);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(14.5);
+    ind.set_objGradoRepeticion(5);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(12);
+    ind.set_objGradoRepeticion(5.8);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(8);
+    ind.set_objGradoRepeticion(8.5);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(7);
+    ind.set_objGradoRepeticion(11);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(6.8);
+    ind.set_objGradoRepeticion(11.5);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(6.5);
+    ind.set_objGradoRepeticion(12);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(6);
+    ind.set_objGradoRepeticion(13);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(5);
+    ind.set_objGradoRepeticion(16);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(4.8);
+    ind.set_objGradoRepeticion(16.5);
+    indPoblacion.push_back(ind);
+
+    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+    ind.set_objPrecio(2.5);
+    ind.set_objGradoRepeticion(22);
+    indPoblacion.push_back(ind);
+
+
+    /*==============================================================*/
+
     crowdingDistance(indPoblacion);
 
+    for(int j = 0; j < indPoblacion.size(); j++)
+            qDebug() << "Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " iDistance: " << indPoblacion[j].get_iDistance();
 
+    qDebug() << "-----------";
 }
 
 
@@ -146,10 +218,7 @@ void MainWindowMenuPlan::crowdingDistance(std::vector<individuo> &poblacionNonDo
     double dmax = std::numeric_limits<double>::max();
     double aux = 0, max, min;
 
-    /*for(int j = 0; j < poblacionNonDom.size(); j++)
-        qDebug() << "Precio: " << poblacionNonDom[j].get_objPrecio() << " Repeticion: " << poblacionNonDom[j].get_objGradoRepeticion();
 
-    qDebug() << "-----------";*/
 
     for(int i = 0; i < NumObjetivos; i++)
     {
@@ -161,29 +230,52 @@ void MainWindowMenuPlan::crowdingDistance(std::vector<individuo> &poblacionNonDo
 
         for(int j = 1; j < N; j++)
         {
+            //qDebug() << "Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " iDistance: " << indPoblacion[j].get_iDistance();
             if(i == 0)
                 aux = poblacionNonDom[j].get_iDistance() + ((poblacionNonDom[1+j].get_objPrecio() - poblacionNonDom[j-1].get_objPrecio()) / (max - min));
             else if(i == 1)
                 aux = poblacionNonDom[j].get_iDistance() + ((poblacionNonDom[1+j].get_objGradoRepeticion() - poblacionNonDom[j-1].get_objGradoRepeticion()) / (max - min));
 
+            /*if(i == 0)
+                qDebug() << poblacionNonDom[j].get_iDistance() << " + " << "((" << poblacionNonDom[1+j].get_objPrecio() << " - " << poblacionNonDom[j-1].get_objPrecio() << ") / (" << max << " - " << min << ")) = " << aux;
+            else if(i == 1)
+                qDebug() << poblacionNonDom[j].get_iDistance() << " + " << "((" << poblacionNonDom[1+j].get_objGradoRepeticion() << " - " << poblacionNonDom[j-1].get_objGradoRepeticion() << ") / (" << max << " - " << min << ")) = " << aux;
+            */
+
             poblacionNonDom[j].set_iDistance(aux);
+            //qDebug() << "";
         }
+
+        /*for(int j = 0; j < indPoblacion.size(); j++)
+                qDebug() << "Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " iDistance: " << indPoblacion[j].get_iDistance();
+
+        qDebug() << "==============================";*/
     }
+
+    /*for(int j = 0; j < poblacionNonDom.size(); j++)
+        qDebug() << "Precio: " << poblacionNonDom[j].get_objPrecio() << " Repeticion: " << poblacionNonDom[j].get_objGradoRepeticion() << " iDistance: " << poblacionNonDom[j].get_iDistance();
+
+    qDebug() << "-----------";*/
 }
 
 
 
 double MainWindowMenuPlan::maxObj(std::vector<individuo> poblacionNonDom, int numObj)
 {
+
     double max = 0;
     for(int i = 0; i < poblacionNonDom.size(); i++)
     {
         if(numObj == 1)
+        {
             if(poblacionNonDom[i].get_objPrecio() > max)
                 max = poblacionNonDom[i].get_objPrecio();
+        }
         else if(numObj == 2)
+        {
             if(poblacionNonDom[i].get_objGradoRepeticion() > max)
                 max = poblacionNonDom[i].get_objGradoRepeticion();
+        }
     }
     return max;
 }
@@ -194,11 +286,15 @@ double MainWindowMenuPlan::minObj(std::vector<individuo> poblacionNonDom, int nu
     for(int i = 0; i < poblacionNonDom.size(); i++)
     {
         if(numObj == 1)
+        {
             if(poblacionNonDom[i].get_objPrecio() < min)
                 min = poblacionNonDom[i].get_objPrecio();
+        }
         else if(numObj == 2)
+        {
             if(poblacionNonDom[i].get_objGradoRepeticion() < min)
                 min = poblacionNonDom[i].get_objGradoRepeticion();
+        }
     }
     return min;
 }
