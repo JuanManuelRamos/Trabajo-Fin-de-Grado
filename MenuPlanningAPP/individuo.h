@@ -31,6 +31,10 @@ class individuo
         std::vector<QString> incompatibilidades;                        //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
 
         double iDistance;
+        std::vector<individuo> indvDominados;                           //Vector de soluciones a las que el individuo actual domina. En la teoria denominada Sp
+        int numDominantes;                                              //Numero de indivuos que dominan al individuo actual. En la teoria denominado np
+        int rango;
+
 
         int imax = std::numeric_limits<int>::max();                     //Entero maximo (utilizado para calculos)
 
@@ -75,8 +79,19 @@ class individuo
        double get_objPrecio() { return objPrecio; }
        double get_objGradoRepeticion() { return objGradoRepeticion; }
 
-       void set_objPrecio(double x) { objPrecio = x; }
-       void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
+       //Funciones para la prueba del crowding distance
+       //void set_objPrecio(double x) { objPrecio = x; }
+       //void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
+
+       void set_numDominantes(int num) { numDominantes = num; }
+       int get_numDominantes() { return numDominantes; }
+
+       void set_indvDominados(individuo I) { indvDominados.push_back(I); }
+       std::vector<individuo> get_indvDominados() { return indvDominados; }
+       size_t get_NumIndDominados() { return indvDominados.size(); }
+
+       void set_rango(int num) { rango = num; }
+       int get_rango() { return rango; }
 };
 
 

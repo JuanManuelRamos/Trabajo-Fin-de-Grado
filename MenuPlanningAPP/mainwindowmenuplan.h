@@ -97,8 +97,10 @@ private:
         std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda el numero de dias desde que se eligio por ultima vez (.first) y el numero de veces en los que se repite el mismo dia (.second)
         std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
 
-        std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
 
+        /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
+        std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
+        std::vector< std::vector<individuo> > indPorFrente;                                 //Vector bidimensional de individuos que almacena los individuos dividios por el frente al que pertenecen
 
 
 
@@ -234,6 +236,9 @@ private:
         void reproduccion(std::vector<menuDiario> P1, std::vector<menuDiario> P2, individuo &H1, individuo &H2);            //Funcion para reproducir dos Planes Dieteticos. P1 y P2 son los planes dieteticos de los padres, que se mezclaran y crearan los planes dieteticos de los hijos H1 y H2
         void mutacion(individuo &I);
         void crowdingDistance(std::vector<individuo> &poblacionNonDom);
+
+        void fastNonDominatedSort();
+        DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                        //Funcion para comprobar si P domina a Q.
 
 
         /*-------------------*/

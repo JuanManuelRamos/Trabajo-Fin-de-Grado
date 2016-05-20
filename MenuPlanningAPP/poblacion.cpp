@@ -15,6 +15,8 @@ void MainWindowMenuPlan::crearPoblacion()
     }
 
 
+    /*==============================================================*/
+    /* EJEMPLO PARA PRUEBA DE LAS FUNCIONES DE REPRODUCCION Y MUTACION */
     /*
     qDebug() << "-----PADRES BIEEENNNNN------";
     individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
@@ -37,12 +39,14 @@ void MainWindowMenuPlan::crearPoblacion()
 
     qDebug() << "-----TODO BIEEENNNNN------";  
     */
+    /*==============================================================*/
+
 
 
     /*==============================================================*/
-    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS */
+    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS PARA PROBAR LA FUNCION DE CROWDING DISTANCE */
 
-    indPoblacion.clear();
+    /*indPoblacion.clear();
 
     individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
     ind.set_objPrecio(18.5);
@@ -104,15 +108,16 @@ void MainWindowMenuPlan::crearPoblacion()
     ind.set_objGradoRepeticion(22);
     indPoblacion.push_back(ind);
 
-
-    /*==============================================================*/
-
     crowdingDistance(indPoblacion);
 
     for(int j = 0; j < indPoblacion.size(); j++)
             qDebug() << "Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " iDistance: " << indPoblacion[j].get_iDistance();
 
-    qDebug() << "-----------";
+    qDebug() << "-----------";*/
+    /*==============================================================*/
+
+
+    fastNonDominatedSort();
 }
 
 
@@ -302,8 +307,57 @@ double MainWindowMenuPlan::minObj(std::vector<individuo> poblacionNonDom, int nu
 
 
 
+/*--------------------------------------------------------------------------------------------------------------*/
+/*--------------- FAST NON DOMINATED SORT - FUNCION PARA EL CALCULO DEL RANGO DE CADA SOLUCION -----------------*/
+/*--------------------------------------------------------------------------------------------------------------*/
+
+void MainWindowMenuPlan::fastNonDominatedSort()
+{
+    DOMINANCE D;
+    std::vector<individuo> aux;
+
+    for(int i = 0; i < indPoblacion.size(); i++)
+    {
+        indPoblacion[i].set_numDominantes(0);
+
+        for(int j = 0; j < indPoblacion.size(); j++)
+        {
+            if(i != j)
+            {
+                D = p_dominate_q(indPoblacion[i], indPoblacion[j]);
+
+                if(D == TRUE_D)
+                    indPoblacion[i].set_indvDominados(indPoblacion[j]);
+                else if(D == FALSE_D)
+                    indPoblacion[i].set_numDominantes(indPoblacion[i].get_numDominantes() + 1);
+            }
+        }
+
+        if(indPoblacion[i].get_numDominantes() == 0)
+        {
+            indPoblacion[i].set_rango(1);
+            aux.push_back(indPoblacion[i]);
+        }
+    }
+    indPorFrente.push_back(aux);
+    aux.clear();
+
+
+    for(int i = 0; i < indPoblacion.size(); i++)
+        qDebug() << "IND " << 1+i << " Precio: " << indPoblacion[i].get_objPrecio() << " Repeticion: " << indPoblacion[i].get_objGradoRepeticion() << " Rango: " << indPoblacion[i].get_rango() << "Domina a: " << indPoblacion[i].get_NumIndDominados() << " Es dominado por: " << indPoblacion[i].get_numDominantes();
+
+    qDebug() << "-----------";
+}
 
 
 
-
+DOMINANCE MainWindowMenuPlan::p_dominate_q(individuo P, individuo Q)
+{
+    if(P.get_objPrecio() < Q.get_objPrecio() && P.get_objGradoRepeticion() < Q.get_objGradoRepeticion())
+        return TRUE_D;
+    else if(P.get_objPrecio() > Q.get_objPrecio() && P.get_objGradoRepeticion() > Q.get_objGradoRepeticion())
+        return FALSE_D;
+    else
+        return ND;
+}
 
