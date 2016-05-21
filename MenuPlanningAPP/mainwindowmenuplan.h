@@ -238,7 +238,8 @@ private:
         void crowdingDistance(std::vector<individuo> &poblacionNonDom);
 
         void fastNonDominatedSort();
-        DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                        //Funcion para comprobar si P domina a Q.
+        DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                   //Funcion para comprobar si P domina a Q
+        int get_posIndividuo(double objPre, double objRep);                                                                 //Funcion que, dado un valor de ambos objetivos devuelve la posicion del individuo en el vector indPoblacion
 
 
         /*-------------------*/

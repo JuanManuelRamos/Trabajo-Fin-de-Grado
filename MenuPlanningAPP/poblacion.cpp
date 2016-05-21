@@ -44,58 +44,58 @@ void MainWindowMenuPlan::crearPoblacion()
 
 
     /*==============================================================*/
-    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS PARA PROBAR LA FUNCION DE CROWDING DISTANCE */
+    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS PARA PROBAR LA FUNCION DE CROWDING DISTANCE Y FIRST NON DOMINATED SORT*/
 
     /*indPoblacion.clear();
 
     individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(18.5);
-    ind.set_objGradoRepeticion(2);
+    ind.set_objPrecio(30.67);
+    ind.set_objGradoRepeticion(7.43);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(15);
-    ind.set_objGradoRepeticion(4.7);
+    ind.set_objPrecio(29.69);
+    ind.set_objGradoRepeticion(11.12);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(14.5);
-    ind.set_objGradoRepeticion(5);
+    ind.set_objPrecio(33.04);
+    ind.set_objGradoRepeticion(11.07);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(12);
-    ind.set_objGradoRepeticion(5.8);
+    ind.set_objPrecio(30.74);
+    ind.set_objGradoRepeticion(14.76);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(8);
-    ind.set_objGradoRepeticion(8.5);
+    ind.set_objPrecio(32.78);
+    ind.set_objGradoRepeticion(10.87);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(7);
-    ind.set_objGradoRepeticion(11);
+    ind.set_objPrecio(27.06);
+    ind.set_objGradoRepeticion(13.05);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(6.8);
-    ind.set_objGradoRepeticion(11.5);
+    ind.set_objPrecio(31.44);
+    ind.set_objGradoRepeticion(9.23);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(6.5);
-    ind.set_objGradoRepeticion(12);
+    ind.set_objPrecio(30.88);
+    ind.set_objGradoRepeticion(9.59);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(6);
-    ind.set_objGradoRepeticion(13);
+    ind.set_objPrecio(28.43);
+    ind.set_objGradoRepeticion(6.77);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(5);
-    ind.set_objGradoRepeticion(16);
+    ind.set_objPrecio(32.67);
+    ind.set_objGradoRepeticion(8.87);
     indPoblacion.push_back(ind);
 
     ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
@@ -315,6 +315,9 @@ void MainWindowMenuPlan::fastNonDominatedSort()
 {
     DOMINANCE D;
     std::vector<individuo> aux;
+    bool auxPB = false;
+
+    //Primera parte - rango del primer nivel de no dominancia
 
     for(int i = 0; i < indPoblacion.size(); i++)
     {
@@ -343,10 +346,46 @@ void MainWindowMenuPlan::fastNonDominatedSort()
     aux.clear();
 
 
-    for(int i = 0; i < indPoblacion.size(); i++)
-        qDebug() << "IND " << 1+i << " Precio: " << indPoblacion[i].get_objPrecio() << " Repeticion: " << indPoblacion[i].get_objGradoRepeticion() << " Rango: " << indPoblacion[i].get_rango() << "Domina a: " << indPoblacion[i].get_NumIndDominados() << " Es dominado por: " << indPoblacion[i].get_numDominantes();
+    //Segunda parte - rango del resto de niveles de no dominancia
 
-    qDebug() << "-----------";
+    int nivel = 1;
+    int pos = 0;
+
+    while((nivel-1) < indPorFrente.size())
+    {
+        for(int k = 0; k < indPorFrente[nivel-1].size(); k++)
+        {           
+            for(int l = 0; l < indPorFrente[nivel-1][k].get_NumIndDominados(); l++)
+            {            
+                pos = get_posIndividuo(indPorFrente[nivel-1][k].get_Ind_indDominados(l).get_objPrecio(), indPorFrente[nivel-1][k].get_Ind_indDominados(l).get_objGradoRepeticion());
+                indPoblacion[pos].set_numDominantes(indPoblacion[pos].get_numDominantes()-1);
+
+                if(indPoblacion[pos].get_numDominantes() == 0)
+                {
+                    indPoblacion[pos].set_rango(1+nivel);
+                    aux.push_back(indPoblacion[pos]);
+                    auxPB = true;
+                }
+            }
+        }
+        nivel++;
+
+        if(auxPB)
+        {
+            indPorFrente.push_back(aux);
+            auxPB = false;
+            aux.clear();
+        }
+    }
+
+
+    for(int j = 0; j < indPoblacion.size(); j++)
+        qDebug() << "IND " << 1+j << " Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " Rango: " << indPoblacion[j].get_rango() << "Domina a: " << indPoblacion[j].get_NumIndDominados() << " Es dominado por: " << indPoblacion[j].get_numDominantes();
+
+    qDebug() << "===========";
+
+    aux.clear();
+    indPorFrente.clear();
 }
 
 
@@ -361,3 +400,14 @@ DOMINANCE MainWindowMenuPlan::p_dominate_q(individuo P, individuo Q)
         return ND;
 }
 
+
+int MainWindowMenuPlan::get_posIndividuo(double objPre, double objRep)
+{
+    int pos = 0;
+    for(int i = 0; i < indPoblacion.size(); i++)
+    {
+        if(indPoblacion[i].get_objPrecio() == objPre && indPoblacion[i].get_objGradoRepeticion() == objRep)
+            pos = i;
+    }
+    return pos;
+}

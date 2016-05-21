@@ -13,6 +13,7 @@ individuo::individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncom
     incompatibilidades.assign(numIncomp, "0");
 
     iDistance = 0;
+    rango = 0;
 }
 
 

@@ -80,8 +80,8 @@ class individuo
        double get_objGradoRepeticion() { return objGradoRepeticion; }
 
        //Funciones para la prueba del crowding distance
-       //void set_objPrecio(double x) { objPrecio = x; }
-       //void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
+       void set_objPrecio(double x) { objPrecio = x; }
+       void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
 
        void set_numDominantes(int num) { numDominantes = num; }
        int get_numDominantes() { return numDominantes; }
@@ -89,6 +89,7 @@ class individuo
        void set_indvDominados(individuo I) { indvDominados.push_back(I); }
        std::vector<individuo> get_indvDominados() { return indvDominados; }
        size_t get_NumIndDominados() { return indvDominados.size(); }
+       individuo get_Ind_indDominados(int num) { return indvDominados[num]; }
 
        void set_rango(int num) { rango = num; }
        int get_rango() { return rango; }
