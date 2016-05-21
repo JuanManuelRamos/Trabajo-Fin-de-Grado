@@ -13,6 +13,7 @@
 #include <time.h>
 #include <limits>
 #include <sstream>
+#include <ctime>
 
 #include "database.h"
 #include "enums.h"
@@ -57,7 +58,7 @@ private:
         const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
         const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
         const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
-        const static int NumIndividuos = 10;            //Numero de individuos a generarse en la primera poblacion
+        const static int NumIndividuos = 100;            //Numero de individuos a generarse en la primera poblacion
 
 
         /*-- Arrays de datos--*/
@@ -100,7 +101,7 @@ private:
 
         /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
         std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
-        std::vector< std::vector<individuo> > indPorFrente;                                 //Vector bidimensional de individuos que almacena los individuos dividios por el frente al que pertenecen
+        std::vector< std::vector<int> > indPorFrente;                                       //Vector bidimensional de individuos que almacena las posiciones de los individuos dividios por el frente al que pertenecen
 
 
 
@@ -239,7 +240,6 @@ private:
 
         void fastNonDominatedSort();
         DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                   //Funcion para comprobar si P domina a Q
-        int get_posIndividuo(double objPre, double objRep);                                                                 //Funcion que, dado un valor de ambos objetivos devuelve la posicion del individuo en el vector indPoblacion
 
 
         /*-------------------*/

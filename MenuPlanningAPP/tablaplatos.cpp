@@ -13,6 +13,7 @@ void MainWindowMenuPlan::ficheroDeTabla()
         fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in | std::fstream::trunc);
 
     std::vector<int> vec(db1->queryNumPlatos().toInt(), -1);                                                    //Crear vector de tamanio igual a numero de platos
+    vectorFicheroDeTabla.clear();
     vectorFicheroDeTabla.assign(vec.size(), vec);                                                               //Crear vector bidimensional
 
     setTablaPlatos(vectorFicheroDeTabla);                                                                       //Rellenar el vector bidimensional o tabla

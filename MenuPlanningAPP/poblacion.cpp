@@ -4,6 +4,13 @@
 
 void MainWindowMenuPlan::crearPoblacion()
 {
+
+    std::clock_t start;
+    double duration;
+
+    start = std::clock();
+
+
     indPoblacion.clear();
 
     for(int i = 0; i < NumIndividuos; i++)
@@ -118,6 +125,11 @@ void MainWindowMenuPlan::crearPoblacion()
 
 
     fastNonDominatedSort();
+
+    duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    qDebug() << ""; qDebug() << "";
+    qDebug() << "Tiempo de ejeucion: " << duration << " segundos";
 }
 
 
@@ -314,7 +326,7 @@ double MainWindowMenuPlan::minObj(std::vector<individuo> poblacionNonDom, int nu
 void MainWindowMenuPlan::fastNonDominatedSort()
 {
     DOMINANCE D;
-    std::vector<individuo> aux;
+    std::vector<int> aux;
     bool auxPB = false;
 
     //Primera parte - rango del primer nivel de no dominancia
@@ -330,7 +342,7 @@ void MainWindowMenuPlan::fastNonDominatedSort()
                 D = p_dominate_q(indPoblacion[i], indPoblacion[j]);
 
                 if(D == TRUE_D)
-                    indPoblacion[i].set_indvDominados(indPoblacion[j]);
+                    indPoblacion[i].set_indvDominados(j);
                 else if(D == FALSE_D)
                     indPoblacion[i].set_numDominantes(indPoblacion[i].get_numDominantes() + 1);
             }
@@ -339,12 +351,11 @@ void MainWindowMenuPlan::fastNonDominatedSort()
         if(indPoblacion[i].get_numDominantes() == 0)
         {
             indPoblacion[i].set_rango(1);
-            aux.push_back(indPoblacion[i]);
+            aux.push_back(i);
         }
     }
     indPorFrente.push_back(aux);
     aux.clear();
-
 
     //Segunda parte - rango del resto de niveles de no dominancia
 
@@ -354,16 +365,16 @@ void MainWindowMenuPlan::fastNonDominatedSort()
     while((nivel-1) < indPorFrente.size())
     {
         for(int k = 0; k < indPorFrente[nivel-1].size(); k++)
-        {           
-            for(int l = 0; l < indPorFrente[nivel-1][k].get_NumIndDominados(); l++)
-            {            
-                pos = get_posIndividuo(indPorFrente[nivel-1][k].get_Ind_indDominados(l).get_objPrecio(), indPorFrente[nivel-1][k].get_Ind_indDominados(l).get_objGradoRepeticion());
+        {
+            for(int l = 0; l < indPoblacion[indPorFrente[nivel-1][k]].get_NumIndDominados(); l++)
+            {
+                pos = indPoblacion[indPorFrente[nivel-1][k]].get_Ind_indDominados(l);
                 indPoblacion[pos].set_numDominantes(indPoblacion[pos].get_numDominantes()-1);
 
                 if(indPoblacion[pos].get_numDominantes() == 0)
                 {
                     indPoblacion[pos].set_rango(1+nivel);
-                    aux.push_back(indPoblacion[pos]);
+                    aux.push_back(pos);
                     auxPB = true;
                 }
             }
@@ -379,13 +390,21 @@ void MainWindowMenuPlan::fastNonDominatedSort()
     }
 
 
-    for(int j = 0; j < indPoblacion.size(); j++)
+    for(int i = 0; i < indPorFrente.size(); i++)
+    {
+        qDebug() << "Frente " << 1+i;
+        for(int j = 0; j < indPorFrente[i].size(); j++)
+            qDebug() << 1+indPorFrente[i][j];
+    }
+
+
+    /*for(int j = 0; j < indPoblacion.size(); j++)
         qDebug() << "IND " << 1+j << " Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " Rango: " << indPoblacion[j].get_rango() << "Domina a: " << indPoblacion[j].get_NumIndDominados() << " Es dominado por: " << indPoblacion[j].get_numDominantes();
 
-    qDebug() << "===========";
+    qDebug() << "===========";*/
 
     aux.clear();
-    indPorFrente.clear();
+    //indPorFrente.clear();
 }
 
 
@@ -398,16 +417,4 @@ DOMINANCE MainWindowMenuPlan::p_dominate_q(individuo P, individuo Q)
         return FALSE_D;
     else
         return ND;
-}
-
-
-int MainWindowMenuPlan::get_posIndividuo(double objPre, double objRep)
-{
-    int pos = 0;
-    for(int i = 0; i < indPoblacion.size(); i++)
-    {
-        if(indPoblacion[i].get_objPrecio() == objPre && indPoblacion[i].get_objGradoRepeticion() == objRep)
-            pos = i;
-    }
-    return pos;
 }
