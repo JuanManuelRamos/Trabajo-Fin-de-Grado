@@ -124,7 +124,8 @@ void MainWindowMenuPlan::crearPoblacion()
     /*==============================================================*/
 
 
-    fastNonDominatedSort();
+    //fastNonDominatedSort();
+    comprobarInfNutricional();
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
@@ -417,4 +418,38 @@ DOMINANCE MainWindowMenuPlan::p_dominate_q(individuo P, individuo Q)
         return FALSE_D;
     else
         return ND;
+}
+
+
+
+
+/*----------------------------------------------------------------------------------------------------------------------------*/
+/*--------------- COMPRUEBA SI LOS PLANES ALIMENTICIOS CUMPLEN CON LOS REQUISITOS NUTRICIONALES RECOMENDADOS -----------------*/
+/*----------------------------------------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::comprobarInfNutricional()
+{
+    bool resultado = true;
+    float valor = 0.0f;
+    int num = 0;
+
+    for(int i = 0; i < indPoblacion.size(); i++)
+    {
+        for(int j = 0; j < indPoblacion[i].get_infNutricional().size(); j++)
+        {
+            valor = indPoblacion[i].get_valor_infNutricional(j);
+            qDebug() << "Minimo: " << irnMinMax[j].first << "Maximo: " << irnMinMax[j].second << " Recomendado: " << idrN[j];
+            qDebug() << valor;
+            if(valor < irnMinMax[j].first || valor > irnMinMax[j].second)
+            {
+                num++;
+                resultado = false;
+                break;
+            }
+        }
+        indPoblacion[i].set_planAdecuado(resultado);
+        resultado = true;
+        qDebug() << "===========";
+    }
+
+    qDebug() << "Planes dieteticos no recomendados: " << num << " de " << indPoblacion.size();
 }

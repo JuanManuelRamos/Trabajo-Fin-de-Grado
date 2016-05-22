@@ -35,6 +35,8 @@ class individuo
         int numDominantes;                                              //Numero de indivuos que dominan al individuo actual. En la teoria denominado np
         int rango;
 
+        bool planAdecuado;                                              //Indica si un plan alimenticio cumple los requisitos nutricionales recomendados (true), o no (false)
+
 
         int imax = std::numeric_limits<int>::max();                     //Entero maximo (utilizado para calculos)
 
@@ -79,9 +81,9 @@ class individuo
        double get_objPrecio() { return objPrecio; }
        double get_objGradoRepeticion() { return objGradoRepeticion; }
 
-       //Funciones para la prueba del crowding distance
-       void set_objPrecio(double x) { objPrecio = x; }
-       void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
+       //Funciones para la prueba del crowding distance y rango
+       //void set_objPrecio(double x) { objPrecio = x; }
+       //void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
 
        void set_numDominantes(int num) { numDominantes = num; }
        int get_numDominantes() { return numDominantes; }
@@ -93,6 +95,12 @@ class individuo
 
        void set_rango(int num) { rango = num; }
        int get_rango() { return rango; }
+
+       void set_planAdecuado(bool b) { planAdecuado = b; }
+       bool get_planAdecuado() { return planAdecuado; }
+
+       std::vector<float> get_infNutricional() { return infNutricional; }
+       float get_valor_infNutricional(int pos) { return infNutricional[pos]; }
 };
 
 

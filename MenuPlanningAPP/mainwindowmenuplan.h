@@ -58,7 +58,8 @@ private:
         const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
         const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
         const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
-        const static int NumIndividuos = 100;            //Numero de individuos a generarse en la primera poblacion
+        const static int NumIndividuos = 10;            //Numero de individuos a generarse en la primera poblacion
+        int numDiasPlan;                                //Numero de dias para los que se hace el plan
 
 
         /*-- Arrays de datos--*/
@@ -82,15 +83,12 @@ private:
         QCheckBox *check11 = new QCheckBox("Noviembre");
         QCheckBox *check12 = new QCheckBox("Diciembre");
 
-        /*-- Struct correspondiente a la ingesta diaria recomendada --*/
-        struct idr
-        {
-            float acidoFol, calcio, energia, fosforo, grasa, hierro, magnesio, potasio, proteinas, selenio, sodio, vitA, vitB1, vitB2, vitB6, vitB12, vitC, vitD, vitE, yodo, zinc;
-        }idrN;
+        /*-- Vector correspondiente a la ingesta diaria recomendada --*/
+        std::vector<float> idrN;
+        std::vector< std::pair <float,float> > irnMinMax;       //Valores recomendados de nutrientes minimos y maximos permitidos en un plan alimenticio
 
 
         /*-- Constante y vectores para la generacion del menu --*/
-        int numDiasPlan;
         const int imax = std::numeric_limits<int>::max();                                   //Constante que almacena el numero maximo posible para un int
         std::vector<infoPlatos> PrimerosPlatos;                                             //Vector de struct (id de plato, numero de dias desde que se eligio este plato en un menu, vector de grupos alimenticios de ingredientes principales de plato, coste, informacion nutricional, alergenos, incompatibilidades)
         std::vector<infoPlatos> SegundosPlatos;                                             //...
@@ -200,8 +198,11 @@ private:
         void setIngestaDiariaRecomendada();                     //Edita los datos de ingestas diarias recomendada
         void enableIDR();                                       //Activa los botones correspondientes a la edicion de datos de ingesta diraria recomendada
         void disableIDR();                                      //Desactiva los botones correspondientes a la edicion de datos de ingesta diraria recomendada
+        void resetIngestaDiariaRecomendada();                   //Funcion que resetea los valores de ingestia diaria recomendada a los valores por defecto
+        void setIngestaDiariaRecomendadaPorDias();              //Edita los datos de ingestia diaria recomendada segun los dias establecidos en el plan alimenticio
+        void set_irnMinMax();
 
-        void setNumDiasPlan();                                   //Devuelve el numero de dias o menus a realizar en el plan segun lo especificado en el calendario
+        void setNumDiasPlan();                                  //Devuelve el numero de dias o menus a realizar en el plan segun lo especificado en el calendario
 
 
         /*-----------------------*/
@@ -234,12 +235,16 @@ private:
         /*---- POBLACION ----*/
         /*-------------------*/
         void crearPoblacion();                                                                                              //Funcion que crea la poblacion de individuos
+
         void reproduccion(std::vector<menuDiario> P1, std::vector<menuDiario> P2, individuo &H1, individuo &H2);            //Funcion para reproducir dos Planes Dieteticos. P1 y P2 son los planes dieteticos de los padres, que se mezclaran y crearan los planes dieteticos de los hijos H1 y H2
         void mutacion(individuo &I);
+
         void crowdingDistance(std::vector<individuo> &poblacionNonDom);
 
         void fastNonDominatedSort();
         DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                   //Funcion para comprobar si P domina a Q
+
+        void comprobarInfNutricional();
 
 
         /*-------------------*/

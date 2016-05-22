@@ -14,6 +14,7 @@ individuo::individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncom
 
     iDistance = 0;
     rango = 0;
+    planAdecuado = false;
 }
 
 

@@ -109,27 +109,12 @@ MainWindowMenuPlan::MainWindowMenuPlan(QWidget *parent) : QMainWindow(parent),ui
     ui->dateEdit_hasta->setDate(QDate::currentDate().addMonths(1));
 
     //Establecer las ingestias diarias recomendadas
-    idrN.acidoFol = 100;
-    idrN.calcio = 400;
-    idrN.energia = 760;
-    idrN.fosforo = 400;
-    idrN.grasa = 25.2f;
-    idrN.hierro = 4;
-    idrN.magnesio = 72;
-    idrN.potasio = 184;
-    idrN.proteinas = 14.4f;
-    idrN.selenio = 12;
-    idrN.sodio = 640;
-    idrN.vitA = 280;
-    idrN.vitB1 = 0.32f;
-    idrN.vitB2 = 0.4f;
-    idrN.vitB6 = 0.44f;
-    idrN.vitB12 = 0.68f;
-    idrN.vitC = 22;
-    idrN.vitD = 6;
-    idrN.vitE = 3.2f;
-    idrN.yodo = 52;
-    idrN.zinc = 4;
+    idrN.assign(NumInfN,0.0f);
+    std::pair <float,float> p;
+    p.first = 0.0f;
+    p.second = 0.0f;
+    irnMinMax.assign(NumInfN,p);
+    resetIngestaDiariaRecomendada();
     disableIDR();
 
     //Establecer el formato del boton Generar Plan
@@ -800,6 +785,31 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 
 
 
-
-
+/*---------------------------------------------------------------------------------------------*/
+/*-------------------- RESETEO DE VALORES DE INGESTIA DIARIA RECOMENDADA ----------------------*/
+/*---------------------------------------------------------------------------------------------*/
+void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
+{
+    idrN[0] = 100;
+    idrN[1] = 400;
+    idrN[2] = 760;
+    idrN[3] = 400;
+    idrN[4] = 25.2f;
+    idrN[5] = 4;
+    idrN[6] = 72;
+    idrN[7] = 184;
+    idrN[8] = 14.4f;
+    idrN[9] = 12;
+    idrN[10] = 640;
+    idrN[11] = 280;
+    idrN[12] = 0.32f;
+    idrN[13] = 0.4f;
+    idrN[14] = 0.44f;
+    idrN[15] = 0.68f;
+    idrN[16] = 22;
+    idrN[17] = 6;
+    idrN[18] = 3.2f;
+    idrN[19] = 52;
+    idrN[20] = 4;
+}
 
