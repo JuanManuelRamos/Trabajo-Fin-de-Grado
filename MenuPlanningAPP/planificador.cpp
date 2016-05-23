@@ -395,7 +395,7 @@ void MainWindowMenuPlan::set_irnMinMax()
 {
     for(int i = 0; i < idrN.size(); i++)
     {
-        irnMinMax[i].first = idrN[i]-(idrN[i]/2);
+        irnMinMax[i].first = idrN[i]-(idrN[i]/(float)1.5);
         irnMinMax[i].second = idrN[i]*2;
     }
 }

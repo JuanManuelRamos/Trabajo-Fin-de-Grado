@@ -789,27 +789,27 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 /*-------------------- RESETEO DE VALORES DE INGESTIA DIARIA RECOMENDADA ----------------------*/
 /*---------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
-{
-    idrN[0] = 100;
-    idrN[1] = 400;
-    idrN[2] = 760;
-    idrN[3] = 400;
-    idrN[4] = 25.2f;
-    idrN[5] = 4;
-    idrN[6] = 72;
-    idrN[7] = 184;
-    idrN[8] = 14.4f;
-    idrN[9] = 12;
-    idrN[10] = 640;
-    idrN[11] = 280;
-    idrN[12] = 0.32f;
-    idrN[13] = 0.4f;
-    idrN[14] = 0.44f;
-    idrN[15] = 0.68f;
-    idrN[16] = 22;
-    idrN[17] = 6;
-    idrN[18] = 3.2f;
-    idrN[19] = 52;
-    idrN[20] = 4;
+{ 
+    idrN[0] = 135;              //acido folico
+    idrN[1] = 585;              //calcio
+    idrN[2] = 1012;             //energia
+    idrN[3] = 562.5f;           //fosforo
+    idrN[4] = 31.72f;           //grasa
+    idrN[5] = 8.55f;            //hierro
+    idrN[6] = 112.5f;           //magnesio
+    idrN[7] = 2025;             //potasio
+    idrN[8] = 27.08f;           //proteinas
+    idrN[9] = 25.75;            //selenio
+    idrN[10] = 870;             //sodio
+    idrN[11] = 450;             //vitA
+    idrN[12] = 0.41f;          //vitB1
+    idrN[13] = 0.63f;           //vitB2
+    idrN[14] = 0.54f;           //vitB6
+    idrN[15] = 2.28f;           //vitB12
+    idrN[16] = 27;              //vitC
+    idrN[17] = 4.65f;           //vitD
+    idrN[18] = 6.3f;            //vitE
+    idrN[19] = 67.5f;           //yodo
+    idrN[20] = 6.75f;           //zinc
 }
 

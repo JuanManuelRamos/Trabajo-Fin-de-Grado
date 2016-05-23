@@ -58,7 +58,7 @@ private:
         const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
         const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
         const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
-        const static int NumIndividuos = 10;            //Numero de individuos a generarse en la primera poblacion
+        const static int NumIndividuos = 1000;            //Numero de individuos a generarse en la primera poblacion
         int numDiasPlan;                                //Numero de dias para los que se hace el plan
 
 

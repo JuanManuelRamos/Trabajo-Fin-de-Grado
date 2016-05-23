@@ -430,26 +430,26 @@ void MainWindowMenuPlan::comprobarInfNutricional()
 {
     bool resultado = true;
     float valor = 0.0f;
-    int num = 0;
+    //int num = 0;
 
     for(int i = 0; i < indPoblacion.size(); i++)
     {
         for(int j = 0; j < indPoblacion[i].get_infNutricional().size(); j++)
         {
-            valor = indPoblacion[i].get_valor_infNutricional(j);
-            qDebug() << "Minimo: " << irnMinMax[j].first << "Maximo: " << irnMinMax[j].second << " Recomendado: " << idrN[j];
-            qDebug() << valor;
+            valor = indPoblacion[i].get_valor_infNutricional(j);        
             if(valor < irnMinMax[j].first || valor > irnMinMax[j].second)
             {
-                num++;
+                //qDebug() << "IN_" << j << " Minimo: " << irnMinMax[j].first << "Maximo: " << irnMinMax[j].second << " Recomendado: " << idrN[j];
+                //qDebug() << valor;
+                //num++;
                 resultado = false;
                 break;
             }
         }
         indPoblacion[i].set_planAdecuado(resultado);
         resultado = true;
-        qDebug() << "===========";
+        //qDebug() << "===========";
     }
 
-    qDebug() << "Planes dieteticos no recomendados: " << num << " de " << indPoblacion.size();
+    //qDebug() << "Planes dieteticos no recomendados: " << num << " de " << indPoblacion.size();
 }
