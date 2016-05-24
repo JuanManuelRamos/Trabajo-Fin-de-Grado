@@ -34,8 +34,8 @@ class individuo
         std::vector<int> indvDominados;                                 //Vector de soluciones a las que el individuo actual domina. En la teoria denominada Sp
         int numDominantes;                                              //Numero de indivuos que dominan al individuo actual. En la teoria denominado np
         int rango;
-
         bool planAdecuado;                                              //Indica si un plan alimenticio cumple los requisitos nutricionales recomendados (true), o no (false)
+        int idIndividuo;                                                //Indica la posicion del individuo en el vector de individuos de la poblacion
 
 
         int imax = std::numeric_limits<int>::max();                     //Entero maximo (utilizado para calculos)
@@ -101,6 +101,9 @@ class individuo
 
        std::vector<float> get_infNutricional() { return infNutricional; }
        float get_valor_infNutricional(int pos) { return infNutricional[pos]; }
+
+       void set_idIndividuo(int id) { idIndividuo = id; }
+       int get_idIndividuo() { return idIndividuo; }
 };
 
 

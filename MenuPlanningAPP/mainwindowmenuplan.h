@@ -58,7 +58,7 @@ private:
         const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
         const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
         const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
-        const static int NumIndividuos = 1000;            //Numero de individuos a generarse en la primera poblacion
+        const static int NumIndividuos = 100;            //Numero de individuos a generarse en la primera poblacion
         int numDiasPlan;                                //Numero de dias para los que se hace el plan
 
 
@@ -246,16 +246,20 @@ private:
 
         void comprobarInfNutricional();
 
+        void meetingPool();                                                                                                 //Funcion que selecciona a los 50 mejores padres
+
 
         /*-------------------*/
         /*---- QUICKSORT ----*/
         /*-------------------*/
-        void quickSort(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
-        int pivot(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
+        void quickSortCD(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
+        int pivotCD(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj);
         double maxObj(std::vector<individuo> poblacionNonDom, int numObj);
         double minObj(std::vector<individuo> poblacionNonDom, int numObj);
 
-
+        void quickSortMP(std::vector<individuo> &pob, int first, int last);
+        int pivotMP(std::vector<individuo> &pob, int first, int last);
+        bool sortBestInd(individuo A, individuo B);
 
 
     private slots:

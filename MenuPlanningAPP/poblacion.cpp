@@ -16,6 +16,7 @@ void MainWindowMenuPlan::crearPoblacion()
     for(int i = 0; i < NumIndividuos; i++)
     {
         individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
+        ind.set_idIndividuo(i);                                                                                                 //Asignarle el id = posicion en el vector indPoblacion
         ind.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, GENERAR);    //Asignarle su plan alimenticio correspondiente
 
         indPoblacion.push_back(ind);                                                                                            //Añadir el individuo al vector de poblacion
@@ -124,8 +125,42 @@ void MainWindowMenuPlan::crearPoblacion()
     /*==============================================================*/
 
 
-    //fastNonDominatedSort();
+
     comprobarInfNutricional();
+    qDebug() << "comprobarInfNutricional BIEN";
+    fastNonDominatedSort();
+    qDebug() << "fastNonDominatedSort BIEN";
+
+    std::vector<individuo> aux;
+
+    for(int n = 1; n <= 1+indPoblacion.size(); n++)
+    {
+        for(int i = 0; i < indPoblacion.size(); i++)
+        {
+            if(indPoblacion[i].get_rango() == n)
+                aux.push_back(indPoblacion[i]);
+        }
+        if(aux.size() > 0)
+        {
+            crowdingDistance(aux);
+            aux.clear();
+        }
+    }
+
+    qDebug() << "crowdingDistance BIEN";
+
+    meetingPool();
+    qDebug() << "meetingPool BIEN";
+
+
+
+
+
+
+
+
+
+
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
@@ -240,7 +275,7 @@ void MainWindowMenuPlan::crowdingDistance(std::vector<individuo> &poblacionNonDo
 
     for(int i = 0; i < NumObjetivos; i++)
     {
-        quickSort(poblacionNonDom, 0, N, 1+i);
+        quickSortCD(poblacionNonDom, 0, N, 1+i);
         poblacionNonDom[0].set_iDistance(dmax);
         poblacionNonDom[N].set_iDistance(dmax);
         max = maxObj(poblacionNonDom, 1+i);
@@ -269,6 +304,13 @@ void MainWindowMenuPlan::crowdingDistance(std::vector<individuo> &poblacionNonDo
 
         qDebug() << "==============================";*/
     }
+
+    for(int x = 0; x < poblacionNonDom.size(); x++)
+        indPoblacion[poblacionNonDom[x].get_idIndividuo()].set_iDistance(poblacionNonDom[x].get_iDistance());
+
+    /*for(int x = 0; x < indPoblacion.size(); x++)
+        qDebug() << "Rango: " << indPoblacion[x].get_rango() << " iDistance: " << indPoblacion[x].get_iDistance();
+    qDebug() << "================";*/
 
     /*for(int j = 0; j < poblacionNonDom.size(); j++)
         qDebug() << "Precio: " << poblacionNonDom[j].get_objPrecio() << " Repeticion: " << poblacionNonDom[j].get_objGradoRepeticion() << " iDistance: " << poblacionNonDom[j].get_iDistance();
@@ -391,12 +433,12 @@ void MainWindowMenuPlan::fastNonDominatedSort()
     }
 
 
-    for(int i = 0; i < indPorFrente.size(); i++)
+    /*for(int i = 0; i < indPorFrente.size(); i++)
     {
         qDebug() << "Frente " << 1+i;
         for(int j = 0; j < indPorFrente[i].size(); j++)
             qDebug() << 1+indPorFrente[i][j];
-    }
+    }*/
 
 
     /*for(int j = 0; j < indPoblacion.size(); j++)
@@ -452,4 +494,42 @@ void MainWindowMenuPlan::comprobarInfNutricional()
     }
 
     //qDebug() << "Planes dieteticos no recomendados: " << num << " de " << indPoblacion.size();
+}
+
+
+
+
+/*----------------------------------------------*/
+/*--------------- MEETING POOL -----------------*/
+/*----------------------------------------------*/
+void MainWindowMenuPlan::meetingPool()
+{
+    std::vector<individuo> pobRecom, pobNoRecom;            //pobRecom = vector de individuos que cumple los requisitos nutricionales, pobNoRecom = individuos que no los cumplen
+    int N = 0;
+
+    for(int i = 0; i < indPoblacion.size(); i++)            //Rellenar los vectores pobRecom y pobNoRecom
+    {
+        if(indPoblacion[i].get_planAdecuado())
+            pobRecom.push_back(indPoblacion[i]);
+        else
+            pobNoRecom.push_back(indPoblacion[i]);
+    }
+
+    qDebug() << "";
+    qDebug() << "-- Poblacion recomendada --";
+
+    N = static_cast<int>(pobRecom.size()-1);
+    quickSortMP(pobRecom, 0, N);
+
+    for(int x = 0; x < pobRecom.size(); x++)
+        qDebug() << x << "[" << pobRecom[x].get_planAdecuado() << "] Rango: " << pobRecom[x].get_rango() << " Crow_dist: " << pobRecom[x].get_iDistance();
+
+    qDebug() << "";
+    qDebug() << "-- Poblacion NO recomendada --";
+
+    N = static_cast<int>(pobNoRecom.size()-1);
+    quickSortMP(pobNoRecom, 0, N);
+
+    for(int x = 0; x < pobNoRecom.size(); x++)
+        qDebug() << x << "[" << pobNoRecom[x].get_planAdecuado() << "] Rango: " << pobNoRecom[x].get_rango() << " Crow_dist: " << pobNoRecom[x].get_iDistance();
 }

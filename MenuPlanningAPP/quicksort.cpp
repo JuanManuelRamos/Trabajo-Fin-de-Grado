@@ -2,19 +2,22 @@
 #include "ui_mainwindowmenuplan.h"
 
 
-void MainWindowMenuPlan::quickSort(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj)
+/*------------------------------------------------------------------*/
+/*--------------- QUICKSORT PARA CROWDING DISTANCE -----------------*/
+/*------------------------------------------------------------------*/
+void MainWindowMenuPlan::quickSortCD(std::vector<individuo> &poblacionNonDom, int first, int last, int numObj)
 {
     int pivotElement;
 
     if(first < last)
     {
-        pivotElement = pivot(poblacionNonDom, first, last, numObj);
-        quickSort(poblacionNonDom, first, pivotElement-1, numObj);
-        quickSort(poblacionNonDom, pivotElement+1, last, numObj);
+        pivotElement = pivotCD(poblacionNonDom, first, last, numObj);
+        quickSortCD(poblacionNonDom, first, pivotElement-1, numObj);
+        quickSortCD(poblacionNonDom, pivotElement+1, last, numObj);
     }
 }
 
-int MainWindowMenuPlan::pivot(std::vector<individuo> &poblacionNonDom, int first, int last,  int numObj)
+int MainWindowMenuPlan::pivotCD(std::vector<individuo> &poblacionNonDom, int first, int last,  int numObj)
 {
     int  p = first;
     double pivotElement = 0;
@@ -29,9 +32,6 @@ int MainWindowMenuPlan::pivot(std::vector<individuo> &poblacionNonDom, int first
             pivotElement = poblacionNonDom[first].get_objGradoRepeticion();
         break;
     }
-
-
-
 
     for(int i = first+1; i <= last; i++)
     {
@@ -54,3 +54,39 @@ int MainWindowMenuPlan::pivot(std::vector<individuo> &poblacionNonDom, int first
 
 
 
+/*-------------------------------------------------------------*/
+/*--------------- QUICKSORT PARA MEETING POOL -----------------*/
+/*-------------------------------------------------------------*/
+void MainWindowMenuPlan::quickSortMP(std::vector<individuo> &pob, int first, int last)
+{
+    int pivotElement;
+
+    if(first < last)
+    {
+        pivotElement = pivotMP(pob, first, last);
+        quickSortMP(pob, first, pivotElement-1);
+        quickSortMP(pob, pivotElement+1, last);
+    }
+}
+
+int MainWindowMenuPlan::pivotMP(std::vector<individuo> &pob, int first, int last)
+{
+    int  p = first;
+    for(int i = first+1; i <= last; i++)
+    {
+        /* If you want to sort the list in the other order, change "<=" to ">" */
+
+        if(sortBestInd(pob[i], pob[first]))
+        {
+            p++;
+            std::swap(pob[i], pob[p]);
+        }
+    }
+    std::swap(pob[p], pob[first]);
+    return p;
+}
+
+bool MainWindowMenuPlan::sortBestInd(individuo A, individuo B)
+{
+    return ((A.get_rango() < B.get_rango()) || ((A.get_rango() == B.get_rango()) && (A.get_iDistance() > B.get_iDistance())));
+}
