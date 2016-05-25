@@ -51,15 +51,18 @@ private:
         QUERYS Q;                                   //Objeto de enum
 
         /*-- Variables de control de datos --*/
-        const static int maxNumSize = 6;                       //Numero maximo de digitos en un campo numerico
-        const static int NumInfN = 21;                         //Numero de datos nutricionales
-        const static int NumMesesTemp = 12;             //Numero de meses de temporada
-        const static int NumAlergenos = 7;              //Numero de alergenos
-        const static int NumIncomp = 5;                 //Numero de incompatibilidades alimenticias
-        const static int NumGruposAlimenticios = 10;    //Numero de grupos alimenticios
-        const static int NumObjetivos = 2;              //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
-        const static int NumIndividuos = 100;            //Numero de individuos a generarse en la primera poblacion
-        int numDiasPlan;                                //Numero de dias para los que se hace el plan
+        const static int maxNumSize = 6;                        //Numero maximo de digitos en un campo numerico
+        const static int NumInfN = 21;                          //Numero de datos nutricionales
+        const static int NumMesesTemp = 12;                     //Numero de meses de temporada
+        const static int NumAlergenos = 7;                      //Numero de alergenos
+        const static int NumIncomp = 5;                         //Numero de incompatibilidades alimenticias
+        const static int NumGruposAlimenticios = 10;            //Numero de grupos alimenticios
+        const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
+        int numDiasPlan;                                        //Numero de dias para los que se hace el plan
+        const static int NumIndividuos = 100;                   //Numero de individuos a generarse en la primera poblacion
+        const static int tamMeetingPool = NumIndividuos/2;      //Numero de individuos que se seleccionaran para el meeting pool
+
+
 
 
         /*-- Arrays de datos--*/
@@ -99,7 +102,7 @@ private:
 
         /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
         std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
-        std::vector< std::vector<int> > indPorFrente;                                       //Vector bidimensional de individuos que almacena las posiciones de los individuos dividios por el frente al que pertenecen
+        std::vector<individuo> meetingPool;                                                 //Vector donde se almacenan los mejores padres en cada generacion
 
 
 
@@ -246,7 +249,7 @@ private:
 
         void comprobarInfNutricional();
 
-        void meetingPool();                                                                                                 //Funcion que selecciona a los 50 mejores padres
+        void set_meetingPool();                                                                                             //Funcion que selecciona a los 50 mejores padres
 
 
         /*-------------------*/
