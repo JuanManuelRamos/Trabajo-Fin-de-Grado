@@ -132,6 +132,8 @@ void MainWindowMenuPlan::crearPoblacion()
     //qDebug() << "fastNonDominatedSort BIEN";
 
     std::vector<individuo> aux;
+    int Prand = 0;
+    int tamIndPob = 0;
 
     for(int n = 1; n <= 1+indPoblacion.size(); n++)
     {
@@ -149,75 +151,105 @@ void MainWindowMenuPlan::crearPoblacion()
 
     //qDebug() << "crowdingDistance BIEN";
 
-    set_meetingPool();
-    //qDebug() << "meetingPool BIEN";
 
-    int Prand = 0;
-    indPoblacion.clear();
-    int tamIndPob = 0;
-
-    for(int j = 0; j < meetingPool.size(); j++)
+    for(int gen = 0; gen < NumGeneraciones; gen++)
     {
-        do
+        set_meetingPool(NumIndividuos/2);
+        //qDebug() << "meetingPool BIEN";
+
+
+        indPoblacion.clear();
+
+
+        for(int j = 0; j < meetingPool.size(); j++)
         {
-            Prand = rand() % meetingPool.size();
+            do
+            {
+                Prand = rand() % meetingPool.size();
+            }
+            while(Prand == j);
+
+            //qDebug() << "Padre 1: " << j << " Padre 2: " << Prand;
+            individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+            individuo hijo2 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+
+            reproduccion(meetingPool[j].getPlanDietetico(), meetingPool[Prand].getPlanDietetico(), hijo1, hijo2);
+            //qDebug() << "reproduccion BIEN";
+            mutacion(hijo1);
+            mutacion(hijo2);
+            //qDebug() << "mutacion BIEN";
+
+            hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
+            hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
+            //qDebug() << "actualizacion BIEN";
+
+            indPoblacion.push_back(hijo1);
+            tamIndPob = static_cast<int>(indPoblacion.size()-1);
+            indPoblacion[tamIndPob].set_idIndividuo(tamIndPob);
+            indPoblacion.push_back(hijo2);
+            tamIndPob = static_cast<int>(indPoblacion.size()-1);
+            indPoblacion[tamIndPob].set_idIndividuo(tamIndPob);
         }
-        while(Prand == j);
 
-        //qDebug() << "Padre 1: " << j << " Padre 2: " << Prand;
-        individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-        individuo hijo2 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
+        comprobarInfNutricional();
 
-        reproduccion(meetingPool[j].getPlanDietetico(), meetingPool[Prand].getPlanDietetico(), hijo1, hijo2);
-        //qDebug() << "reproduccion BIEN";
-        mutacion(hijo1);
-        mutacion(hijo2);
-        //qDebug() << "mutacion BIEN";
+        for(int k = 0; k < meetingPool.size(); k++)
+        {
+            meetingPool[k].set_rango(0);
+            meetingPool[k].set_iDistance(0);
+            meetingPool[k].clear_indvDominados();
+            indPoblacion.push_back(meetingPool[k]);
+            tamIndPob = static_cast<int>(indPoblacion.size()-1);
+            indPoblacion[tamIndPob].set_idIndividuo(tamIndPob);
+        }
 
-        hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
-        hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
-        //qDebug() << "actualizacion BIEN";
+        //qDebug() << "Num total de padres: " << meetingPool.size();
+        //qDebug() << "Num total de hijos: " << indPoblacion.size();
 
-        indPoblacion.push_back(hijo1);
-        tamIndPob = static_cast<int>(indPoblacion.size()-1);
-        indPoblacion[tamIndPob].set_idIndividuo(tamIndPob);
-        indPoblacion.push_back(hijo2);
-        tamIndPob = static_cast<int>(indPoblacion.size()-1);
-        indPoblacion[tamIndPob].set_idIndividuo(tamIndPob);
+
+        fastNonDominatedSort();
+        aux.clear();
+        for(int n = 1; n <= 1+indPoblacion.size(); n++)
+        {
+            for(int i = 0; i < indPoblacion.size(); i++)
+            {
+                if(indPoblacion[i].get_rango() == n)
+                    aux.push_back(indPoblacion[i]);
+            }
+            if(aux.size() > 0)
+            {
+                crowdingDistance(aux);
+                aux.clear();
+            }
+        }
+        //qDebug() << "crowding-distance BIEN";
+
+        /*qDebug() << "--- PADRES ---";
+        for(int x = 0; x < meetingPool.size(); x++)
+            qDebug() << x << "[" << meetingPool[x].get_planAdecuado() << "] Rango: " << meetingPool[x].get_rango() << " Crow_dist: " << meetingPool[x].get_iDistance();
+
+
+        qDebug() << "--- HIJOS ---";
+        for(int x = 0; x < indPoblacion.size(); x++)
+            qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance();*/
+
+
+        set_meetingPool(NumIndividuos);
+        indPoblacion.clear();
+        indPoblacion = meetingPool;
+
+        qDebug() << "--- POBLACION FINAL ---";
+        for(int x = 0; x < indPoblacion.size(); x++)
+            qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance();
+
+        qDebug() << "";
+        qDebug() << "";
+        qDebug() << "";
     }
 
-    qDebug() << "Num total de padres: " << meetingPool.size();
-    qDebug() << "Num total de hijos: " << indPoblacion.size();
-
-    comprobarInfNutricional();
-    qDebug() << "comprobarInfNutricional BIEN";
-    fastNonDominatedSort();
-    qDebug() << "fastNonDominatedSort BIEN";
-
-    aux.clear();
-    for(int n = 1; n <= 1+indPoblacion.size(); n++)
-    {
-        for(int i = 0; i < indPoblacion.size(); i++)
-        {
-            if(indPoblacion[i].get_rango() == n)
-                aux.push_back(indPoblacion[i]);
-        }
-        if(aux.size() > 0)
-        {
-            crowdingDistance(aux);
-            aux.clear();
-        }
-    }
-    qDebug() << "crowding-distance BIEN";
-
-    qDebug() << "--- PADRES ---";
-    for(int x = 0; x < meetingPool.size(); x++)
-        qDebug() << x << "[" << meetingPool[x].get_planAdecuado() << "] Rango: " << meetingPool[x].get_rango() << " Crow_dist: " << meetingPool[x].get_iDistance();
 
 
-    qDebug() << "--- HIJOS ---";
-    for(int x = 0; x < indPoblacion.size(); x++)
-        qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance();
+
 
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
@@ -557,14 +589,12 @@ void MainWindowMenuPlan::comprobarInfNutricional()
 
 
 
-
 /*----------------------------------------------*/
 /*--------------- MEETING POOL -----------------*/
 /*----------------------------------------------*/
-void MainWindowMenuPlan::set_meetingPool()
+void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
 {
     std::vector<individuo> pobRecom, pobNoRecom;            //pobRecom = vector de individuos que cumple los requisitos nutricionales, pobNoRecom = individuos que no los cumplen
-    int N = 0;
 
     for(int i = 0; i < indPoblacion.size(); i++)            //Rellenar los vectores pobRecom y pobNoRecom
     {
@@ -574,10 +604,8 @@ void MainWindowMenuPlan::set_meetingPool()
             pobNoRecom.push_back(indPoblacion[i]);
     }
 
-    /*qDebug() << "";
-    qDebug() << "-- Poblacion recomendada --";*/
 
-    N = static_cast<int>(pobRecom.size()-1);
+    int N = static_cast<int>(pobRecom.size()-1);
     quickSortMP(pobRecom, 0, N);
 
     /*for(int x = 0; x < pobRecom.size(); x++)
@@ -596,9 +624,9 @@ void MainWindowMenuPlan::set_meetingPool()
     int cont = 0;
     meetingPool.clear();
 
-    if(pobRecom.size() >= tamMeetingPool)
+    if(pobRecom.size() >= numIndSelec)
     {
-        for(cont; cont < tamMeetingPool; cont++)
+        for(cont; cont < numIndSelec; cont++)
         {
             meetingPool.push_back(pobRecom[cont]);
             meetingPool[cont].set_idIndividuo(cont);
@@ -615,7 +643,7 @@ void MainWindowMenuPlan::set_meetingPool()
         }
         for(int k = 0; k < pobNoRecom.size(); k++)
         {
-            if(cont < tamMeetingPool)
+            if(cont < numIndSelec)
             {
                 meetingPool.push_back(pobNoRecom[k]);
                 meetingPool[k].set_idIndividuo(k);

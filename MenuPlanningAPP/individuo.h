@@ -92,6 +92,7 @@ class individuo
        std::vector<int> get_indvDominados() { return indvDominados; }
        size_t get_NumIndDominados() { return indvDominados.size(); }
        int get_Ind_indDominados(int num) { return indvDominados[num]; }
+       void clear_indvDominados() { indvDominados.clear(); }
 
        void set_rango(int num) { rango = num; }
        int get_rango() { return rango; }

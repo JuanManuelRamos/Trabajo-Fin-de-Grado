@@ -60,7 +60,7 @@ private:
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
         const static int NumIndividuos = 100;                   //Numero de individuos a generarse en la primera poblacion
-        const static int tamMeetingPool = NumIndividuos/2;      //Numero de individuos que se seleccionaran para el meeting pool
+        const static int NumGeneraciones = 100;
 
 
 
@@ -249,7 +249,7 @@ private:
 
         void comprobarInfNutricional();
 
-        void set_meetingPool();                                                                                             //Funcion que selecciona a los 50 mejores padres
+        void set_meetingPool(const int numIndSelec);                                                                        //Funcion que selecciona a los 50 mejores padres
 
 
         /*-------------------*/
