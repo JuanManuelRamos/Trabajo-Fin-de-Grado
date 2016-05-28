@@ -361,6 +361,7 @@ void MainWindowMenuPlan::reproduccion(std::vector<menuDiario> P1, std::vector<me
 void MainWindowMenuPlan::mutacion(individuo &I)
 {
     int probabilidadMutacion = 0;
+    int limite = 50;
     bool mutado = false;
     int ipp, isp, ip;
     std::vector<menuDiario> aux = I.getPlanDietetico();
@@ -368,7 +369,7 @@ void MainWindowMenuPlan::mutacion(individuo &I)
     for(int i = 0; i < numDiasPlan; i++)
     {
         probabilidadMutacion = rand() % 100;
-        if(probabilidadMutacion < 5)
+        if(probabilidadMutacion < limite)
         {
             mutado = true;
             //qDebug() << "Mutado menu nº " << 1+i;
@@ -636,6 +637,8 @@ void MainWindowMenuPlan::comprobarInfNutricional()
 void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
 {
     std::vector<individuo> pobRecom, pobNoRecom;            //pobRecom = vector de individuos que cumple los requisitos nutricionales, pobNoRecom = individuos que no los cumplen
+    double minCrowDist = 0.4;
+
 
     for(int i = 0; i < indPoblacion.size(); i++)            //Rellenar los vectores pobRecom y pobNoRecom
     {
@@ -700,7 +703,7 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
     {
         if(cont < numIndSelec)
         {
-            if(pobRecom[j].get_iDistance() > (double)0.6)
+            if(pobRecom[j].get_iDistance() > minCrowDist && !esRepetido(pobRecom[j]))
             {
                 meetingPool.push_back(pobRecom[j]);
                 tam = static_cast<int>(meetingPool.size()-1);
@@ -717,7 +720,7 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
     {
         if(cont < numIndSelec)
         {
-            if(pobNoRecom[k].get_iDistance() > (double)0.6)
+            if(pobNoRecom[k].get_iDistance() > minCrowDist && !esRepetido(pobNoRecom[k]))
             {
                 meetingPool.push_back(pobNoRecom[k]);
                 tam = static_cast<int>(meetingPool.size()-1);
@@ -731,6 +734,9 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
         }
     }
 
+    if(meetingPool.size() != numIndSelec)
+        qDebug() << "mec, mec, Error!!";
+
 
     /*qDebug() << "";
     qDebug() << "";
@@ -739,4 +745,16 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
 
     for(int x = 0; x < meetingPool.size(); x++)
         qDebug() << x << "[" << meetingPool[x].get_planAdecuado() << "] " << meetingPool[x].get_idIndividuo() << " Rango: " << meetingPool[x].get_rango() << " Crow_dist: " << meetingPool[x].get_iDistance();*/
+}
+
+
+
+bool MainWindowMenuPlan::esRepetido(individuo ind)
+{
+    for(int i = 0; i < meetingPool.size(); i++)
+    {
+        if(meetingPool[i].get_objPrecio() == ind.get_objPrecio() && meetingPool[i].get_objGradoRepeticion() == ind.get_objGradoRepeticion())
+            return true;
+    }
+    return false;
 }

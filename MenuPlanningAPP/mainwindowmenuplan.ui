@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -3712,346 +3712,372 @@
        <attribute name="title">
         <string>Alérgenos</string>
        </attribute>
-       <widget class="QWidget" name="gridLayoutWidget_16">
+       <widget class="QGroupBox" name="groupBox_1">
         <property name="geometry">
          <rect>
-          <x>20</x>
-          <y>10</y>
-          <width>185</width>
-          <height>171</height>
+          <x>0</x>
+          <y>0</y>
+          <width>221</width>
+          <height>191</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_16">
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="checkBox_marisco_2">
-           <property name="text">
-            <string>Marisco</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="checkBox_frutos_secos_2">
-           <property name="text">
-            <string>Frutos secos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_legumbres_2">
-           <property name="text">
-            <string>Legumbres</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="checkBox_cereales_2">
-           <property name="text">
-            <string>Cereales</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_Aler_cereales_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_Aler_legumbres_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="1">
-          <widget class="QCheckBox" name="checkBox_huevo_2">
-           <property name="text">
-            <string>Proteína de huevo</string>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="1">
-          <widget class="QCheckBox" name="checkBox_leche_2">
-           <property name="text">
-            <string>Proteína de leche de vaca</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_Aler_marisco_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_Aler_frutos_secos_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="checkBox_pescado_2">
-           <property name="text">
-            <string>Pescado</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_Aler_pescado_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="5" column="0">
-          <widget class="QLabel" name="label_Aler_huevo_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="6" column="0">
-          <widget class="QLabel" name="label_Aler_leche_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QWidget" name="gridLayoutWidget_16">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>10</y>
+           <width>185</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_frutos_secos_2">
+            <property name="text">
+             <string>Frutos secos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="checkBox_legumbres_2">
+            <property name="text">
+             <string>Legumbres</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_Aler_cereales_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_Aler_legumbres_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QCheckBox" name="checkBox_huevo_2">
+            <property name="text">
+             <string>Proteína de huevo</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QCheckBox" name="checkBox_leche_2">
+            <property name="text">
+             <string>Proteína de leche de vaca</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_Aler_marisco_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_Aler_frutos_secos_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="checkBox_pescado_2">
+            <property name="text">
+             <string>Pescado</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_Aler_pescado_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_Aler_huevo_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_Aler_leche_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="checkBox_marisco_2">
+            <property name="text">
+             <string>Marisco</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="checkBox_cereales_2">
+            <property name="text">
+             <string>Cereales</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Incompatibilidades</string>
        </attribute>
-       <widget class="QWidget" name="gridLayoutWidget_17">
+       <widget class="QGroupBox" name="groupBox_2">
         <property name="geometry">
          <rect>
-          <x>10</x>
-          <y>10</y>
-          <width>200</width>
-          <height>171</height>
+          <x>-1</x>
+          <y>-1</y>
+          <width>221</width>
+          <height>191</height>
          </rect>
         </property>
-        <layout class="QGridLayout" name="gridLayout_17">
-         <item row="0" column="1">
-          <widget class="QCheckBox" name="checkBox_celiaco_2">
-           <property name="text">
-            <string>No apto para celíacos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="checkBox_diabetico_2">
-           <property name="text">
-            <string>No apto para diabéticos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QCheckBox" name="checkBox_semivegetariano_2">
-           <property name="text">
-            <string>No apto para semivegetarianos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QCheckBox" name="checkBox_vegano_2">
-           <property name="text">
-            <string>No apto para veganos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="1">
-          <widget class="QCheckBox" name="checkBox_vegetariano_2">
-           <property name="text">
-            <string>No apto para vegetarianos</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_Inc_celiaco_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_Inc_diabetico_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_Inc_semivegetariano_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QLabel" name="label_Inc_vegetariano_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QLabel" name="label_Inc_vegano_2">
-           <property name="minimumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>19</width>
-             <height>19</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="QWidget" name="gridLayoutWidget_17">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>200</width>
+           <height>171</height>
+          </rect>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_17">
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="checkBox_celiaco_2">
+            <property name="text">
+             <string>No apto para celíacos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="checkBox_diabetico_2">
+            <property name="text">
+             <string>No apto para diabéticos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="checkBox_semivegetariano_2">
+            <property name="text">
+             <string>No apto para semivegetarianos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QCheckBox" name="checkBox_vegano_2">
+            <property name="text">
+             <string>No apto para veganos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="checkBox_vegetariano_2">
+            <property name="text">
+             <string>No apto para vegetarianos</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_Inc_celiaco_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_Inc_diabetico_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_Inc_semivegetariano_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_Inc_vegetariano_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_Inc_vegano_2">
+            <property name="minimumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>19</width>
+              <height>19</height>
+             </size>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </widget>
      </widget>

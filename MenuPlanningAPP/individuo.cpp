@@ -9,8 +9,8 @@ individuo::individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncom
     objPrecio = 0;
     objGradoRepeticion = 0;
     infNutricional.assign(numInfNutr, 0);
-    alergenos.assign(numAlerg, "0");
-    incompatibilidades.assign(numIncomp, "0");
+    alergenos.assign(numAlerg, 0);
+    incompatibilidades.assign(numIncomp, 0);
 
     iDistance = 0;
     rango = 0;
@@ -71,13 +71,13 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 
         //ALERGENOS
         for(int k = 0; k < alergenos.size(); k++)
-            if(alergenos[k] == "0" && (pp[ipp].alerg[k] == "1" || sp[isp].alerg[k] == "1" || p[ip].alerg[k] == "1"))
-                alergenos[k] = "1";
+            if(alergenos[k] == 0 && (pp[ipp].alerg[k] == "1" || sp[isp].alerg[k] == "1" || p[ip].alerg[k] == "1"))
+                alergenos[k] = 1;
 
         //INCOMPATIBILIDADES ALIMENTICIAS
         for(int l = 0; l < incompatibilidades.size(); l++)
-            if(incompatibilidades[l] == "0" && (pp[ipp].incomp[l] == "1" || sp[isp].incomp[l] == "1" || p[ip].incomp[l] == "1"))
-                incompatibilidades[l] = "1";
+            if(incompatibilidades[l] == 0 && (pp[ipp].incomp[l] == "1" || sp[isp].incomp[l] == "1" || p[ip].incomp[l] == "1"))
+                incompatibilidades[l] = 1;
     }
 
     //VALOR DE REPETICION O VARIABILIDAD DE PLATOS

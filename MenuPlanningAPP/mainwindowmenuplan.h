@@ -59,8 +59,8 @@ private:
         const static int NumGruposAlimenticios = 10;            //Numero de grupos alimenticios
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
-        const static int NumIndividuos = 50;                   //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 700;
+        const static int NumIndividuos = 30;                   //Numero de individuos a generarse en la primera poblacion
+        const static int NumGeneraciones = 500;
 
 
 
@@ -251,6 +251,7 @@ private:
         void comprobarInfNutricional();
 
         void set_meetingPool(const int numIndSelec);                                                                        //Funcion que selecciona a los 50 mejores padres
+        bool esRepetido(individuo ind);
 
 
         /*-------------------*/
@@ -269,11 +270,23 @@ private:
         /*----------------------------------------------*/
         /*---- VISUALIZACION DE PLANES ALIMENTICIOS ----*/
         /*----------------------------------------------*/
-
         void inicializarTablas();
         void limpiarTablas();
         void visualizarPlanes();
         QString get_variedad(double var);
+
+
+
+        /*---------------------------------------------------------------------------------------*/
+        /*---- CREACION DE PLAN ESPECIAL (SIN DETERMINADOS ALERGENOS Y/O INCOMPATIBILIDADES) ----*/
+        /*---------------------------------------------------------------------------------------*/
+        void comprobarAlerIncomp(std::vector<int> &aler, std::vector<int> &incomp);                                     //Comprobar cuales son los alergenos e incompatibilidades que se desean evitar en el plan alimenticio
+        bool comprobarPlanActual(std::vector<int> aler, std::vector<int> incomp, individuo ind);                        //Comprueba si un plan alimenticio cumple con las restricciones de alergenos e incompatibilidades
+        void set_PlanEspecial();
+        void set_PlatosEspeciales(std::vector<int> &ppE, std::vector<int> &spE, std::vector<int> &pE);                  //Seleccionar los platos compatibles con los alergenos e incompatibilidades a evitar
+
+
+
 
 
     private slots:

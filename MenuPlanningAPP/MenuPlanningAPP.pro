@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     individuo.cpp \
     poblacion.cpp \
     quicksort.cpp \
-    visualizacionplan.cpp
+    visualizacionplan.cpp \
+    planespecial.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \

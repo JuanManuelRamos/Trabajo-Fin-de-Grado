@@ -27,8 +27,8 @@ class individuo
         double objPrecio;                                               //Precio total de todos los platos incluidos en el plan (menor = mejor)
         double objGradoRepeticion;                                      //Valor de repeticion de platos en el plan (menor = mejor)
         std::vector<float> infNutricional;                              //Vector que almacena la suma de valores nutricionales de todos los platos incluidos en el plan
-        std::vector<QString> alergenos;                                 //Vector que almacena los alergenos contenidos en el plan
-        std::vector<QString> incompatibilidades;                        //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
+        std::vector<int> alergenos;                                     //Vector que almacena los alergenos contenidos en el plan
+        std::vector<int> incompatibilidades;                            //Vector que almacena las incompatibilidades alimenticias contenidas en el plan
 
         double iDistance;
         std::vector<int> indvDominados;                                 //Vector de soluciones a las que el individuo actual domina. En la teoria denominada Sp
@@ -110,6 +110,9 @@ class individuo
        int get_idPlatoPP(int dia) { return planDietetico[dia].idPrimerPlato.first; }
        int get_idPlatoSP(int dia) { return planDietetico[dia].idSegundoPlato.first; }
        int get_idPlatoP(int dia) { return planDietetico[dia].idPostre.first; }
+
+       int get_alergeno(int i) { return alergenos[i]; }
+       int get_incompatibilidad(int i) { return incompatibilidades[i]; }
 };
 
 

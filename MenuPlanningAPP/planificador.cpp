@@ -420,9 +420,11 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
 
         setNumDiasPlan();
 
-        resetIngestaDiariaRecomendada();                            //Se resetea para que se vuelva a los valores anteriores a la modificacion por numero de dias del plan (por si el numero de dias cambia)
-        setIngestaDiariaRecomendadaPorDias();                       //Se calculan los valores nutricionales recomendados segun el numero de dias elegido para el plan
+        //resetIngestaDiariaRecomendada();                            //Se resetea para que se vuelva a los valores anteriores a la modificacion por numero de dias del plan (por si el numero de dias cambia)
+        //setIngestaDiariaRecomendadaPorDias();                       //Se calculan los valores nutricionales recomendados segun el numero de dias elegido para el plan
 
-        crearPoblacion();                                           //Comienza la creacion de individuos
+        //crearPoblacion();                                           //Comienza la creacion de individuos
+
+        set_PlanEspecial();
     }
 }
