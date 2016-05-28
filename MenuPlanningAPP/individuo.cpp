@@ -113,7 +113,7 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl)
 {
     double valPP, valSP, valP, valTabla, valGAFirst, valGASecond;
-    double uno = 1;
+    double num = 1;
     double  valTotal = 0;
     std::vector<int> gaElegidos;                                                                                //Vector que guarda los grupos alimenticios pertenecientes a los platos elegidos
 
@@ -179,7 +179,11 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);                                                                                 //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
         //qDebug() << "valorGASecond: " << valGASecond;
 
-        valTotal += uno/(valTabla + valPP + valSP + valP) + uno/valGAFirst + valGASecond;                                                           //Calcular el valor total
+        //ORIGINAL
+        valTotal += num/(valTabla + valPP + valSP + valP) + num/valGAFirst + valGASecond;                                                           //Calcular el valor total
+
+        //valTotal += num/valTabla + 1+num/(valPP + valSP + valP + valGAFirst) + valGASecond;
+
         //qDebug() << "valorTotal: " << valTotal;
 
         //qDebug() << "=========" << i;

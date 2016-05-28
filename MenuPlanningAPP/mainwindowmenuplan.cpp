@@ -460,7 +460,7 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
             enablePLANElements();                                                           //______Se habilitan los elementos en la seccion de planificador
             infoPLANPlatos();                                                               //______Mostrar la informacion de numero de platos
             getIngestaDiariaRecomendada();                                                  //______Mostrar la informacion de ingestas diarias recomendadas
-
+            inicializarTablas();                                                            //______Inicializar las tablas donde se muestran los planes alimenticios
 
 
 
@@ -488,6 +488,7 @@ void MainWindowMenuPlan::on_pushButton_ConectarBD_clicked()
         disableAMEIngredientesButtons();                                                //_____Se deshabilitan los botones de edicion del panel de ingredientes
         disableAMEPlatosButtons();                                                      //_____Se deshabilitan los botones de edicion del panel de platos
         disablePLANElements();                                                          //_____Se deshabilitan los elementos en la seccion de planificador
+        limpiarTablas();                                                                //_____Se limpian las tablas en donde se muestran los planes alimenticios
     }
 }
 
@@ -812,4 +813,6 @@ void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
     idrN[19] = 67.5f;           //yodo
     idrN[20] = 6.75f;           //zinc
 }
+
+
 

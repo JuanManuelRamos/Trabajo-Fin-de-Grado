@@ -59,8 +59,8 @@ private:
         const static int NumGruposAlimenticios = 10;            //Numero de grupos alimenticios
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
-        const static int NumIndividuos = 100;                   //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 100;
+        const static int NumIndividuos = 50;                   //Numero de individuos a generarse en la primera poblacion
+        const static int NumGeneraciones = 700;
 
 
 
@@ -103,7 +103,8 @@ private:
         /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
         std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
         std::vector<individuo> meetingPool;                                                 //Vector donde se almacenan los mejores padres en cada generacion
-
+        std::vector<individuo> planesRecomendados;
+        std::vector<individuo> planesEspeciales;
 
 
 
@@ -265,6 +266,16 @@ private:
         bool sortBestInd(individuo A, individuo B);
 
 
+        /*----------------------------------------------*/
+        /*---- VISUALIZACION DE PLANES ALIMENTICIOS ----*/
+        /*----------------------------------------------*/
+
+        void inicializarTablas();
+        void limpiarTablas();
+        void visualizarPlanes();
+        QString get_variedad(double var);
+
+
     private slots:
 
         void closeEvent(QCloseEvent * event);
@@ -300,6 +311,7 @@ private:
         void on_pushButton_PLAN_Cancelar_clicked();
         void on_pushButton_PLAN_GenerarPlan_clicked();
 
+        void on_listWidget_PLAND_Recomendados_clicked(const QModelIndex &index);
 };
 
 #endif // MAINWINDOWMENUPLAN_H

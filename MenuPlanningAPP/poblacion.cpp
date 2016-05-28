@@ -238,16 +238,25 @@ void MainWindowMenuPlan::crearPoblacion()
         indPoblacion.clear();
         indPoblacion = meetingPool;
 
-        qDebug() << "--- POBLACION FINAL ---";
-        for(int x = 0; x < indPoblacion.size(); x++)
-            qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance();
+        /*if(gen == 0 || gen == 250 || gen == 500 || gen == 750)
+        {
+            qDebug() << "--- POBLACION FINAL " << gen << " ---";
+            for(int x = 0; x < indPoblacion.size(); x++)
+                qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
 
-        qDebug() << "";
-        qDebug() << "";
-        qDebug() << "";
+            qDebug() << "";
+            qDebug() << "";
+            qDebug() << "";
+        }*/
     }
 
+    qDebug() << "--- POBLACION FINAL ---";
+    for(int x = 0; x < indPoblacion.size(); x++)
+        qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
 
+    qDebug() << "";
+    qDebug() << "";
+    qDebug() << "";
 
 
 
@@ -256,6 +265,38 @@ void MainWindowMenuPlan::crearPoblacion()
 
     qDebug() << ""; qDebug() << "";
     qDebug() << "Tiempo de ejeucion: " << duration << " segundos";
+
+
+
+    /*=================================*/
+
+    planesRecomendados.clear();
+
+    int p = 0;
+    while(indPoblacion[p].get_rango() == 1 && indPoblacion[p].get_iDistance() > 0)
+    {
+        planesRecomendados.push_back(indPoblacion[p]);
+        p++;
+    }
+    if(planesRecomendados.size() == 0)
+    {
+        for(int i = 0; i < 5; i++)
+            planesRecomendados.push_back(indPoblacion[i]);
+    }
+
+
+
+
+
+    /*qDebug() << "--Menus del Plan--";
+    for(int i = 0; i < numDiasPlan; i++)
+        qDebug() << "PP: " << planesRecomendados[0].get_idPlatoPP(i) << "  SP: " << planesRecomendados[0].get_idPlatoSP(i) << "  P: " << planesRecomendados[0].get_idPlatoP(i);*/
+
+
+    visualizarPlanes();
+
+
+
 }
 
 
@@ -327,7 +368,7 @@ void MainWindowMenuPlan::mutacion(individuo &I)
     for(int i = 0; i < numDiasPlan; i++)
     {
         probabilidadMutacion = rand() % 100;
-        if(probabilidadMutacion < 10)
+        if(probabilidadMutacion < 5)
         {
             mutado = true;
             //qDebug() << "Mutado menu nº " << 1+i;
@@ -622,9 +663,10 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
 
 
     int cont = 0;
+    int tam = 0;
     meetingPool.clear();
 
-    if(pobRecom.size() >= numIndSelec)
+    /*if(pobRecom.size() >= numIndSelec)
     {
         for(cont; cont < numIndSelec; cont++)
         {
@@ -651,6 +693,41 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
             }
             else
                 break;
+        }
+    }*/
+
+    for(int j = 0; j < pobRecom.size(); j++)
+    {
+        if(cont < numIndSelec)
+        {
+            if(pobRecom[j].get_iDistance() > (double)0.6)
+            {
+                meetingPool.push_back(pobRecom[j]);
+                tam = static_cast<int>(meetingPool.size()-1);
+                meetingPool[tam].set_idIndividuo(tam);
+                cont++;
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+    for(int k = 0; k < pobNoRecom.size(); k++)
+    {
+        if(cont < numIndSelec)
+        {
+            if(pobNoRecom[k].get_iDistance() > (double)0.6)
+            {
+                meetingPool.push_back(pobNoRecom[k]);
+                tam = static_cast<int>(meetingPool.size()-1);
+                meetingPool[tam].set_idIndividuo(tam);
+                cont++;
+            }
+        }
+        else
+        {
+            break;
         }
     }
 

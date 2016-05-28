@@ -53,6 +53,7 @@ class database
         QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
         int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
         //int queryMostrarIDPlatoPorNombre(QString nombre);                                       //Consulta para mostrar el id de un plato por su nombre
+        QString queryMostrarNombrePlatoPorID(QString id);                                       //Consulta para mostrar el nombre de un plato por su ID
 
         void addPLAQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo plato
         void modPLAQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un plato

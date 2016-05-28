@@ -105,6 +105,11 @@ class individuo
 
        void set_idIndividuo(int id) { idIndividuo = id; }
        int get_idIndividuo() { return idIndividuo; }
+
+
+       int get_idPlatoPP(int dia) { return planDietetico[dia].idPrimerPlato.first; }
+       int get_idPlatoSP(int dia) { return planDietetico[dia].idSegundoPlato.first; }
+       int get_idPlatoP(int dia) { return planDietetico[dia].idPostre.first; }
 };
 
 
