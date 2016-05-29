@@ -17,6 +17,10 @@ void MainWindowMenuPlan::inicializarTablas()
     ui->tableWidget_PLAND_Especiales->setColumnCount(4);
     ui->tableWidget_PLAND_Especiales->setHorizontalHeaderLabels(QString("Día;Primer plato;Segundo plato;Postre").split(";"));
     ui->tableWidget_PLAND_Especiales->verticalHeader()->hide();
+    ui->tableWidget_PLAND_Especiales->setColumnWidth(0, 50);
+    ui->tableWidget_PLAND_Especiales->setColumnWidth(1, 236);
+    ui->tableWidget_PLAND_Especiales->setColumnWidth(2, 238);
+    ui->tableWidget_PLAND_Especiales->setColumnWidth(3, 215);
 }
 
 void MainWindowMenuPlan::limpiarTablas()
@@ -57,6 +61,18 @@ void MainWindowMenuPlan::on_listWidget_PLAND_Recomendados_clicked(const QModelIn
 
     ui->label_PLAND_precioR->setText(QString::number(planesRecomendados[plan].get_objPrecio()));
     ui->label_PLAND_varR->setText(get_variedad(planesRecomendados[plan].get_objGradoRepeticion()));
+
+    if(planesEspeciales.size() > 0)
+    {
+        for(int i = 0; i < numDiasPlan; i++)
+        {
+            ui->tableWidget_PLAND_Especiales->insertRow(1+i);
+            ui->tableWidget_PLAND_Especiales->setItem(1+i, 0, new QTableWidgetItem(QString::number(1+i)));
+            ui->tableWidget_PLAND_Especiales->setItem(1+i, 1, new QTableWidgetItem(db1->queryMostrarNombrePlatoPorID(QString::number(planesEspeciales[plan].get_idPlatoPP(i)))));
+            ui->tableWidget_PLAND_Especiales->setItem(1+i, 2, new QTableWidgetItem(db1->queryMostrarNombrePlatoPorID(QString::number(planesEspeciales[plan].get_idPlatoSP(i)))));
+            ui->tableWidget_PLAND_Especiales->setItem(1+i, 3, new QTableWidgetItem(db1->queryMostrarNombrePlatoPorID(QString::number(planesEspeciales[plan].get_idPlatoP(i)))));
+        }
+    }
 }
 
 

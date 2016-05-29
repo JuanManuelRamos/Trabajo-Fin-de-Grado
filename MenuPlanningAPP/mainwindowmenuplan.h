@@ -60,7 +60,7 @@ private:
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
         const static int NumIndividuos = 30;                   //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 500;
+        const static int NumGeneraciones = 1;
 
 
 
@@ -105,6 +105,7 @@ private:
         std::vector<individuo> meetingPool;                                                 //Vector donde se almacenan los mejores padres en cada generacion
         std::vector<individuo> planesRecomendados;
         std::vector<individuo> planesEspeciales;
+        std::vector<int> alerEvitar, incompEvitar;
 
 
 
@@ -280,10 +281,12 @@ private:
         /*---------------------------------------------------------------------------------------*/
         /*---- CREACION DE PLAN ESPECIAL (SIN DETERMINADOS ALERGENOS Y/O INCOMPATIBILIDADES) ----*/
         /*---------------------------------------------------------------------------------------*/
-        void comprobarAlerIncomp(std::vector<int> &aler, std::vector<int> &incomp);                                     //Comprobar cuales son los alergenos e incompatibilidades que se desean evitar en el plan alimenticio
-        bool comprobarPlanActual(std::vector<int> aler, std::vector<int> incomp, individuo ind);                        //Comprueba si un plan alimenticio cumple con las restricciones de alergenos e incompatibilidades
+        bool comprobarAlerIncomp();                                                                                     //Comprobar cuales son los alergenos e incompatibilidades que se desean evitar en el plan alimenticio
+        bool comprobarPlanActual(individuo ind);                                                                        //Comprueba si un plan alimenticio cumple con las restricciones de alergenos e incompatibilidades
+        bool comprobarPlatossEsp(infoPlatos iF);                                                                        //Genera los vectores de platos especiales
+        bool comprobarPlatoActual(int p, int tipoP, std::vector<int> ppE, std::vector<int> spE, std::vector<int> pE);   //Comprueba si un plato cumple con las restricciones de alergenos e incompatibilidades
         void set_PlanEspecial();
-        void set_PlatosEspeciales(std::vector<int> &ppE, std::vector<int> &spE, std::vector<int> &pE);                  //Seleccionar los platos compatibles con los alergenos e incompatibilidades a evitar
+        void set_PlatosEspeciales(std::vector<int> &ppE, std::vector<int> &spE, std::vector<int> &pE);      //Seleccionar los platos compatibles con los alergenos e incompatibilidades a evitar
 
 
 

@@ -113,6 +113,14 @@ class individuo
 
        int get_alergeno(int i) { return alergenos[i]; }
        int get_incompatibilidad(int i) { return incompatibilidades[i]; }
+
+       int get_menuDiarioPP(int m) { return planDietetico[m].idPrimerPlato.first; }
+       int get_menuDiarioSP(int m) { return planDietetico[m].idSegundoPlato.first; }
+       int get_menuDiarioP(int m) { return planDietetico[m].idPostre.first; }
+
+       void set_menuDiarioPP(int m, int id) { planDietetico[m].idPrimerPlato.first = id;planDietetico[m].idPrimerPlato.second = 0; }
+       void set_menuDiarioSP(int m, int id) { planDietetico[m].idSegundoPlato.first = id;planDietetico[m].idSegundoPlato.second = 0; }
+       void set_menuDiarioP(int m, int id) { planDietetico[m].idPostre.first = id;planDietetico[m].idPostre.second = 0; }
 };
 
 
