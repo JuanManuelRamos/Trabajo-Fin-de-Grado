@@ -59,8 +59,8 @@ private:
         const static int NumGruposAlimenticios = 10;            //Numero de grupos alimenticios
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
-        const static int NumIndividuos = 30;                   //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 1;
+        const static int NumIndividuos = 50;                   //Numero de individuos a generarse en la primera poblacion
+        const static int NumGeneraciones = 200;
 
 
 

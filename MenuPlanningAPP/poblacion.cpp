@@ -4,7 +4,6 @@
 
 void MainWindowMenuPlan::crearPoblacion()
 {
-
     std::clock_t start;
     double duration;
 
@@ -23,108 +22,6 @@ void MainWindowMenuPlan::crearPoblacion()
     }
 
 
-    /*==============================================================*/
-    /* EJEMPLO PARA PRUEBA DE LAS FUNCIONES DE REPRODUCCION Y MUTACION */
-    /*
-    qDebug() << "-----PADRES BIEEENNNNN------";
-    individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
-    individuo hijo2 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
-
-    reproduccion(indPoblacion[0].getPlanDietetico(), indPoblacion[1].getPlanDietetico(), hijo1, hijo2);
-    qDebug() << "-----REPRODUCCION BIEEENNNNN------";
-
-    hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
-    hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
-    qDebug() << "-----HIJOS REPRODUCCION BIEEENNNNN------";
-
-    mutacion(hijo1);
-    qDebug() << "-----HIJO 1 MUTACION BIEEENNNNN------";
-    mutacion(hijo2);
-    qDebug() << "-----HIJO 2 MUTACION BIEEENNNNN------";
-
-    hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
-    hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);    //Asignarle su plan alimenticio correspondiente
-
-    qDebug() << "-----TODO BIEEENNNNN------";  
-    */
-    /*==============================================================*/
-
-
-
-    /*==============================================================*/
-    /* EJEMPLO DE CONJUNTO DE SOLUCIONES NO DOMINADAS PARA PROBAR LA FUNCION DE CROWDING DISTANCE Y FIRST NON DOMINATED SORT*/
-
-    /*indPoblacion.clear();
-
-    individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(30.67);
-    ind.set_objGradoRepeticion(7.43);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(29.69);
-    ind.set_objGradoRepeticion(11.12);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(33.04);
-    ind.set_objGradoRepeticion(11.07);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(30.74);
-    ind.set_objGradoRepeticion(14.76);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(32.78);
-    ind.set_objGradoRepeticion(10.87);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(27.06);
-    ind.set_objGradoRepeticion(13.05);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(31.44);
-    ind.set_objGradoRepeticion(9.23);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(30.88);
-    ind.set_objGradoRepeticion(9.59);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(28.43);
-    ind.set_objGradoRepeticion(6.77);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(32.67);
-    ind.set_objGradoRepeticion(8.87);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(4.8);
-    ind.set_objGradoRepeticion(16.5);
-    indPoblacion.push_back(ind);
-
-    ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
-    ind.set_objPrecio(2.5);
-    ind.set_objGradoRepeticion(22);
-    indPoblacion.push_back(ind);
-
-    crowdingDistance(indPoblacion);
-
-    for(int j = 0; j < indPoblacion.size(); j++)
-            qDebug() << "Precio: " << indPoblacion[j].get_objPrecio() << " Repeticion: " << indPoblacion[j].get_objGradoRepeticion() << " iDistance: " << indPoblacion[j].get_iDistance();
-
-    qDebug() << "-----------";*/
-    /*==============================================================*/
-
-
 
     comprobarInfNutricional();
     //qDebug() << "comprobarInfNutricional BIEN";
@@ -134,6 +31,8 @@ void MainWindowMenuPlan::crearPoblacion()
     std::vector<individuo> aux;
     int Prand = 0;
     int tamIndPob = 0;
+    int probCruce = 80;
+    int x = 0;
 
     for(int n = 1; n <= 1+indPoblacion.size(); n++)
     {
@@ -173,7 +72,19 @@ void MainWindowMenuPlan::crearPoblacion()
             individuo hijo1 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
             individuo hijo2 = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);
 
-            reproduccion(meetingPool[j].getPlanDietetico(), meetingPool[Prand].getPlanDietetico(), hijo1, hijo2);
+
+            x = rand() % 100;
+            if(x < probCruce)
+            {
+                reproduccion(meetingPool[j].getPlanDietetico(), meetingPool[Prand].getPlanDietetico(), hijo1, hijo2);
+            }
+            else
+            {
+                hijo1 = meetingPool[j];
+                hijo2 = meetingPool[Prand];
+            }
+
+
             //qDebug() << "reproduccion BIEN";
             mutacion(hijo1);
             mutacion(hijo2);
@@ -238,25 +149,27 @@ void MainWindowMenuPlan::crearPoblacion()
         indPoblacion.clear();
         indPoblacion = meetingPool;
 
-        /*if(gen == 0 || gen == 250 || gen == 500 || gen == 750)
+        if(gen == 0 || gen == 100 || gen == 500 || gen == 750)
         {
             qDebug() << "--- POBLACION FINAL " << gen << " ---";
             for(int x = 0; x < indPoblacion.size(); x++)
+                if(indPoblacion[x].get_rango() == 1)
                 qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
 
             qDebug() << "";
             qDebug() << "";
             qDebug() << "";
-        }*/
+        }
     }
 
     qDebug() << "--- POBLACION FINAL ---";
     for(int x = 0; x < indPoblacion.size(); x++)
+        if(indPoblacion[x].get_rango() == 1)
         qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
 
     qDebug() << "";
     qDebug() << "";
-    qDebug() << "";
+    //qDebug() << "";
 
 
 
@@ -361,7 +274,7 @@ void MainWindowMenuPlan::reproduccion(std::vector<menuDiario> P1, std::vector<me
 void MainWindowMenuPlan::mutacion(individuo &I)
 {
     int probabilidadMutacion = 0;
-    int limite = 50;
+    int limite = 20;
     bool mutado = false;
     int ipp, isp, ip;
     std::vector<menuDiario> aux = I.getPlanDietetico();
@@ -734,8 +647,8 @@ void MainWindowMenuPlan::set_meetingPool(const int numIndSelec)
         }
     }
 
-    if(meetingPool.size() != numIndSelec)
-        qDebug() << "mec, mec, Error!!";
+    //if(meetingPool.size() != numIndSelec)
+        //qDebug() << "mec, mec, Error!!";
 
 
     /*qDebug() << "";
