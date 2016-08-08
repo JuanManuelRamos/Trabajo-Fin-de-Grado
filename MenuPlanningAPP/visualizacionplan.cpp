@@ -60,7 +60,7 @@ void MainWindowMenuPlan::on_listWidget_PLAND_Recomendados_clicked(const QModelIn
     }
 
     ui->label_PLAND_precioR->setText(QString::number(planesRecomendados[plan].get_objPrecio()));
-    ui->label_PLAND_varR->setText(get_variedad(planesRecomendados[plan].get_objGradoRepeticion()));
+    ui->label_PLAND_varR->setText(QString::number(numDiasPlan));
 
     if(planesEspeciales.size() > 0)
     {
@@ -73,21 +73,36 @@ void MainWindowMenuPlan::on_listWidget_PLAND_Recomendados_clicked(const QModelIn
             ui->tableWidget_PLAND_Especiales->setItem(1+i, 3, new QTableWidgetItem(db1->queryMostrarNombrePlatoPorID(QString::number(planesEspeciales[plan].get_idPlatoP(i)))));
         }
     }
+
+    ui->listWidget_PLAND_alerg->clear();
+    ui->listWidget_2_PLAND_inc->clear();
+
+    if(ui->checkBox_cereales_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Cereales");
+    if(ui->checkBox_frutos_secos_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Frutos secos");
+    if(ui->checkBox_legumbres_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Legumbres");
+    if(ui->checkBox_marisco_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Marisco");
+    if(ui->checkBox_pescado_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Pescado");
+    if(ui->checkBox_huevo_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Proteína de huevo");
+    if(ui->checkBox_leche_2->isChecked())
+        ui->listWidget_PLAND_alerg->addItem("Proteína de leche de vaca");
+
+
+    if(ui->checkBox_celiaco_2->isChecked())
+        ui->listWidget_2_PLAND_inc->addItem("Celiaquía");
+    if(ui->checkBox_diabetico_2->isChecked())
+        ui->listWidget_2_PLAND_inc->addItem("Diabetes");
+    if(ui->checkBox_semivegetariano_2->isChecked())
+        ui->listWidget_2_PLAND_inc->addItem("Semivegetarianismo");
+    if(ui->checkBox_vegetariano_2->isChecked())
+        ui->listWidget_2_PLAND_inc->addItem("Vegetarianismo");
+    if(ui->checkBox_vegano_2->isChecked())
+        ui->listWidget_2_PLAND_inc->addItem("Veganismo");
 }
 
 
-QString MainWindowMenuPlan::get_variedad(double var)
-{
-    if(var >= 10)
-        return "Muy baja";
-    else if(var < 10 && var >= 8)
-        return "Baja";
-    else if(var < 8 && var >= 6)
-        return "Media";
-    else if(var < 6 && var >= 4)
-        return "Moderada";
-    else if(var < 4 && var >= 2)
-        return "Alta";
-    else
-        return "Muy Alta";
-}

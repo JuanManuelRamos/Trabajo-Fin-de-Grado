@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -4170,7 +4170,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_190">
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Variedad: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Nº días: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -4223,16 +4223,6 @@
       <property name="title">
        <string>Planes alimenticios especiales recomendados</string>
       </property>
-      <widget class="QListWidget" name="listWidget__PLAND_Especiales">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>80</y>
-         <width>151</width>
-         <height>201</height>
-        </rect>
-       </property>
-      </widget>
       <widget class="QTableWidget" name="tableWidget_PLAND_Especiales">
        <property name="geometry">
         <rect>
@@ -4246,14 +4236,47 @@
       <widget class="QLabel" name="label_189">
        <property name="geometry">
         <rect>
-         <x>0</x>
-         <y>40</y>
-         <width>171</width>
-         <height>51</height>
+         <x>20</x>
+         <y>30</y>
+         <width>151</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt; font-weight:600;&quot;&gt;Planes especiales&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Alérgenos excluidos&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidget_PLAND_alerg">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>171</width>
+         <height>91</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_192">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>170</y>
+         <width>171</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Incompatibilidades&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QListWidget" name="listWidget_2_PLAND_inc">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>200</y>
+         <width>171</width>
+         <height>81</height>
+        </rect>
        </property>
       </widget>
      </widget>

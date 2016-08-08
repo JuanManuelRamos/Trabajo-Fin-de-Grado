@@ -59,9 +59,12 @@ private:
         const static int NumGruposAlimenticios = 10;            //Numero de grupos alimenticios
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
-        const static int NumIndividuos = 50;                   //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 200;
 
+        const static int NumIndividuos = 50;                    //Numero de individuos a generarse en la primera poblacion
+        const static int NumGeneraciones = 200;
+        const static int probCruce = 90;
+        const static int probMutacion = 20;
+        const double minCrowDist = 0.8;    //0.8
 
 
 
@@ -102,7 +105,7 @@ private:
 
         /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
         std::vector<individuo> indPoblacion;                                                //Vector de individuos que almacena todos los individuos de la poblacion
-        std::vector<individuo> meetingPool;                                                 //Vector donde se almacenan los mejores padres en cada generacion
+        std::vector<individuo> matingPool;                                                  //Vector donde se almacenan los mejores padres en cada generacion
         std::vector<individuo> planesRecomendados;
         std::vector<individuo> planesEspeciales;
         std::vector<int> alerEvitar, incompEvitar;
@@ -249,9 +252,9 @@ private:
         void fastNonDominatedSort();
         DOMINANCE p_dominate_q(individuo P, individuo Q);                                                                   //Funcion para comprobar si P domina a Q
 
-        void comprobarInfNutricional();
+        void comprobarInfNutricional();                                                                                     //Comprueba si los planes alimenticios cumplen con las restricciones del problema
 
-        void set_meetingPool(const int numIndSelec);                                                                        //Funcion que selecciona a los 50 mejores padres
+        void set_matingPool(const int numIndSelec);                                                                         //Funcion que selecciona a los 50 mejores padres
         bool esRepetido(individuo ind);
 
 
@@ -274,7 +277,6 @@ private:
         void inicializarTablas();
         void limpiarTablas();
         void visualizarPlanes();
-        QString get_variedad(double var);
 
 
 

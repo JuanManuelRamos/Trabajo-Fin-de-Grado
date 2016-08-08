@@ -409,7 +409,6 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     ui->pushButton_PLAN_GenerarPlan->setEnabled(false);
     ui->label_generarPlan->setText("Generando plan alimenticio. Espere...");
     ui->listWidget_PLAND_Recomendados->clear();
-    ui->listWidget__PLAND_Especiales->clear();
     ui->tableWidget_PLAND_Recomendados->clear();
     ui->tableWidget_PLAND_Especiales->clear();
 
