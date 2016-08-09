@@ -55,7 +55,7 @@ int MainWindowMenuPlan::pivotCD(std::vector<individuo> &poblacionNonDom, int fir
 
 
 /*-------------------------------------------------------------*/
-/*--------------- QUICKSORT PARA MEETING POOL -----------------*/
+/*--------------- QUICKSORT PARA MATING POOL ------------------*/
 /*-------------------------------------------------------------*/
 void MainWindowMenuPlan::quickSortMP(std::vector<individuo> &pob, int first, int last)
 {
@@ -89,4 +89,41 @@ int MainWindowMenuPlan::pivotMP(std::vector<individuo> &pob, int first, int last
 bool MainWindowMenuPlan::sortBestInd(individuo A, individuo B)
 {
     return ((A.get_rango() < B.get_rango()) || ((A.get_rango() == B.get_rango()) && (A.get_iDistance() > B.get_iDistance())));
+}
+
+
+
+/*---------------------------------------------------------------------*/
+/*--------------- QUICKSORT PARA PLANES RECOMENDADOS ------------------*/
+/*---------------------------------------------------------------------*/
+
+void MainWindowMenuPlan::quickSortGradoRep(std::vector<individuo> &pob, int first, int last)
+{
+    int pivotElement;
+
+    if(first < last)
+    {
+        pivotElement = pivotGradoRep(pob, first, last);
+        quickSortGradoRep(pob, first, pivotElement-1);
+        quickSortGradoRep(pob, pivotElement+1, last);
+    }
+}
+
+int MainWindowMenuPlan::pivotGradoRep(std::vector<individuo> &pob, int first, int last)
+{
+    int  p = first;
+    double pivotElement = pob[first].get_objGradoRepeticion();
+
+    for(int i = first+1; i <= last; i++)
+    {
+        /* If you want to sort the list in the other order, change "<=" to ">" */
+
+        if(pob[i].get_objGradoRepeticion() <= pivotElement)
+        {
+            p++;
+            std::swap(pob[i], pob[p]);
+        }
+    }
+    std::swap(pob[p], pob[first]);
+    return p;
 }

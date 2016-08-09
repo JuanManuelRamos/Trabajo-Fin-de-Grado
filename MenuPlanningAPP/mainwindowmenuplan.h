@@ -255,7 +255,8 @@ private:
         void comprobarInfNutricional();                                                                                     //Comprueba si los planes alimenticios cumplen con las restricciones del problema
 
         void set_matingPool(const int numIndSelec);                                                                         //Funcion que selecciona a los 50 mejores padres
-        bool esRepetido(individuo ind);
+        bool esRepetido(individuo ind, std::vector<individuo> &vec);
+
 
 
         /*-------------------*/
@@ -269,6 +270,9 @@ private:
         void quickSortMP(std::vector<individuo> &pob, int first, int last);
         int pivotMP(std::vector<individuo> &pob, int first, int last);
         bool sortBestInd(individuo A, individuo B);
+
+        void quickSortGradoRep(std::vector<individuo> &pob, int first, int last);                                           //Ordena el vector de invidiuos por el objetivo de grado de repeticion
+        int pivotGradoRep(std::vector<individuo> &pob, int first, int last);
 
 
         /*----------------------------------------------*/

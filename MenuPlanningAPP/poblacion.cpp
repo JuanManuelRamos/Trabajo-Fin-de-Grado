@@ -40,6 +40,7 @@ void MainWindowMenuPlan::crearPoblacion()
     int Prand = 0;
     int tamIndPob = 0;   
     int x = 0;
+    int N = 0;
 
     for(int n = 1; n <= 1+indPoblacion.size(); n++)
     {
@@ -58,7 +59,9 @@ void MainWindowMenuPlan::crearPoblacion()
     //qDebug() << "crowdingDistance BIEN";
 
 
+    //-----------------------------
     //--- COMIENZO GENERACIONES ---
+    //-----------------------------
 
 
     for(int gen = 0; gen < NumGeneraciones; gen++)
@@ -172,7 +175,7 @@ void MainWindowMenuPlan::crearPoblacion()
         indPoblacion.clear();
         indPoblacion = matingPool;
 
-        if(gen == 0 || gen == 100 || gen == 500 || gen == 750)
+        if(gen == 0 || gen == NumGeneraciones/2)
         {
             qDebug() << "--- POBLACION FINAL " << gen << " ---";
             for(int x = 0; x < indPoblacion.size(); x++)
@@ -183,42 +186,75 @@ void MainWindowMenuPlan::crearPoblacion()
             qDebug() << "";
             qDebug() << "";
         }
+
+
+
+        if(gen == NumGeneraciones-1)
+        {
+            qDebug() << "--- POBLACION FINAL ---";
+            for(int x = 0; x < indPoblacion.size(); x++)
+                qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
+
+            qDebug() << "";
+            qDebug() << "";
+        }
+
+
+
+
+        //---PLANES RECOMENDADOS---
+
+        N = static_cast<int>(indPoblacion.size()-1);
+        quickSortGradoRep(indPoblacion, 0, N);
+
+
+        if(gen == 0)
+        {
+            planesRecomendados.clear();
+            for(int i = 0; i < 5; i++)
+                planesRecomendados.push_back(indPoblacion[i]);
+        }
+        else
+        {
+            for(int i = 0; i < planesRecomendados.size(); i++)
+            {
+                if(indPoblacion[i].get_objGradoRepeticion() < planesRecomendados[planesRecomendados.size()-1].get_objGradoRepeticion() && indPoblacion[i].get_planAdecuado() && !esRepetido(indPoblacion[i], planesRecomendados))
+                {
+                    planesRecomendados.pop_back();
+                    planesRecomendados.push_back(indPoblacion[i]);
+                    N = static_cast<int>(planesRecomendados.size()-1);
+                    quickSortGradoRep(planesRecomendados, 0, N);
+                }
+                else
+                    break;
+            }
+        }
+
     }
-
-    qDebug() << "--- POBLACION FINAL ---";
-    for(int x = 0; x < indPoblacion.size(); x++)
-        qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
-
-    qDebug() << "";
-    qDebug() << "";
-    //qDebug() << "";
-
-
-
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
     qDebug() << ""; qDebug() << "";
-    qDebug() << "Tiempo de ejeucion: " << duration << " segundos";
+    qDebug() << "Tiempo de ejecucion: " << duration << " segundos";
 
 
 
     /*=================================*/
-
+    /*
     planesRecomendados.clear();
 
-    int p = 0;
-    while(indPoblacion[p].get_rango() == 1 && indPoblacion[p].get_iDistance() > 0)
-    {
-        planesRecomendados.push_back(indPoblacion[p]);
-        p++;
-    }
-    if(planesRecomendados.size() == 0)
-    {
-        for(int i = 0; i < 5; i++)
-            planesRecomendados.push_back(indPoblacion[i]);
-    }
 
+    int rg = 1;
+    while(planesRecomendados.size() == 0)
+    {
+        for(int i = 0; i < indPoblacion.size(); i++)
+            if(indPoblacion[i].get_rango() == rg && indPoblacion[i].get_iDistance() > 0 && indPoblacion[i].get_planAdecuado())
+                planesRecomendados.push_back(indPoblacion[i]);
+        if(planesRecomendados.size() == 0)
+            rg++;
+        if(rg >= 6)
+            break;
+    }*/
 
     qDebug() << "--- PLANES RECOMENDADOS ---";
     for(int x = 0; x < planesRecomendados.size(); x++)
@@ -234,7 +270,6 @@ void MainWindowMenuPlan::crearPoblacion()
 
 
     visualizarPlanes();
-
 
 
 }
@@ -648,7 +683,7 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
         {
             if(cont < numIndSelec)
             {
-                if(pobRecom[j].get_iDistance() > crowD && !esRepetido(pobRecom[j]))
+                if(pobRecom[j].get_iDistance() > crowD && !esRepetido(pobRecom[j], matingPool))
                 //if(pobRecom[j].get_rango() <= crowD && !esRepetido(pobRecom[j]))
                 {
                     matingPool.push_back(pobRecom[j]);
@@ -668,7 +703,7 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
         {
             if(cont < numIndSelec)
             {
-                if(pobNoRecom[k].get_iDistance() > crowD && !esRepetido(pobNoRecom[k]))
+                if(pobNoRecom[k].get_iDistance() > crowD && !esRepetido(pobNoRecom[k], matingPool))
                 //if(pobNoRecom[k].get_rango() <= crowD && !esRepetido(pobNoRecom[k]))
                 {
                     matingPool.push_back(pobNoRecom[k]);
@@ -709,11 +744,11 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
 
 
 
-bool MainWindowMenuPlan::esRepetido(individuo ind)
+bool MainWindowMenuPlan::esRepetido(individuo ind, std::vector<individuo> &vec)
 {
-    for(int i = 0; i < matingPool.size(); i++)
+    for(int i = 0; i < vec.size(); i++)
     {
-        if(matingPool[i].get_objPrecio() == ind.get_objPrecio() && matingPool[i].get_objGradoRepeticion() == ind.get_objGradoRepeticion())
+        if(vec[i].get_objPrecio() == ind.get_objPrecio() && vec[i].get_objGradoRepeticion() == ind.get_objGradoRepeticion())
             return true;
     }
     return false;
