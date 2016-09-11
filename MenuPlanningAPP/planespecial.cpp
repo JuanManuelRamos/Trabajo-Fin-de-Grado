@@ -98,6 +98,7 @@ void MainWindowMenuPlan::set_PlanEspecial()
         set_PlatosEspeciales(ppE, spE, pE);
         int platoRand = 0;
 
+        planesEspeciales.clear();
         planesEspeciales = planesRecomendados;
 
         for(int i = 0; i < planesEspeciales.size(); i++)
@@ -106,24 +107,27 @@ void MainWindowMenuPlan::set_PlanEspecial()
             {
                 for(int j = 0; j < numDiasPlan; j++)
                 {
-                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioPP(j),1,ppE,spE,pE))
+
+                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioPP(j),1,ppE,spE,pE) && ppE.size() > 0)
                     {
                         platoRand = rand() % ppE.size();
                         planesEspeciales[i].set_menuDiarioPP(j,ppE[platoRand]);
-                    }
-                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioSP(j),2,ppE,spE,pE))
+                    }                
+                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioSP(j),2,ppE,spE,pE) && spE.size() > 0)
                     {
                         platoRand = rand() % spE.size();
                         planesEspeciales[i].set_menuDiarioSP(j,spE[platoRand]);
-                    }
-                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioP(j),3,ppE,spE,pE))
+                    }               
+                    if(!comprobarPlatoActual(planesEspeciales[i].get_menuDiarioP(j),3,ppE,spE,pE) && pE.size() > 0)
                     {
                         platoRand = rand() % pE.size();
                         planesEspeciales[i].set_menuDiarioP(j,pE[platoRand]);
-                    }
+                    }            
                 }
+
             }
         }
+        infoPlanEsp(ppE, spE, pE);
     }
 }
 
@@ -152,4 +156,28 @@ bool MainWindowMenuPlan::comprobarPlatoActual(int p, int tipoP, std::vector<int>
         break;
     }
     return x;
+}
+
+
+void MainWindowMenuPlan::infoPlanEsp(std::vector<int> ppE, std::vector<int> spE, std::vector<int> pE)
+{
+    QString str = "No se han encontrado platos que cumplan las restricciones alimenticias en: ";
+    bool x = false;
+    if(ppE.size() == 0)
+    {
+        str.append("\n- primer plato");
+        x = true;
+    }
+    if(spE.size() == 0)
+    {
+        str.append("\n- segundo plato");
+        x = true;
+    }
+    if(pE.size() == 0)
+    {
+        str.append("\n- postre");
+        x = true;
+    }
+    if(x)
+        QMessageBox::information(this,"Información",str);
 }

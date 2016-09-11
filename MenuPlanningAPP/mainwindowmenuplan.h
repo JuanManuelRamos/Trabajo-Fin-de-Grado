@@ -6,6 +6,8 @@
 #include <QtSql>
 #include <QMessageBox>
 #include <QCloseEvent>
+#include <QGroupBox>
+#include <QtWidgets>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -18,8 +20,7 @@
 #include "database.h"
 #include "enums.h"
 #include "individuo.h"
-#include <QGroupBox>
-#include <QtWidgets>
+
 
 struct infoPlatos                       //Struct que almacena informacion de los platos utilizada en el proceso de creacion del plan
 {
@@ -61,9 +62,9 @@ private:
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
 
         const static int NumIndividuos = 50;                    //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 200;
-        const static int probCruce = 90;
-        const static int probMutacion = 20;
+        const static int NumGeneraciones = 300;
+        const static int probCruce = 80;
+        const static int probMutacion = 10;
         const double minCrowDist = 0.8;    //0.8
 
 
@@ -273,6 +274,7 @@ private:
 
         void quickSortGradoRep(std::vector<individuo> &pob, int first, int last);                                           //Ordena el vector de invidiuos por el objetivo de grado de repeticion
         int pivotGradoRep(std::vector<individuo> &pob, int first, int last);
+        bool sortBestIndGR(individuo A, individuo B);
 
 
         /*----------------------------------------------*/
@@ -293,7 +295,7 @@ private:
         bool comprobarPlatoActual(int p, int tipoP, std::vector<int> ppE, std::vector<int> spE, std::vector<int> pE);   //Comprueba si un plato cumple con las restricciones de alergenos e incompatibilidades
         void set_PlanEspecial();
         void set_PlatosEspeciales(std::vector<int> &ppE, std::vector<int> &spE, std::vector<int> &pE);      //Seleccionar los platos compatibles con los alergenos e incompatibilidades a evitar
-
+        void infoPlanEsp(std::vector<int> ppE, std::vector<int> spE, std::vector<int> pE);
 
 
 

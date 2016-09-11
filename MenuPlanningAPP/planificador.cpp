@@ -411,6 +411,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     ui->listWidget_PLAND_Recomendados->clear();
     ui->tableWidget_PLAND_Recomendados->clear();
     ui->tableWidget_PLAND_Especiales->clear();
+    qApp->processEvents();
 
     if(ui->label_PLAN_PP_2->text() == "0")
         QMessageBox::information(this,"Información","Debe seleccionar al menos un primer plato.");
@@ -430,8 +431,7 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
         setIngestaDiariaRecomendadaPorDias();                       //Se calculan los valores nutricionales recomendados segun el numero de dias elegido para el plan
 
         crearPoblacion();                                           //Comienza la creacion de individuos
-
-        set_PlanEspecial();
+        set_PlanEspecial();                                         //Creacion de plan especial
     }
 
     ui->pushButton_PLAN_GenerarPlan->setEnabled(true);

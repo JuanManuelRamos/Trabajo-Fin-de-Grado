@@ -112,13 +112,13 @@ void MainWindowMenuPlan::quickSortGradoRep(std::vector<individuo> &pob, int firs
 int MainWindowMenuPlan::pivotGradoRep(std::vector<individuo> &pob, int first, int last)
 {
     int  p = first;
-    double pivotElement = pob[first].get_objGradoRepeticion();
+    //double pivotElement = pob[first].get_objGradoRepeticion();
 
     for(int i = first+1; i <= last; i++)
     {
         /* If you want to sort the list in the other order, change "<=" to ">" */
 
-        if(pob[i].get_objGradoRepeticion() <= pivotElement)
+        if(sortBestIndGR(pob[i], pob[first]))
         {
             p++;
             std::swap(pob[i], pob[p]);
@@ -126,4 +126,9 @@ int MainWindowMenuPlan::pivotGradoRep(std::vector<individuo> &pob, int first, in
     }
     std::swap(pob[p], pob[first]);
     return p;
+}
+
+bool MainWindowMenuPlan::sortBestIndGR(individuo A, individuo B)
+{
+    return ((A.get_objGradoRepeticion() < B.get_objGradoRepeticion()) || ((A.get_objGradoRepeticion() == B.get_objGradoRepeticion()) && (A.get_planAdecuado() && !B.get_planAdecuado())));
 }

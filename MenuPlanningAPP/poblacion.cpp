@@ -187,8 +187,6 @@ void MainWindowMenuPlan::crearPoblacion()
             qDebug() << "";
         }
 
-
-
         if(gen == NumGeneraciones-1)
         {
             qDebug() << "--- POBLACION FINAL ---";
@@ -201,11 +199,11 @@ void MainWindowMenuPlan::crearPoblacion()
 
 
 
-
         //---PLANES RECOMENDADOS---
 
-        N = static_cast<int>(indPoblacion.size()-1);
-        quickSortGradoRep(indPoblacion, 0, N);
+        //N = static_cast<int>(indPoblacion.size()-1);
+        //quickSortGradoRep(indPoblacion, 0, N);
+
 
 
         if(gen == 0)
@@ -213,22 +211,20 @@ void MainWindowMenuPlan::crearPoblacion()
             planesRecomendados.clear();
             for(int i = 0; i < 5; i++)
                 planesRecomendados.push_back(indPoblacion[i]);
+            N = static_cast<int>(planesRecomendados.size()-1);
         }
-        else
+        for(int i = 0; i < indPoblacion.size(); i++)
         {
-            for(int i = 0; i < planesRecomendados.size(); i++)
+            if(indPoblacion[i].get_objGradoRepeticion() < planesRecomendados[N].get_objGradoRepeticion() && indPoblacion[i].get_planAdecuado() && !esRepetido(indPoblacion[i], planesRecomendados))
             {
-                if(indPoblacion[i].get_objGradoRepeticion() < planesRecomendados[planesRecomendados.size()-1].get_objGradoRepeticion() && indPoblacion[i].get_planAdecuado() && !esRepetido(indPoblacion[i], planesRecomendados))
-                {
-                    planesRecomendados.pop_back();
-                    planesRecomendados.push_back(indPoblacion[i]);
-                    N = static_cast<int>(planesRecomendados.size()-1);
-                    quickSortGradoRep(planesRecomendados, 0, N);
-                }
-                else
-                    break;
+                planesRecomendados.pop_back();
+                planesRecomendados.push_back(indPoblacion[i]);
+                quickSortGradoRep(planesRecomendados, 0, N);
             }
+            else
+                break;
         }
+
 
     }
 
@@ -674,6 +670,11 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
     }*/
 
 
+    //qDebug() << "num ind select: " << numIndSelec;
+    //qDebug() << "tam REC: " << pobRecom.size();
+    //qDebug() << "tam NO REC: " << pobNoRecom.size();
+
+
     //Rellenar el mating pool con los individuos adecuados
 
     while(matingPool.size() != numIndSelec)
@@ -683,7 +684,7 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
         {
             if(cont < numIndSelec)
             {
-                if(pobRecom[j].get_iDistance() > crowD && !esRepetido(pobRecom[j], matingPool))
+                if((pobRecom[j].get_iDistance() > crowD && !esRepetido(pobRecom[j], matingPool) && crowD >= 0) || crowD < 0)
                 //if(pobRecom[j].get_rango() <= crowD && !esRepetido(pobRecom[j]))
                 {
                     matingPool.push_back(pobRecom[j]);
@@ -703,7 +704,7 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
         {
             if(cont < numIndSelec)
             {
-                if(pobNoRecom[k].get_iDistance() > crowD && !esRepetido(pobNoRecom[k], matingPool))
+                if((pobNoRecom[k].get_iDistance() > crowD && !esRepetido(pobNoRecom[k], matingPool) && crowD >= 0) || crowD < 0)
                 //if(pobNoRecom[k].get_rango() <= crowD && !esRepetido(pobNoRecom[k]))
                 {
                     matingPool.push_back(pobNoRecom[k]);
@@ -718,6 +719,9 @@ void MainWindowMenuPlan::set_matingPool(const int numIndSelec)
             }
         }
 
+        //qDebug() << matingPool.size();
+        //qDebug() << crowD;
+        //qDebug() << "";
         crowD -= 0.1;
         //crowD += 1;
     }

@@ -45,7 +45,7 @@
      <enum>Qt::NoFocus</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tab_inicio">
      <attribute name="title">
@@ -4097,14 +4097,14 @@
      <widget class="QLabel" name="label_generarPlan">
       <property name="geometry">
        <rect>
-        <x>820</x>
-        <y>640</y>
-        <width>47</width>
-        <height>13</height>
+        <x>740</x>
+        <y>630</y>
+        <width>201</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string/>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
