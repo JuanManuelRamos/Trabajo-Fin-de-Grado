@@ -268,7 +268,7 @@ void MainWindowMenuPlan::setIngestaDiariaRecomendada()
     ACTION A = controllDataTextBoxNum(*ui->groupBox_PLAN_idr, 0);
 
     if(A == ACCEPT)
-    {
+    {   /*
         idrN[0] = ui->lineEdit_PLAN_acidofol->text().toFloat();
         idrN[1] = ui->lineEdit_PLAN_calcio->text().toFloat();
         idrN[2] = ui->lineEdit_PLAN_energia->text().toFloat();
@@ -289,7 +289,34 @@ void MainWindowMenuPlan::setIngestaDiariaRecomendada()
         idrN[17] = ui->lineEdit_PLAN_vitd->text().toFloat();
         idrN[18] = ui->lineEdit_PLAN_vite->text().toFloat();
         idrN[19] = ui->lineEdit_PLAN_yodo->text().toFloat();
-        idrN[20] = ui->lineEdit_PLAN_zinc->text().toFloat();
+        idrN[20] = ui->lineEdit_PLAN_zinc->text().toFloat();*/
+
+        std::fstream fs;
+        fs.open("ingestarecomendada.txt", std::fstream::out | std::fstream::trunc);
+        fs << ui->lineEdit_PLAN_acidofol->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_calcio->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_energia->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_fosforo->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_grasa->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_hierro->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_magnesio->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_potasio->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_proteinas->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_selenio->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_sodio->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vita->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitb1->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitb2->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitb6->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitb12->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitc->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vitd->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_vite->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_yodo->text().toStdString() << "\n";
+        fs << ui->lineEdit_PLAN_zinc->text().toStdString() << "\n";
+        fs.close();
+        resetIngestaDiariaRecomendada();
+        getIngestaDiariaRecomendada();
     }
 }
 
@@ -413,19 +440,21 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     ui->tableWidget_PLAND_Especiales->clear();
     qApp->processEvents();
 
+    setNumDiasPlan();                                               //Calculo del numero de dias del plan alimenticio
+
     if(ui->label_PLAN_PP_2->text() == "0")
         QMessageBox::information(this,"Información","Debe seleccionar al menos un primer plato.");
     else if (ui->label_PLAN_SP_2->text() == "0")
         QMessageBox::information(this,"Información","Debe seleccionar al menos un segundo plato.");
     else if(ui->label_PLAN_P_2->text() == "0")
         QMessageBox::information(this,"Información","Debe seleccionar al menos un postre.");
+    else if(numDiasPlan <= 0)
+        QMessageBox::information(this,"Información","El numero de días debe ser superior a 0 (sábados y domingos excluidos).");
     else
     {
         setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
         setVectorGruposAlimenticios();                              //Genera el vector de grupos alimenticios
         ficheroDeTabla();                                           //Actualizar el fichero de tabla de platos
-
-        setNumDiasPlan();
 
         resetIngestaDiariaRecomendada();                            //Se resetea para que se vuelva a los valores anteriores a la modificacion por numero de dias del plan (por si el numero de dias cambia)
         setIngestaDiariaRecomendadaPorDias();                       //Se calculan los valores nutricionales recomendados segun el numero de dias elegido para el plan

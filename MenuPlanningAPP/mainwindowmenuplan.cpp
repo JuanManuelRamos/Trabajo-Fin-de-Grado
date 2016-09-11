@@ -791,6 +791,7 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 /*---------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
 { 
+    /*
     idrN[0] = 135;              //acido folico
     idrN[1] = 585;              //calcio
     idrN[2] = 1012;             //energia
@@ -803,7 +804,7 @@ void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
     idrN[9] = 25.75;            //selenio
     idrN[10] = 870;             //sodio
     idrN[11] = 450;             //vitA
-    idrN[12] = 0.41f;          //vitB1
+    idrN[12] = 0.41f;           //vitB1
     idrN[13] = 0.63f;           //vitB2
     idrN[14] = 0.54f;           //vitB6
     idrN[15] = 2.28f;           //vitB12
@@ -812,6 +813,31 @@ void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
     idrN[18] = 6.3f;            //vitE
     idrN[19] = 67.5f;           //yodo
     idrN[20] = 6.75f;           //zinc
+    */
+
+    std::fstream fs;
+    fs.open("ingestarecomendada.txt", std::fstream::in);                                                        //Si el archivo existe se abre
+
+    if(!fs.is_open())                                                                                           //Si el archivo no existe se crea
+    {
+        fs.open("ingestarecomendada.txt", std::fstream::out | std::fstream::trunc);
+        fs << "135\n" << "585\n" << "1012\n" << "562.5\n" << "31.72\n" << "8.55\n" << "112.5\n" << "2025\n" << "27.08\n" << "25.75\n" << "870\n" << "450\n" << "0.41\n" << "0.63\n" << "0.54\n" << "2.28\n" << "27\n" << "4.65\n" << "6.3\n" << "67.5\n" << "6.75\n";
+        fs.close();
+        fs.open("ingestarecomendada.txt", std::fstream::in);
+    }
+    std::string data;
+    std::string::size_type sz;
+
+    for(int i = 0; i < NumInfN; i++)
+    {
+        fs >> data;
+        idrN[i] = std::stof(data,&sz);
+    }
+    fs.close();
+
+
+    /*for(int i = 0; i < idrN.size(); i++)
+        qDebug() << QString::number(idrN[i]);*/
 }
 
 
