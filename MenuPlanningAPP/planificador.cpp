@@ -268,29 +268,7 @@ void MainWindowMenuPlan::setIngestaDiariaRecomendada()
     ACTION A = controllDataTextBoxNum(*ui->groupBox_PLAN_idr, 0);
 
     if(A == ACCEPT)
-    {   /*
-        idrN[0] = ui->lineEdit_PLAN_acidofol->text().toFloat();
-        idrN[1] = ui->lineEdit_PLAN_calcio->text().toFloat();
-        idrN[2] = ui->lineEdit_PLAN_energia->text().toFloat();
-        idrN[3] = ui->lineEdit_PLAN_fosforo->text().toFloat();
-        idrN[4] = ui->lineEdit_PLAN_grasa->text().toFloat();
-        idrN[5] =  ui->lineEdit_PLAN_hierro->text().toFloat();
-        idrN[6] = ui->lineEdit_PLAN_magnesio->text().toFloat();
-        idrN[7] = ui->lineEdit_PLAN_potasio->text().toFloat();
-        idrN[8] = ui->lineEdit_PLAN_proteinas->text().toFloat();
-        idrN[9] = ui->lineEdit_PLAN_selenio->text().toFloat();
-        idrN[10] = ui->lineEdit_PLAN_sodio->text().toFloat();
-        idrN[11] = ui->lineEdit_PLAN_vita->text().toFloat();
-        idrN[12] = ui->lineEdit_PLAN_vitb1->text().toFloat();
-        idrN[13] = ui->lineEdit_PLAN_vitb2->text().toFloat();
-        idrN[14] = ui->lineEdit_PLAN_vitb6->text().toFloat();
-        idrN[15] = ui->lineEdit_PLAN_vitb12->text().toFloat();
-        idrN[16] = ui->lineEdit_PLAN_vitc->text().toFloat();
-        idrN[17] = ui->lineEdit_PLAN_vitd->text().toFloat();
-        idrN[18] = ui->lineEdit_PLAN_vite->text().toFloat();
-        idrN[19] = ui->lineEdit_PLAN_yodo->text().toFloat();
-        idrN[20] = ui->lineEdit_PLAN_zinc->text().toFloat();*/
-
+    {
         std::fstream fs;
         fs.open("ingestarecomendada.txt", std::fstream::out | std::fstream::trunc);
         fs << ui->lineEdit_PLAN_acidofol->text().toStdString() << "\n";

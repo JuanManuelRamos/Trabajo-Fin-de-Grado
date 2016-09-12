@@ -35,8 +35,6 @@ int MainWindowMenuPlan::pivotCD(std::vector<individuo> &poblacionNonDom, int fir
 
     for(int i = first+1; i <= last; i++)
     {
-        /* If you want to sort the list in the other order, change "<=" to ">" */
-
         if(poblacionNonDom[i].get_objPrecio() <= pivotElement && numObj == 1)
         {
             p++;
@@ -74,8 +72,6 @@ int MainWindowMenuPlan::pivotMP(std::vector<individuo> &pob, int first, int last
     int  p = first;
     for(int i = first+1; i <= last; i++)
     {
-        /* If you want to sort the list in the other order, change "<=" to ">" */
-
         if(sortBestInd(pob[i], pob[first]))
         {
             p++;
@@ -112,12 +108,9 @@ void MainWindowMenuPlan::quickSortGradoRep(std::vector<individuo> &pob, int firs
 int MainWindowMenuPlan::pivotGradoRep(std::vector<individuo> &pob, int first, int last)
 {
     int  p = first;
-    //double pivotElement = pob[first].get_objGradoRepeticion();
 
     for(int i = first+1; i <= last; i++)
     {
-        /* If you want to sort the list in the other order, change "<=" to ">" */
-
         if(sortBestIndGR(pob[i], pob[first]))
         {
             p++;

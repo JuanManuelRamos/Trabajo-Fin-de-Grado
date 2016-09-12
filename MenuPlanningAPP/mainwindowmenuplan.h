@@ -334,7 +334,6 @@ private:
         void on_pushButton_PLAN_Guardar_clicked();
         void on_pushButton_PLAN_Cancelar_clicked();
         void on_pushButton_PLAN_GenerarPlan_clicked();
-
         void on_listWidget_PLAND_Recomendados_clicked(const QModelIndex &index);
 };
 

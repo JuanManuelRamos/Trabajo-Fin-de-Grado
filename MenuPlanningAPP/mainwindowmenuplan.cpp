@@ -197,29 +197,7 @@ void MainWindowMenuPlan::setPrimerosPlatos()
             for(int m = 0; m < NumIncomp; m++)
                 iP.incomp.push_back(inc.at(m));
 
-
             PrimerosPlatos.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
-
-            /*qDebug() << "id: " <<  iP.id << " nDias: " <<  iP.nDias << "precio: " <<  iP.precio;
-            for(int z = 0; z < iP.gruposAl.size(); z++)
-            {
-                qDebug() << iP.gruposAl[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.infoN.size(); z++)
-            {
-                qDebug() << iP.infoN[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.alerg.size(); z++)
-            {
-                qDebug() << iP.alerg[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.incomp.size(); z++)
-            {
-                qDebug() << iP.incomp[z];
-            }*/
 
             iP.gruposAl.clear();
             iP.infoN.clear();
@@ -228,7 +206,6 @@ void MainWindowMenuPlan::setPrimerosPlatos()
             delete model2;
             delete model3;
         }
-        //qDebug() << "==========";
     }
 }
 
@@ -336,27 +313,6 @@ void MainWindowMenuPlan::setPostres()
 
             Postres.push_back(iP);                                                                              //Se inserta toda la informacion en el vector de platos
 
-            /*qDebug() << "id: " <<  iP.id << " nDias: " <<  iP.nDias << "precio: " <<  iP.precio;
-            for(int z = 0; z < iP.gruposAl.size(); z++)
-            {
-                qDebug() << iP.gruposAl[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.infoN.size(); z++)
-            {
-                qDebug() << iP.infoN[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.alerg.size(); z++)
-            {
-                qDebug() << iP.alerg[z];
-            }
-            qDebug() << "---";
-            for(int z = 0; z < iP.incomp.size(); z++)
-            {
-                qDebug() << iP.incomp[z];
-            }*/
-
             iP.gruposAl.clear();
             iP.infoN.clear();
             iP.alerg.clear();
@@ -366,42 +322,6 @@ void MainWindowMenuPlan::setPostres()
         }
     }
 }
-
-
-/*---------------------------------------------------------------------*/
-/*----------------------- CLEAR TIPOS DE PLATO ------------------------*/
-/*---------------------------------------------------------------------*/
-/*void MainWindowMenuPlan::clearPrimerosPlatos()
-{
-    for(int i = 0; i < PrimerosPlatos.size(); i++)
-        PrimerosPlatos[i].nDias = imax;
-}
-
-
-void MainWindowMenuPlan::clearSegundosPlatos()
-{
-    std::tuple<int,int,std::vector<int>> tpl;
-
-    for(int i = 0; i < SegundosPlatos.size(); i++)
-        SegundosPlatos[i].nDias = imax;
-}
-
-
-void MainWindowMenuPlan::clearPostres()
-{
-    std::tuple<int,int,std::vector<int>> tpl;
-
-    for(int i = 0; i < Postres.size(); i++)
-        Postres[i].nDias = imax;
-}*/
-
-/*--------------------------------------------------------------------------*/
-/*----------------------- GETTERS DE TIPOS DE PLATO ------------------------*/
-/*--------------------------------------------------------------------------*/
-//std::vector<vectorPlatos> MainWindowMenuPlan::getPrimerosPlatos(){ return PrimerosPlatos; }
-//std::vector<vectorPlatos> MainWindowMenuPlan::getSegundosPlatos(){ return SegundosPlatos; }
-//std::vector<vectorPlatos> MainWindowMenuPlan::getPostres(){ return Postres; }
-
 
 
 /*------------------------------------------------------------------------------------*/
@@ -418,9 +338,6 @@ void MainWindowMenuPlan::setVectorGruposAlimenticios()
 }
 
 
-
-
-
 /*-------------------------------------------------------------------------*/
 /*------------------------ CIERRE DE LA APLICACION ------------------------*/
 /*-------------------------------------------------------------------------*/
@@ -430,7 +347,6 @@ void MainWindowMenuPlan::closeEvent(QCloseEvent * event)    //Desconectarse de l
     db1->disconnectBD();
     event->accept();
 }
-
 
 
 /*----------------------------------------------------------------------------------------------------*/
@@ -791,7 +707,7 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 /*---------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
 { 
-    /*
+    /*      informacion nutricional por defecto
     idrN[0] = 135;              //acido folico
     idrN[1] = 585;              //calcio
     idrN[2] = 1012;             //energia
@@ -834,10 +750,6 @@ void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
         idrN[i] = std::stof(data,&sz);
     }
     fs.close();
-
-
-    /*for(int i = 0; i < idrN.size(); i++)
-        qDebug() << QString::number(idrN[i]);*/
 }
 
 

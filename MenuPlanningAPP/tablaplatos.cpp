@@ -18,14 +18,6 @@ void MainWindowMenuPlan::ficheroDeTabla()
 
     setTablaPlatos(vectorFicheroDeTabla);                                                                       //Rellenar el vector bidimensional o tabla
 
-    /*for(int i = 0; i < vectorFicheroDeTabla.size(); i++)
-    {
-        for(int j = 0; j < vectorFicheroDeTabla.size(); j++)
-            qDebug() << vectorFicheroDeTabla[i][j] << "  ";
-
-        qDebug() << "----";
-    }*/
-
     for(int i = 0; i < vectorFicheroDeTabla.size(); i++)                                                        //Escribir la tabla en el archivo
     {
         for(int j = 0; j < vectorFicheroDeTabla.size(); j++)

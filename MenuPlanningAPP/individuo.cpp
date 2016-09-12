@@ -29,13 +29,6 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
     int ipp, isp, ip;
     for(unsigned int i = 0; i < numMenus; i++)
     {
-        //*** IDEA FELIZ *** SI PONGO AQUI UN CONTROL PARA QUE EL RANDOM NO ACEPTE PLATOS CON DETERMINADOS ALERGENOS O INCOMPATIBILIDADES,
-        //¿SOLUCIONARA ESO EL PROBLEMA DE LOS MENUS PARA PERSONAS CON DETERMINADAS ALERGIAS O INCOMPATIBILIDADES?
-        //ESTE METODO CREA LOS INDIVIDUOS DE LA PRIMERA GENERACION, YA QUE SE CREAN DE FORMA ALEATORIA, SI DESDE EL COMIENZO NO SE ELIGEN PLATOS CON DETERMINADAS
-        //CARACTERISTICAS, NO DEBERIAN APARECER EN POSTERIORES GENERACIONES
-
-
-
         //La funcion setMenuDiario sirve tanto para crear un individuo de forma aleatoria en la primera generacion como para actualizar los datos de un nuevo individuo
         //Por ello se debe controlar si el individuo se quiere generar de forma aleatoria o por el contrario ya existe y solo se desea actualizar sus datos
 
@@ -82,30 +75,6 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
 
     //VALOR DE REPETICION O VARIABILIDAD DE PLATOS
     setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
-
-
-    /*qDebug() << "--Menus del Plan--";
-    for(unsigned int i = 0; i < numMenus; i++)
-        qDebug() << "PP: " << planDietetico[i].idPrimerPlato.first << "  SP: " << planDietetico[i].idSegundoPlato.first << "  P: " << planDietetico[i].idPostre.first;*/
-
-    /*qDebug() << "--Precio total del plan--";
-    qDebug() << objPrecio;
-
-    qDebug() << "--Grado de Repeticion del plan--";
-    qDebug() << objGradoRepeticion;
-
-    qDebug() << "--Informacion nutricional--";
-    for(unsigned int i = 0; i < infNutricional.size(); i++)
-        qDebug() << infNutricional[i];
-
-    qDebug() << "--Alergenos--";
-    for(unsigned int i = 0; i < alergenos.size(); i++)
-        qDebug() << alergenos[i];
-
-    qDebug() << "--Incompatibilidades--";
-    for(unsigned int i = 0; i < incompatibilidades.size(); i++)
-        qDebug() << incompatibilidades[i];*/
-
 }
 
 
@@ -128,12 +97,6 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
                 gaElegidos.push_back(pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
         }
 
-
-        /*qDebug() << "pp: " << valPP;
-        for(int x = 0; x < pp.size(); x++)
-            qDebug() << pp[x].id << " - " << pp[x].nDias;
-        qDebug() << "-----";*/
-
         //SEGUNDO PLATO
         valSP = setValorSP(sp, planDietetico[i].idSegundoPlato.second);
         for(int k = 0; k < sp[planDietetico[i].idSegundoPlato.second].gruposAl.size(); k++)
@@ -142,11 +105,6 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
             if(gaElegidosPorIteracion(gaElegidos, sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]))
                 gaElegidos.push_back(sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
         }
-
-        /*qDebug() << "sp: " << valSP;
-        for(int x = 0; x < sp.size(); x++)
-            qDebug() << sp[x].id << " - " << sp[x].nDias;
-        qDebug() << "-----";*/
 
         //POSTRE
         valP = setValorP(p, planDietetico[i].idPostre.second);
@@ -157,36 +115,12 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
                 gaElegidos.push_back(p[planDietetico[i].idPostre.second].gruposAl[l]);
         }
 
-        /*qDebug() << "p: " << valP;
-        for(int x = 0; x < p.size(); x++)
-            qDebug() << p[x].id << " - " << p[x].nDias;
-        qDebug() << "-----";*/
-
-        /*for(int x = 0; x < vectorGruposAl.size(); x++)
-            qDebug() << x << " - " << vectorGruposAl[x].first << " --> " << vectorGruposAl[x].second;
-        qDebug() << "-----";*/
-
-
-
-
-        /*qDebug() << "pp: " << valPP;
-        qDebug() << "sp: " << valSP;
-        qDebug() << "p: " << valP;*/
-        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);         //Obtener el valor de la tabla de platos de compatibilidad entre primeros y segundos platos
-        //qDebug() << "tabla: " << valTabla;
-        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);                                                                                   //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios
-        //qDebug() << "valorGAFirst: " << valGAFirst;
+        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);         //Obtener el valor de la tabla de platos de compatibilidad entre primeros y segundos platos   
+        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);                                                                                   //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios      
         valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);                                                                                 //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
-        //qDebug() << "valorGASecond: " << valGASecond;
 
         //ORIGINAL
         valTotal += num/(valTabla + valPP + valSP + valP) + num/valGAFirst + valGASecond;                                                           //Calcular el valor total
-
-        //valTotal += num/valTabla + 1+num/(valPP + valSP + valP + valGAFirst) + valGASecond;
-
-        //qDebug() << "valorTotal: " << valTotal;
-
-        //qDebug() << "=========" << i;
 
         sumValorPP(pp);                                                                                                                             //Suma los valores de platos y grupos alimenticios elegidos para el siguiente dia
         sumValorSP(sp);
@@ -262,11 +196,6 @@ void individuo::setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int 
 
 int individuo::getValorGAFirst(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> gaEleg)
 {
-   /*qDebug() << "-- GA Elegidos--";
-   for(int i = 0; i < gaEleg.size(); i++)
-       qDebug() << gaEleg[i];
-   qDebug() << "------";*/
-
    int valor = 0;
    for(int i = 0; i < vectorGruposAl.size(); i++)
        if(vectorGruposAl[i].first != imax && !gaElegidosPorIteracion(gaEleg, i))
