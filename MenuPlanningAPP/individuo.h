@@ -36,6 +36,7 @@ class individuo
         int rango;
         bool planAdecuado;                                              //Indica si un plan alimenticio cumple los requisitos nutricionales recomendados (true), o no (false)
         int idIndividuo;                                                //Indica la posicion del individuo en el vector de individuos de la poblacion
+        bool evaluado;                                                  //Indica si el individuo ha sido evaluado o no
 
 
         int imax = std::numeric_limits<int>::max();                     //Entero maximo (utilizado para calculos)
@@ -45,12 +46,11 @@ class individuo
         ~individuo();
 
         //Genera un menu aleatorio para un dia
-        void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI);
+		void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI, std::vector<std::vector<int>> &ultimos5GA);
+        void setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<std::vector<double>>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI, std::vector<std::vector<int>> &ultimos5GA);
 
         //Calcula el valor de objGradoRepeticion
-        void setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl);
-
-        //menuDiario getMenuDiario(const unsigned int posPlan);                                                                                                                         //Obtiene el menu del dia de la posicion especificada del plan dietetico
+		void setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<std::vector<double>>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, std::vector<std::vector<int>> &ultimos5GA);                                                                                                                        //Obtiene el menu del dia de la posicion especificada del plan dietetico
 
 
         /* --- FUNCIONES PARA EL CALCULO DEL GRADO DE REPETICION DEL MENU --- */
@@ -61,6 +61,11 @@ class individuo
             void setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int ga);                               //Complementa las funciones getValorGA para el calculo de GAFirst y GASecond
             int getValorGAFirst(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> gaEleg);          //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios
             int getValorGASecond(std::vector<std::pair<int,int>> vectorGruposAl, std::vector<int> gaEleg);          //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
+
+            int getValorGAFirstCorreccion(std::vector<std::pair<int,int>> &vectorGruposAl, std::vector<int> &gaElegidosAnterior);
+            void set_ultimos5GA(std::vector<std::vector<int>> &ultimos5GA, std::vector<int> vec);
+            double set_ValorGAFirstAlternativa(std::vector<std::vector<int>> &ultimos5GA, std::vector<int> vec);
+
 
             void sumValorPP(std::vector<struct infoPlatos> &pp);                                                    //Suma los valores de platos y grupos alimenticios elegidos para el siguiente dia
             void sumValorSP(std::vector<struct infoPlatos> &sp);                                                    //---
@@ -80,10 +85,6 @@ class individuo
 
        double get_objPrecio() { return objPrecio; }
        double get_objGradoRepeticion() { return objGradoRepeticion; }
-
-       //Funciones para la prueba del crowding distance y rango
-       //void set_objPrecio(double x) { objPrecio = x; }
-       //void set_objGradoRepeticion(double x) { objGradoRepeticion = x; }
 
        void set_numDominantes(int num) { numDominantes = num; }
        int get_numDominantes() { return numDominantes; }
@@ -110,6 +111,10 @@ class individuo
        int get_idPlatoPP(int dia) { return planDietetico[dia].idPrimerPlato.first; }
        int get_idPlatoSP(int dia) { return planDietetico[dia].idSegundoPlato.first; }
        int get_idPlatoP(int dia) { return planDietetico[dia].idPostre.first; }
+
+       int get_idPlatoPPSec(int dia) { return planDietetico[dia].idPrimerPlato.second; }
+       int get_idPlatoSPSec(int dia) { return planDietetico[dia].idSegundoPlato.second; }
+       int get_idPlatoPSec(int dia) { return planDietetico[dia].idPostre.second; }
 
        int get_alergeno(int i) { return alergenos[i]; }
        int get_incompatibilidad(int i) { return incompatibilidades[i]; }

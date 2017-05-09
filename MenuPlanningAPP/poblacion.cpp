@@ -11,6 +11,8 @@ void MainWindowMenuPlan::crearPoblacion()
 
 
     indPoblacion.clear();
+    planesRecomendados.clear();
+    numEvaluaciones = 0;
 
     //--- CREAR PRIMERA POBLACION ---
 
@@ -18,7 +20,7 @@ void MainWindowMenuPlan::crearPoblacion()
     {
         individuo ind = individuo(numDiasPlan, NumInfN, NumAlergenos, NumIncomp);                                               //Crear un individuo
         ind.set_idIndividuo(i);                                                                                                 //Asignarle el id = posicion en el vector indPoblacion
-        ind.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, GENERAR);    //Asignarle su plan alimenticio correspondiente
+		ind.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, nuevoFicheroDeTabla, vectorGruposAlimenticios, GENERAR, ultimos5GA);
 
         indPoblacion.push_back(ind);                                                                                            //Añadir el individuo al vector de poblacion
     }
@@ -94,8 +96,8 @@ void MainWindowMenuPlan::crearPoblacion()
             mutacion(hijo1);
             mutacion(hijo2);
 
-            hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
-            hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, vectorFicheroDeTabla, vectorGruposAlimenticios, ACTUALIZAR);
+			hijo1.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, nuevoFicheroDeTabla, vectorGruposAlimenticios, GENERAR, ultimos5GA);
+            hijo2.setMenuDiario(PrimerosPlatos, SegundosPlatos, Postres, nuevoFicheroDeTabla, vectorGruposAlimenticios, GENERAR, ultimos5GA);
 
             indPoblacion.push_back(hijo1);
             tamIndPob = static_cast<int>(indPoblacion.size()-1);
@@ -145,67 +147,65 @@ void MainWindowMenuPlan::crearPoblacion()
         set_matingPool(NumIndividuos);
         indPoblacion.clear();
         indPoblacion = matingPool;
-
-        if(gen == 0 || gen == NumGeneraciones/2)
-        {
-            qDebug() << "--- POBLACION FINAL " << gen << " ---";
-            for(int x = 0; x < indPoblacion.size(); x++)
-                if(indPoblacion[x].get_rango() == 1)
-                qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
-
-            qDebug() << "";
-            qDebug() << "";
-            qDebug() << "";
-        }
-
-        if(gen == NumGeneraciones-1)
-        {
-            qDebug() << "--- POBLACION FINAL ---";
-            for(int x = 0; x < indPoblacion.size(); x++)
-                qDebug() << x << "[" << indPoblacion[x].get_planAdecuado() << "] Rango: " << indPoblacion[x].get_rango() << " Crow_dist: " << indPoblacion[x].get_iDistance() << " Precio: " << indPoblacion[x].get_objPrecio() << " Repeticion: " << indPoblacion[x].get_objGradoRepeticion();
-
-            qDebug() << "";
-            qDebug() << "";
-        }
-
-
+        numEvaluaciones += NumIndividuos;
 
         //---PLANES RECOMENDADOS---
 
-        if(gen == 0)
-        {
-            planesRecomendados.clear();
-            for(int i = 0; i < 5; i++)
-                planesRecomendados.push_back(indPoblacion[i]);
-            N = static_cast<int>(planesRecomendados.size()-1);
-        }
         for(int i = 0; i < indPoblacion.size(); i++)
-        {
-            if(indPoblacion[i].get_objGradoRepeticion() < planesRecomendados[N].get_objGradoRepeticion() && indPoblacion[i].get_planAdecuado() && !esRepetido(indPoblacion[i], planesRecomendados))
-            {
-                planesRecomendados.pop_back();
+            if(indPoblacion[i].get_rango() == 1 && indPoblacion[i].get_planAdecuado() && !esRepetido(indPoblacion[i], planesRecomendados))
                 planesRecomendados.push_back(indPoblacion[i]);
-                quickSortGradoRep(planesRecomendados, 0, N);
+
+
+        indPoblacion = planesRecomendados;
+        //Resetear valores de fast non dominated sort
+        for(int k = 0; k < indPoblacion.size(); k++)
+        {
+            indPoblacion[k].set_rango(0);
+            indPoblacion[k].set_iDistance(0);
+            indPoblacion[k].clear_indvDominados();
+            indPoblacion[k].set_idIndividuo(k);
+        }
+        fastNonDominatedSort();
+        planesRecomendados.clear();
+        planesRecomendados = indPoblacion;
+        indPoblacion.clear();
+        indPoblacion = matingPool;
+
+
+
+        for(int j = 0; j < planesRecomendados.size(); j++)
+            if(planesRecomendados[j].get_rango() != 1)
+            {
+                planesRecomendados.erase(planesRecomendados.begin()+j);
+                j--;
             }
-            else
-                break;
+
+
+
+
+        //LLAMADA A TEST OUTPUT
+
+        int a = 0;
+        bool b = false;
+        while(a <= eval)
+        {
+            if(a == numEvaluaciones)
+                b = true;
+            a += 10000;
         }
 
-
+        if(b)
+        { 
+            N = static_cast<int>(planesRecomendados.size()-1);
+            quickSortGradoRep(planesRecomendados, 0, N);
+            outputFile(nombreAr, true, numEvaluaciones, 0);
+        }
     }
 
     duration = ( std::clock() - start ) / (double) CLOCKS_PER_SEC;
 
     qDebug() << ""; qDebug() << "";
     qDebug() << "Tiempo de ejecucion: " << duration << " segundos";
-
-
-    qDebug() << "--- PLANES RECOMENDADOS ---";
-    for(int x = 0; x < planesRecomendados.size(); x++)
-        qDebug() << x << "[" << planesRecomendados[x].get_planAdecuado() << "] Rango: " << planesRecomendados[x].get_rango() << " Crow_dist: " << planesRecomendados[x].get_iDistance() << " Precio: " << planesRecomendados[x].get_objPrecio() << " Repeticion: " << planesRecomendados[x].get_objGradoRepeticion();
-
-    qDebug() << "";
-    qDebug() << "";
 
     visualizarPlanes();
 }

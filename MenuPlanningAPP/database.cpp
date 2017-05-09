@@ -10,7 +10,7 @@ database::database()
     db.setHostName("localhost");
     db.setDatabaseName("alimentos");
     db.setUserName("root");
-    db.setPassword("password");
+    db.setPassword("root");
 }
 
 
@@ -429,33 +429,6 @@ QString database::queryAlergenosING(QString nombre)
 
 
 /*-------------------------------------------------------------------------------------*/
-/*------------ MOSTRAR LOS MESES DE TEMPORADA DE UN INGREDIENTE CONCRETO --------------*/
-/*-------------------------------------------------------------------------------------*/
-/*QString database::queryTemporadaING(QString nombre)
-{
-    QString str = "SELECT temporada FROM AlimentosTAB WHERE nombre = \"";
-    str.append(nombre);
-    str.append("\"");
-
-    qry = new QSqlQuery();
-    model = new QSqlQueryModel();
-
-    qry->prepare(str);
-    qry->exec();
-    model->setQuery(*qry);
-
-    str = model->index(0,0).data(Qt::DisplayRole).toString();
-
-    delete model;
-    delete qry;
-
-    return str;
-
-    return querysQString(str);
-}*/
-
-
-/*-------------------------------------------------------------------------------------*/
 /*------------ COMPRUEBA SI UN INGREDIENTE DETERMINADO ES PRINCIPAL O NO --------------*/
 /*-------------------------------------------------------------------------------------*/
 bool database::queryEsIngredientePrincipal(QString id)
@@ -478,6 +451,18 @@ int database::queryMostrarGrupoAlimenticio(QString id)
 {
     QString str = "SELECT grupo_alimenticio FROM AlimentosTAB WHERE id_AlimentosTAB =";
     str.append(id);
+
+    return querysQSTRING(str).toInt();
+}
+
+/*---------------------------------------------------------------------------------------------------*/
+/*------------ MUESTRA EL GRUPO ALIMENTICIO AL QUE PERTENECE EL INGREDIENTE POR NOMBRE --------------*/
+/*---------------------------------------------------------------------------------------------------*/
+int database::queryMostrarGrupoAlimenticioPorNombre(QString nombre)
+{
+    QString str = "SELECT grupo_alimenticio FROM AlimentosTAB WHERE nombre ='";
+    str.append(nombre);
+    str.append("'");
 
     return querysQSTRING(str).toInt();
 }
@@ -523,19 +508,6 @@ QSqlQueryModel* database::queryMostrarNombrePlatosPorTipo(QString strID)
 
     return querysQSQLQUERYMODEL(str);
 }
-
-
-/*-------------------------------------------------------------------------------------------------*/
-/*------------------------ MOSTRAR LOS ID'S DE LOS PLATOS SEGUN SU TIPO ---------------------------*/
-/*-------------------------------------------------------------------------------------------------*/
-/*QSqlQueryModel* database::queryMostrarIdPlatosPorTipo(QString strID)
-{
-    QString str = "SELECT id_PlatosTAB FROM PlatosTAB WHERE tipo ='";
-    str.append(strID);
-    str.append("' ORDER BY id_PlatosTAB ASC");
-
-    return querysQSQLQUERYMODEL(str);
-}*/
 
 
 /*------------------------------------------------------------------------------------------------*/
@@ -827,23 +799,23 @@ QString database::queryMostrarAlergPlato(QString id)
 
 
 /*-------------------------------------------------------------------------------------*/
-/*--------------------- MOSTRAR EL ID DE UN PLATO POR SU NOMBRE -----------------------*/
-/*-------------------------------------------------------------------------------------*/
-/*int database::queryMostrarIDPlatoPorNombre(QString nombre)
-{
-    QString str = "SELECT id_PlatosTAB FROM PlatosTAB WHERE nombre='";
-    str.append(nombre);
-    str.append("'");
-
-    return querysQSTRING(str).toInt();
-}*/
-
-/*-------------------------------------------------------------------------------------*/
 /*--------------------- MOSTRAR EL NOMBRE DE UN PLATO POR SU ID -----------------------*/
 /*-------------------------------------------------------------------------------------*/
 QString database::queryMostrarNombrePlatoPorID(QString id)
 {
     QString str = "SELECT nombre FROM PlatosTAB WHERE id_PlatosTAB=";
+    str.append(id);
+
+    return querysQSTRING(str);
+}
+
+
+/*-------------------------------------------------------------------------------------------------*/
+/*--------------------- MOSTRAR LA CANTIDAD EN GRAMOS DE UN PLATO POR SU ID -----------------------*/
+/*-------------------------------------------------------------------------------------------------*/
+QString database::queryMostrarGramosPlatoPorID(QString id)
+{
+    QString str = "SELECT cantidad_gramos FROM PlatosTAB WHERE id_PlatosTAB=";
     str.append(id);
 
     return querysQSTRING(str);
@@ -1015,6 +987,15 @@ void database::ActualizarIDPlatos()
 QSqlQueryModel* database::queryMostrarGruposAldeIngPrincipales(QString idPlato)
 {
     QString str = "SELECT DISTINCT grupo_alimenticio FROM AlimentosTAB WHERE ingrediente_principal='1' AND id_AlimentosTAB IN (SELECT id_AlimentosTAB FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
+    str.append(idPlato);
+    str.append("))");
+
+    return querysQSQLQUERYMODEL(str);
+}
+
+QSqlQueryModel* database::queryMostrarGruposAl(QString idPlato)
+{
+    QString str = "SELECT DISTINCT grupo_alimenticio FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT id_AlimentosTAB FROM AlimentosTAB WHERE id_AlimentosTAB IN (SELECT AlimentosTAB_id FROM IngredientesTAB WHERE PlatosTAB_id =";
     str.append(idPlato);
     str.append("))");
 

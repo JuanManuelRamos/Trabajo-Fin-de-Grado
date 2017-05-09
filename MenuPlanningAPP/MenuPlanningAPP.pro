@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = MenuPlanningAPP
 TEMPLATE = app
 
+CONFIG += console
 
 SOURCES += main.cpp\
         mainwindowmenuplan.cpp \
@@ -23,7 +24,9 @@ SOURCES += main.cpp\
     poblacion.cpp \
     quicksort.cpp \
     visualizacionplan.cpp \
-    planespecial.cpp
+    planespecial.cpp \
+    test_output.cpp \
+    matlab_script.cpp
     images
 
 HEADERS  += mainwindowmenuplan.h \

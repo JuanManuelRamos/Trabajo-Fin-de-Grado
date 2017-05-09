@@ -40,8 +40,6 @@ class database;
 class individuo;
 
 
-
-
 class MainWindowMenuPlan : public QMainWindow
 {
     Q_OBJECT
@@ -61,12 +59,13 @@ private:
         const static int NumObjetivos = 2;                      //Numero de objetivos del problema = 2 (objetivo de precio y grado de repeticion de alimentos)
         int numDiasPlan;                                        //Numero de dias para los que se hace el plan
 
-        const static int NumIndividuos = 50;                    //Numero de individuos a generarse en la primera poblacion
-        const static int NumGeneraciones = 300;
-        const static int probCruce = 80;
-        const static int probMutacion = 10;
-        const double minCrowDist = 0.8;    //0.8
-
+        const static int eval = 80000;
+        const static int NumIndividuos = 25;                    //Numero de individuos a generarse en la primera poblacion
+        const static int NumGeneraciones = eval/NumIndividuos;
+        int probCruce = 100;
+        int probMutacion = 10;
+        const double minCrowDist = 0.8;    
+        int numEvaluaciones = 0;
 
 
         /*-- Arrays de datos--*/
@@ -102,6 +101,10 @@ private:
         std::vector<infoPlatos> Postres;                                                    //...
         std::vector<std::pair<int,int>> vectorGruposAlimenticios;                           //Vector de pares que guarda el numero de dias desde que se eligio por ultima vez (.first) y el numero de veces en los que se repite el mismo dia (.second)
         std::vector<std::vector<int>> vectorFicheroDeTabla;                                 //Vector que almacena la tabla de grado de variabilidad de los platos escrita en el fichero tablaplatos.txt
+
+        std::vector<std::vector<int>> ultimos5GA;                                           //vector que guarda los grupos alimenticios elegidos en los ultimos 5 dias
+        std::vector<std::vector<std::vector<double>>> nuevoFicheroDeTabla;
+
 
 
         /*-- Datos correspondientes a los individuos y poblaciones del problema --*/
@@ -183,6 +186,8 @@ private:
         void mostrar_Incomp_Alerg_Plato();                      //Muestra las incompatibilidades y alergenos del plato
         void set_temporada_Plato();                             //Calcula la calidad de un plato segun la temporada de sus ingredientes
 
+        int set_GAPrincipal(int idPlato);                       //Para los platos que no tienen ingrediente principal se les asigna un grupo alimenticio
+
 
         /*--------------------------------*/
         /*--- INGREDIENTES DE UN PLATO ---*/
@@ -220,6 +225,11 @@ private:
 
         void ficheroDeTabla();                                                  //Funcion que crea el archivo "tablaPlatos.txt" y copia la tabla en el
         void setTablaPlatos(std::vector< std::vector<int> > &vec);              //Funcion que crea la tabla comparando todos los platos entre si y dando un valor a su composicion en funcion de su compatibilidad
+
+        void ficheroDeTablaNuevo();
+        void setTablaPlatosNuevo(std::vector<std::vector<std::vector<double>>> &vec);
+        void setGAElegidos(std::vector<int> gal, std::vector<bool> &galE);
+        double setPenalizacion(std::vector<int> gal, std::vector<bool> galE);
 
 
         /*-------------------------------------------------------------------*/
@@ -276,6 +286,10 @@ private:
         int pivotGradoRep(std::vector<individuo> &pob, int first, int last);
         bool sortBestIndGR(individuo A, individuo B);
 
+        void quickSortPrecio(std::vector<individuo> &pob, int first, int last);                                           //Ordena el vector de invidiuos por el objetivo de precio
+        int pivotPrecio(std::vector<individuo> &pob, int first, int last);
+        bool sortBestIndP(individuo A, individuo B);
+
 
         /*----------------------------------------------*/
         /*---- VISUALIZACION DE PLANES ALIMENTICIOS ----*/
@@ -297,6 +311,22 @@ private:
         void set_PlatosEspeciales(std::vector<int> &ppE, std::vector<int> &spE, std::vector<int> &pE);      //Seleccionar los platos compatibles con los alergenos e incompatibilidades a evitar
         void infoPlanEsp(std::vector<int> ppE, std::vector<int> spE, std::vector<int> pE);
 
+
+        /*--- TEST OUTPUT ---*/
+        int ejecuciones = 50;
+        QString nombreAr;
+        void outputFile(QString name, bool b, int eval, int ejec);
+
+
+        /*--- MATLAB SCRIPT ---*/
+        void matLabScript();
+        struct data{
+            double x;
+            double y;
+        };
+
+        std::vector<data> v2;
+        std::vector<std::vector<data>> v1;
 
 
 

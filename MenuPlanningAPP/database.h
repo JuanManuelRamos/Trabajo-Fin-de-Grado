@@ -37,10 +37,10 @@ class database
         float queryMostrarPrecioING(QString &nombre, float cantidad);                           //Consulta para mostrar el precio de un ingrediente en base a su cantidad
         QString queryIncompatibilidadesING(QString nombre);
         QString queryAlergenosING(QString nombre);
-        //QString queryTemporadaING(QString nombre);
 
         bool queryEsIngredientePrincipal(QString id);
         int queryMostrarGrupoAlimenticio(QString id);
+        int queryMostrarGrupoAlimenticioPorNombre(QString nombre);
 
 
         /*--------------*/
@@ -49,11 +49,10 @@ class database
         QSqlQueryModel* queryMostrarPlatos();                                                   //Consulta para mostrar los platos disponibles en la base de datos
         QSqlQueryModel* queryMostrarInfoPlatos(QString strID);                                  //Consulta para mostrar la informacion de un plato
         QSqlQueryModel* queryMostrarNombrePlatosPorTipo(QString strID);                         //Consulta para mostrar los nombres de los platos segun su tipo (primer plato, segundo plato o postre)
-        //QSqlQueryModel* queryMostrarIdPlatosPorTipo(QString strID);                             //Consulta para mostrar los id's de los platos segun su tipo (primer plato, segundo plato o postre)
         QString queryMostrarTipoPlatoNombre(QString nombre);                                    //Consulta para mostrar de que tipo es un plato determinado por nombre (primer plato, segundo plato o postre)
         int queryMostrarTipoPlatoID(QString id);                                                //Consulta para mostrar de que tipo es un plato determinado por id(primer plato, segundo plato o postre)
-        //int queryMostrarIDPlatoPorNombre(QString nombre);                                       //Consulta para mostrar el id de un plato por su nombre
         QString queryMostrarNombrePlatoPorID(QString id);                                       //Consulta para mostrar el nombre de un plato por su ID
+        QString queryMostrarGramosPlatoPorID(QString id);
 
         void addPLAQuerys(QStringList &strl);                                                   //Consulta para crear un nuevo plato
         void modPLAQuerys(QStringList &strl);                                                   //Consulta para modificar los datos de un plato
@@ -97,6 +96,7 @@ class database
         /*---------------------------------*/
         void ActualizarIDPlatos();
         QSqlQueryModel* queryMostrarGruposAldeIngPrincipales(QString idPlato);
+        QSqlQueryModel* queryMostrarGruposAl(QString idPlato);
 
 
         /*-----------------------------*/

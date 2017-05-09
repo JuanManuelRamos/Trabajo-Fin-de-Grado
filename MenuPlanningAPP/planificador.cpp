@@ -432,15 +432,49 @@ void MainWindowMenuPlan::on_pushButton_PLAN_GenerarPlan_clicked()
     {
         setPlatos();                                                //Actualiza las tres listas correspondientes a los tres tipos de platos
         setVectorGruposAlimenticios();                              //Genera el vector de grupos alimenticios
-        ficheroDeTabla();                                           //Actualizar el fichero de tabla de platos
+		ficheroDeTablaNuevo();
+
+        numDiasPlan = 15;
+        ejecuciones = 1;
 
         resetIngestaDiariaRecomendada();                            //Se resetea para que se vuelva a los valores anteriores a la modificacion por numero de dias del plan (por si el numero de dias cambia)
         setIngestaDiariaRecomendadaPorDias();                       //Se calculan los valores nutricionales recomendados segun el numero de dias elegido para el plan
 
-        crearPoblacion();                                           //Comienza la creacion de individuos
-        set_PlanEspecial();                                         //Creacion de plan especial
+        int pm[3] = {5,10,15};
+        int pc[3] = {80,90,100};
+        int posm = 0, posc = 0;
+
+        for(int j = 0; j < 1; j++)                      //9 archivos
+        {
+            for(int i = 0; i < ejecuciones; i++)        //50 ejecuciones cada archivo
+            {
+                probCruce = pc[posc];
+                probMutacion = pm[posm];
+
+                nombreAr = "MenuPlanning_";
+                nombreAr.append(QString::number(numDiasPlan));
+                nombreAr.append("_");
+                nombreAr.append(QString::number(NumIndividuos));
+                nombreAr.append("_");
+                nombreAr.append(QString::number(probMutacion));
+                nombreAr.append("_");
+                nombreAr.append(QString::number(probCruce));
+                nombreAr.append("_");
+                nombreAr.append(QString::number(i+1));
+                nombreAr.append(".dat");
+
+                outputFile(nombreAr, false, 0, i+1);
+                crearPoblacion();                                           //Comienza la creacion de individuos
+                set_PlanEspecial();                                         //Creacion de plan especial
+            }
+
+            posc++;
+            if(posc == 3) {posm++;posc = 0;}
+            if(posm >= 3) {posm = 0;}
+        }
     }
 
     ui->pushButton_PLAN_GenerarPlan->setEnabled(true);
     ui->label_generarPlan->setText("");
+    QApplication::quit();
 }

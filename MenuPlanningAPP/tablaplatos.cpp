@@ -3,93 +3,84 @@
 #include "database.h"
 
 
-
-void MainWindowMenuPlan::ficheroDeTabla()
+void MainWindowMenuPlan::ficheroDeTablaNuevo()
 {
-    std::fstream fs;
-    fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in);                                           //Si el archivo existe se abre
+    std::vector<double> sz(Postres.size(), 0.0);                                     //Vector de postres
+    std::vector<std::vector<double>> sz2(SegundosPlatos.size(), sz);                 //Plano de postres y segundos platos
+    nuevoFicheroDeTabla.assign(PrimerosPlatos.size(), sz2);                          //Prisma rectangular de primeros, segundos platos y postres
 
-    if(!fs.is_open())                                                                                           //Si el archivo no existe se crea
-        fs.open("tablaplatos.txt", std::fstream::out | std::fstream::in | std::fstream::trunc);
-
-    std::vector<int> vec(db1->queryNumPlatos().toInt(), -1);                                                    //Crear vector de tamanio igual a numero de platos
-    vectorFicheroDeTabla.clear();
-    vectorFicheroDeTabla.assign(vec.size(), vec);                                                               //Crear vector bidimensional
-
-    setTablaPlatos(vectorFicheroDeTabla);                                                                       //Rellenar el vector bidimensional o tabla
-
-    for(int i = 0; i < vectorFicheroDeTabla.size(); i++)                                                        //Escribir la tabla en el archivo
-    {
-        for(int j = 0; j < vectorFicheroDeTabla.size(); j++)
-            fs << vectorFicheroDeTabla[i][j] << "\t";
-
-        fs << "\n";
-    }
-
-    fs.close();
+    //Rellenar vector tridimensional
+    setTablaPlatosNuevo(nuevoFicheroDeTabla);
 }
 
-
-
-void MainWindowMenuPlan::setTablaPlatos(std::vector< std::vector<int> > &vec)
+void MainWindowMenuPlan::setTablaPlatosNuevo(std::vector<std::vector<std::vector<double>>> &vec)
 {
-    int sz = 1;
-    bool variedad = true;
-    QSqlQueryModel *model;
+    /* Nuevo valor de compatibilidad de platos = suma de grupos alimenticios repetidos
+        1 carne 	+1
+        6 marisco 	+0.9
+        8 pescado 	+0.6
+        7 pasta 	+0.5
+        5 legumbre 	+0.3
+        9 verdura	+0.1
+        3 fruta		+0.1
+        2 cereal	+0.3
+        4 lacteo	+0.3
+        0 otro		+0.1
+    */
 
-    std::vector<int> grupoAl_1;
-    std::vector<int> grupoAl_2;
+    std::vector<bool> gaElegidos;
 
-
-    for(int i = 0; i < vec.size(); i++)
-    {
-        //Consulta para mostrar los ingredientes principales de un plato
-        model = db1->queryMostrarGruposAldeIngPrincipales(QString::number(1+i));
-
-        for(int k = 0; k < model->rowCount(); k++)
-            grupoAl_1.push_back(model->index(k,0).data(Qt::DisplayRole).toInt());                                                                                   //Guardar su grupo alimenticio
-        delete model;
-
-        for(int j = 0; j < sz; j++)                                                                                                                                 //__Para cada plato i, comprarlo con el resto de platos j
-        {
-            if(i == j)                                                                                                                                              //Si la celda corresponde al mismo plato, VARIEDAD = 0
-               vec[i][j] = 0;
-            else
+    for(int y = 0; y < PrimerosPlatos.size(); y++)
+        for(int x = 0; x < SegundosPlatos.size(); x++)
+            for(int z = 0; z < Postres.size(); z++)
             {
-                if(db1->queryMostrarTipoPlatoID(QString::number(1+i)) == db1->queryMostrarTipoPlatoID(QString::number(1+j)))                                        //Si la celda corresponde a dos platos del mismo tipo (2 primer plato o 2 segundos platos), VARIEDAD = 0
-                    vec[i][j] = 0;
-                else if(db1->queryMostrarTipoPlatoID(QString::number(1+i)) == 3 || db1->queryMostrarTipoPlatoID(QString::number(1+j)) == 3)                         //Si alguno de los platos es un postre, VARIEDAD = 0
-                    vec[i][j] = 0;
-                else                                                                                                                                                //Si la celda corresponde a un primer plato y un segundo plato...
-                {
-                    model = db1->queryMostrarGruposAldeIngPrincipales(QString::number(1+j));
-
-                    for(int l = 0; l < model->rowCount(); l++)
-                        grupoAl_2.push_back(model->index(l,0).data(Qt::DisplayRole).toInt());                                                                       //Guardar su grupo alimenticio
-                    delete model;
-
-                    if(grupoAl_1.size() > 0 && grupoAl_2.size() > 0)                                                                                                //Si el plato i y j tienen ingredientes principales
-                    {
-                        for(int x = 0; x < grupoAl_1.size(); x++)                                                                                                   //Comprobar si tienen en comun grupos alimenticios
-                            for(int y = 0; y < grupoAl_2.size(); y++)                         
-                                if(grupoAl_1[x] == grupoAl_2[y])
-                                    variedad = false;
-
-                        if(variedad)                                                                                                                                //Si NO tienen en comun grupos alimenticios, VARIEDAD = 10
-                           vec[i][j] = 10;
-                        else
-                            vec[i][j] = 5;                                                                                                                          //Si tienen en comun grupos alimenticios, VARIEDAD = 5
-                    }
-                    else                                                                                                                                            //Si alguno de los platos no tiene ingrediente principal, VARIEDAD = 10
-                        vec[i][j] = 10;
-
-                }
+                gaElegidos.clear();
+                gaElegidos.assign(10,false);
+                setGAElegidos(PrimerosPlatos[y].gruposAl, gaElegidos);
+                vec[y][x][z] = setPenalizacion(SegundosPlatos[x].gruposAl, gaElegidos);
+                setGAElegidos(SegundosPlatos[x].gruposAl, gaElegidos);
+                vec[y][x][z] += setPenalizacion(Postres[z].gruposAl, gaElegidos);
             }
+}
 
-            variedad = true;        
-            grupoAl_2.clear();
-        }
-        grupoAl_1.clear();
-        sz++;
+void MainWindowMenuPlan::setGAElegidos(std::vector<int> gal, std::vector<bool> &galE)
+{
+    for(int i = 0; i < gal.size(); i++)
+        galE[gal[i]] = true;
+}
+
+double MainWindowMenuPlan::setPenalizacion(std::vector<int> gal, std::vector<bool> galE)
+{
+    double resultado = 0.0;
+    for(int i = 0; i < gal.size(); i++)
+    {
+        if(galE[gal[i]])
+            switch(gal[i])
+            {
+                case 0: case 3: case 9:
+                    resultado += 2.0;
+                break;
+
+                case 1:
+                    resultado += 3.0;
+                break;
+
+                case 2: case 4: case 5:
+                    resultado += 2.5;
+                break;
+
+                case 6:
+                    resultado += 2.8;
+                break;
+
+                case 7:
+                    resultado += 2.5;
+                break;
+
+                case 8:
+                    resultado += 2.5;
+                break;
+            }
     }
+    return resultado;
 }

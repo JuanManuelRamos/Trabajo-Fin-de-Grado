@@ -162,6 +162,10 @@ void MainWindowMenuPlan::setPrimerosPlatos()
     QSqlQueryModel *model2;
     QSqlQueryModel *model3;
 
+    double gram, dou;
+    QString ing;
+    std::vector<double> gas;
+
     for(int i = 0; i < model->rowCount(); i++)
     {
         if(db1->queryMostrarTipoPlatoNombre(model->index(i, 0).data(Qt::DisplayRole).toString()) == "1")                //Se comprueba que el plato seleccionado sea Primer Plato
@@ -175,10 +179,21 @@ void MainWindowMenuPlan::setPrimerosPlatos()
             iP.nDias = imax;                                                                                            //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
 
             //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
-            model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
-
+            gas.assign(10,0);
+            gram = 40.0 * db1->queryMostrarGramosPlatoPorID(QString::number(iP.id)).toDouble() / 100.0;
+            model2 = db1->queryMostrarIngredientesPlatos(QString::number(iP.id));
             for(int j = 0; j < model2->rowCount(); j++)
-                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+            {     
+                ing = model2->index(j,0).data(Qt::DisplayRole).toString();
+                dou = db1->queryMostrarCantidadInGPlatos(QString::number(iP.id),ing).toDouble();
+                gas[db1->queryMostrarGrupoAlimenticioPorNombre(ing)] += dou;
+            }
+            for(int z = 0; z < gas.size(); z++)
+                if(gas[z] > gram)
+                    iP.gruposAl.push_back(z);
+
+            if(iP.gruposAl.size() < 1)
+                iP.gruposAl.push_back(set_GAPrincipal(iP.id));
 
             //PRECIO DEL PLATO
             iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
@@ -218,6 +233,10 @@ void MainWindowMenuPlan::setSegundosPlatos()
     QSqlQueryModel *model2;
     QSqlQueryModel *model3;
 
+    double gram, dou;
+    QString ing;
+    std::vector<double> gas;
+
     for(int i = 0; i < model->rowCount(); i++)
     {
         if(db1->queryMostrarTipoPlatoNombre(model->index(i, 0).data(Qt::DisplayRole).toString()) == "2")                //Se comprueba que el plato seleccionado sea Primer Plato
@@ -230,11 +249,21 @@ void MainWindowMenuPlan::setSegundosPlatos()
             //NUMERO DE DIAS DESDE QUE SE ELIGIO EL PLATO POR ULTIMA VEZ
             iP.nDias = imax;                                                                                            //Se asigna numero de dias desde que se eligio el plato al segundo elemento del par
 
-            //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
-            model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
-
+            gas.assign(10,0);
+            gram = 40.0 * db1->queryMostrarGramosPlatoPorID(QString::number(iP.id)).toDouble() / 100.0;
+            model2 = db1->queryMostrarIngredientesPlatos(QString::number(iP.id));
             for(int j = 0; j < model2->rowCount(); j++)
-                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+            {
+                ing = model2->index(j,0).data(Qt::DisplayRole).toString();
+                dou = db1->queryMostrarCantidadInGPlatos(QString::number(iP.id),ing).toDouble();
+                gas[db1->queryMostrarGrupoAlimenticioPorNombre(ing)] += dou;
+            }
+            for(int z = 0; z < gas.size(); z++)
+                if(gas[z] > gram)
+                    iP.gruposAl.push_back(z);
+
+            if(iP.gruposAl.size() < 1)
+                iP.gruposAl.push_back(set_GAPrincipal(iP.id));
 
             //PRECIO DEL PLATO
             iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
@@ -290,8 +319,15 @@ void MainWindowMenuPlan::setPostres()
             //GRUPOS ALIMENTICIOS DE LOS INGREDIENTES PRINCIPALES DEL PLATO
             model2 = db1->queryMostrarGruposAldeIngPrincipales(QString::number(iP.id));                                 //Se hace una consulta para averiguar los grupos alimenticios de los ingredientes principales del plato
 
-            for(int j = 0; j < model2->rowCount(); j++)
-                iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+            if(model2->rowCount() > 0)
+            {
+                for(int j = 0; j < model2->rowCount(); j++)
+                    iP.gruposAl.push_back(model2->index(j,0).data(Qt::DisplayRole).toInt());                                //Se guardan los grupos alimenticios en el vector correspondiente
+            }
+            else
+            {
+                iP.gruposAl.push_back(set_GAPrincipal(iP.id));
+            }
 
             //PRECIO DEL PLATO
             iP.precio = model3->index(0,3).data(Qt::DisplayRole).toFloat();
@@ -707,30 +743,6 @@ ACTION MainWindowMenuPlan::controllSelectionElement(QListView &lv)
 /*---------------------------------------------------------------------------------------------*/
 void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
 { 
-    /*      informacion nutricional por defecto
-    idrN[0] = 135;              //acido folico
-    idrN[1] = 585;              //calcio
-    idrN[2] = 1012;             //energia
-    idrN[3] = 562.5f;           //fosforo
-    idrN[4] = 31.72f;           //grasa
-    idrN[5] = 8.55f;            //hierro
-    idrN[6] = 112.5f;           //magnesio
-    idrN[7] = 2025;             //potasio
-    idrN[8] = 27.08f;           //proteinas
-    idrN[9] = 25.75;            //selenio
-    idrN[10] = 870;             //sodio
-    idrN[11] = 450;             //vitA
-    idrN[12] = 0.41f;           //vitB1
-    idrN[13] = 0.63f;           //vitB2
-    idrN[14] = 0.54f;           //vitB6
-    idrN[15] = 2.28f;           //vitB12
-    idrN[16] = 27;              //vitC
-    idrN[17] = 4.65f;           //vitD
-    idrN[18] = 6.3f;            //vitE
-    idrN[19] = 67.5f;           //yodo
-    idrN[20] = 6.75f;           //zinc
-    */
-
     std::fstream fs;
     fs.open("ingestarecomendada.txt", std::fstream::in);                                                        //Si el archivo existe se abre
 
@@ -753,4 +765,25 @@ void MainWindowMenuPlan::resetIngestaDiariaRecomendada()
 }
 
 
+/*--------------------------------------------------------------------------------------------------------------*/
+/*-------------------- ASIGNACION DE GRUPO ALIMENTICIO A PLATOS SIN INGREDIENTE PRINCIPAL ----------------------*/
+/*--------------------------------------------------------------------------------------------------------------*/
+int MainWindowMenuPlan::set_GAPrincipal(int idPlato)
+{
+    /* 0 Otros, 1 Carne, 2 Cereal, 3 Fruta, 4 Lacteo, 5 Legumbre, 6 Marisco, 7 Pasta, 8 Pescado, 9 Verdura */
+    int ga[10] = {1,6,8,7,5,9,3,2,4,0};
+    int posmin = 9;
+    QSqlQueryModel *model2;
+    model2 = db1->queryMostrarGruposAl(QString::number(idPlato));
 
+    for(int j = 0; j < model2->rowCount(); j++)
+        for(int i = 0; i < 10; i++)
+            if(model2->index(j,0).data(Qt::DisplayRole).toInt() == ga[i] && i < posmin)
+            {
+                posmin = i;
+                break;
+            }
+
+    delete model2;
+    return ga[posmin];
+}

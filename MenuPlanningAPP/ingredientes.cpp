@@ -395,7 +395,7 @@ void MainWindowMenuPlan::mostrar_IngredientePrincipal(QString str)
 /*-------------------------------------------------------------------------------------*/
 QString MainWindowMenuPlan::set_GrupoAlimenticio()
 {
-    /* 0 Otros, 1 Carne, 2 Cereal, 3 Fruta, 4 Legumbre, 5 Marisco, 6 Pasta, 7 Pescado, 8 Verdura */
+    /* 0 Otros, 1 Carne, 2 Cereal, 3 Fruta, 4 Lacteo, 5 Legumbre, 6 Marisco, 7 Pasta, 8 Pescado, 9 Verdura */
     return QString::number(ui->comboBox_ING_GrupoAl->currentIndex());
 }
 

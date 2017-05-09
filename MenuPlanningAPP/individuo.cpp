@@ -15,6 +15,7 @@ individuo::individuo(int numDiasPlan, int numInfNutr, int numAlerg, int numIncom
     iDistance = 0;
     rango = 0;
     planAdecuado = false;
+    evaluado = false;
 }
 
 
@@ -24,7 +25,7 @@ individuo::~individuo()
 }
 
 
-void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI)
+void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<std::vector<double>>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, MENUINDIVIDUO MI, std::vector<std::vector<int>> &ultimos5GA)
 {
     int ipp, isp, ip;
     for(unsigned int i = 0; i < numMenus; i++)
@@ -74,17 +75,21 @@ void individuo::setMenuDiario(std::vector<struct infoPlatos> pp, std::vector<str
     }
 
     //VALOR DE REPETICION O VARIABILIDAD DE PLATOS
-    setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl);
+    setObjGradoRepeticion(pp, sp, p, vectorFdeTabla, vectorGruposAl, ultimos5GA);
 }
 
 
 
-void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<int>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl)
+void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::vector<struct infoPlatos> sp, std::vector<struct infoPlatos> p, std::vector<std::vector<std::vector<double>>> vectorFdeTabla, std::vector<std::pair<int,int>> vectorGruposAl, std::vector<std::vector<int>> &ultimos5GA)
 {
     double valPP, valSP, valP, valTabla, valGAFirst, valGASecond;
-    double num = 1;
+    double numPP = 8;
+    double numSP = 10;
+    double numP = 2;
     double  valTotal = 0;
     std::vector<int> gaElegidos;                                                                                //Vector que guarda los grupos alimenticios pertenecientes a los platos elegidos
+    std::vector<int> gaElegidosAnterior;                                                                        //Vector que guarda los ga pertenecientes al menu de la iteracion anterior
+
 
     for(unsigned int i = 0; i < numMenus; i++)
     {
@@ -92,7 +97,8 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         valPP = setValorPP(pp, planDietetico[i].idPrimerPlato.second);                                          //Numero de dias desde que se repitio el plato seleccionado
         for(int j = 0; j < pp[planDietetico[i].idPrimerPlato.second].gruposAl.size(); j++)                      //Numero de dias desde que se repitio el grupo alimenticio
         {
-            setValorGA(vectorGruposAl, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
+            //en este for se va desde 0 hasta el numero total de grupos alimenticios que tiene este primer plato i
+            //comprueba si ya habia aparecido en el menu el grupo alimenticio j, si no lo añade al vector gaElegidos
             if(gaElegidosPorIteracion(gaElegidos, pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]))
                 gaElegidos.push_back(pp[planDietetico[i].idPrimerPlato.second].gruposAl[j]);
         }
@@ -101,7 +107,6 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         valSP = setValorSP(sp, planDietetico[i].idSegundoPlato.second);
         for(int k = 0; k < sp[planDietetico[i].idSegundoPlato.second].gruposAl.size(); k++)
         {
-            setValorGA(vectorGruposAl, sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
             if(gaElegidosPorIteracion(gaElegidos, sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]))
                 gaElegidos.push_back(sp[planDietetico[i].idSegundoPlato.second].gruposAl[k]);
         }
@@ -110,26 +115,28 @@ void individuo::setObjGradoRepeticion(std::vector<struct infoPlatos> pp, std::ve
         valP = setValorP(p, planDietetico[i].idPostre.second);
         for(int l = 0; l < p[planDietetico[i].idPostre.second].gruposAl.size(); l++)
         {
-            setValorGA(vectorGruposAl, p[planDietetico[i].idPostre.second].gruposAl[l]);
             if(gaElegidosPorIteracion(gaElegidos, p[planDietetico[i].idPostre.second].gruposAl[l]))
                 gaElegidos.push_back(p[planDietetico[i].idPostre.second].gruposAl[l]);
         }
 
-        valTabla = getValorVectorFdeTabla(vectorFdeTabla, planDietetico[i].idPrimerPlato.first-1, planDietetico[i].idSegundoPlato.first-1);         //Obtener el valor de la tabla de platos de compatibilidad entre primeros y segundos platos   
-        valGAFirst = getValorGAFirst(vectorGruposAl, gaElegidos);                                                                                   //Obtener el valor total del numero de dias desde que se repitieron grupos alimenticios      
-        valGASecond = getValorGASecond(vectorGruposAl, gaElegidos);                                                                                 //Obtener el valor total del numero de repeticiones de grupos alimenticios el mismo dia
 
-        //ORIGINAL
-        valTotal += num/(valTabla + valPP + valSP + valP) + num/valGAFirst + valGASecond;                                                           //Calcular el valor total
+
+		valTabla = vectorFdeTabla[planDietetico[i].idPrimerPlato.second][planDietetico[i].idSegundoPlato.second][planDietetico[i].idPostre.second];
+		valGAFirst = set_ValorGAFirstAlternativa(ultimos5GA, gaElegidos);
+		valTotal += valTabla + numPP/valPP + numSP/valSP + numP/valP + valGAFirst;
 
         sumValorPP(pp);                                                                                                                             //Suma los valores de platos y grupos alimenticios elegidos para el siguiente dia
         sumValorSP(sp);
         sumValorP(p);
         sumValorGA(vectorGruposAl);
 
+		set_ultimos5GA(ultimos5GA, gaElegidos);
+        gaElegidosAnterior = gaElegidos;
         gaElegidos.clear();
     }
 
+    ultimos5GA.clear();
+    gaElegidosAnterior.clear();
     objGradoRepeticion = valTotal;
 }
 
@@ -153,9 +160,10 @@ int individuo::getValorVectorFdeTabla(std::vector<std::vector<int>> vectorFdeTab
         return vectorFdeTabla[idSP][idPP];
 }
 
+
 int individuo::setValorPP(std::vector<struct infoPlatos> &pp, int id)
 {
-    int valor = 0;                          //Tengo que retornar el numero de dias desde que se eligio el plato por ultima vez
+    int valor = imax;                          //Tengo que retornar el numero de dias desde que se eligio el plato por ultima vez
     if(pp[id].nDias != imax)                //Si el numero de dias es imax, significa que nunca se ha elegido, por lo que retorno 0
         valor = pp[id].nDias;               //Si el numero de dias es distinto a imax, retorno el valor y reseteo el numero de dias a 0
     pp[id].nDias = 0;
@@ -165,7 +173,7 @@ int individuo::setValorPP(std::vector<struct infoPlatos> &pp, int id)
 
 int individuo::setValorSP(std::vector<struct infoPlatos> &sp, int id)
 {
-    int valor = 0;
+    int valor = imax;
     if(sp[id].nDias != imax)
         valor = sp[id].nDias;
     sp[id].nDias = 0;
@@ -175,7 +183,7 @@ int individuo::setValorSP(std::vector<struct infoPlatos> &sp, int id)
 
 int individuo::setValorP(std::vector<struct infoPlatos> &p, int id)
 {
-    int valor = 0;
+    int valor = imax;
     if(p[id].nDias != imax)
         valor = p[id].nDias;
     p[id].nDias = 0;
@@ -185,6 +193,9 @@ int individuo::setValorP(std::vector<struct infoPlatos> &p, int id)
 
 void individuo::setValorGA(std::vector<std::pair<int,int>> &vectorGruposAl, int ga)
 {
+    //first es el numero de dias desde que se repitio por ultima vez y second el numero de veces que se repite un mismo dia
+    //por ahora este metodo solo inicializa el grupo alimenticio que no se haya repetido nunca, en first, y en second si que suma el numero de veces que se repite al dia
+
     if(vectorGruposAl[ga].first == imax)          //Si el grupo alimenticio es igual a imax, es que no se ha repetido nunca, por lo que se pone a 0
         vectorGruposAl[ga].first = 0;
     if(vectorGruposAl[ga].second == imax)
@@ -219,19 +230,6 @@ int individuo::getValorGASecond(std::vector<std::pair<int,int>> vectorGruposAl, 
     return valor;
 }
 
-
-/*
-El tema con los grupos alimenticios es que, a diferencia de los platos, un grupo alimenticio puede repetirse el mismo dia. Los tres platos del dia nunca se van a repetir el mismo dia
-porque son de diferente tipo, pero los grupos alimenticios son comunes a los tres tipos de platos. Por lo que se debe hacer una separacion entre numero de dias desde que se repitio
-un grupo alimenticio y si un grupo alimenticio determinado se repite el mismo dia.
-
-Si el grupo alimenticio X se repite 2 o mas veces el mismo dia, debe ser penalizable de forma aparte a si se repite dias despues. Por tanto, se podria volver a hacer el vector
-grupoAL como vector de pares, en el que el primer elemento hace referencia al numero de dias desde que se repitio por ultima vez, y el segundo elemento el numero de veces que se
-ha repetido ese dia. Al final de cada iteracion, este segundo elemento se resetea a 0 para todos los grupos alimenticios, y el primer elemento (el contador de dias), se utiliza de la misma
-forma que para los tipos de platos. Como el numero de repeticiones de grupo alimenticio es algo muy evitable, y cuanto mayor peor, se puede incluir en la ecuacion como la suma de este
-valor, en el numerador.
-*/
-
 void individuo::sumValorPP(std::vector<struct infoPlatos> &pp)
 {
     for(int i = 0; i < pp.size(); i++)
@@ -261,4 +259,70 @@ void individuo::sumValorGA(std::vector<std::pair<int,int>> &vectorGruposAl)
             vectorGruposAl[i].first++;
         vectorGruposAl[i].second = imax;
     }
+}
+
+
+int individuo::getValorGAFirstCorreccion(std::vector<std::pair<int, int> > &vectorGruposAl, std::vector<int> &gaElegidosAnterior)
+{
+    int min = imax;
+
+
+    for(int i = 0; i < vectorGruposAl.size(); i++)
+    {
+        if(gaElegidosAnterior.size() > 0)
+            for(int u = 0; u < gaElegidosAnterior.size(); u++)
+                if(vectorGruposAl[gaElegidosAnterior[u]].first == 0)
+                    min = 1;
+        if(vectorGruposAl[i].first < min && vectorGruposAl[i].first != 0)
+            min = vectorGruposAl[i].first;
+    }
+
+    return min;
+}
+
+
+void individuo::set_ultimos5GA(std::vector<std::vector<int>> &ultimos5GA, std::vector<int> vec)
+{
+    if(ultimos5GA.size() < 5)
+        ultimos5GA.push_back(vec);
+    else
+    {
+        ultimos5GA.erase(ultimos5GA.begin());
+        ultimos5GA.push_back(vec);
+    }
+}
+
+
+double individuo::set_ValorGAFirstAlternativa(std::vector<std::vector<int>> &ultimos5GA, std::vector<int> vec)
+{
+    /* 0 Otros, 1 Carne, 2 Cereal, 3 Fruta, 4 Lacteo, 5 Legumbre, 6 Marisco, 7 Pasta, 8 Pescado, 9 Verdura */
+    double penalizacionPorGA[10] = {0.1,3,0.3,0.1,0.3,0.3,2,1.5,0.5,0.1};
+    double penalizacionPorDi­as[5] = {3,2.5,1.8,1,0.2};
+    bool pen[5] = {false, false, false, false, false};
+    double resultado = 0;
+
+
+    if(ultimos5GA.size() > 0)
+    {
+        for(int i = 0; i < vec.size(); i++)
+        {
+            for(int j = 0; j < ultimos5GA.size(); j++)
+                for(int k = 0; k < ultimos5GA[j].size(); k++)
+                {
+                    if(vec[i] == ultimos5GA[j][k])
+                    {
+                        pen[j] = true;
+                        resultado += penalizacionPorGA[vec[i]];
+                    }
+                }
+        }
+        for(int x = 0; x < 5; x++)
+            if(pen[x])
+            {
+                resultado += penalizacionPorDi­as[x];
+                pen[x] = false;
+            }
+    }
+
+    return resultado;
 }

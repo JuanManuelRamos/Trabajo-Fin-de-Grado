@@ -89,9 +89,9 @@ bool MainWindowMenuPlan::sortBestInd(individuo A, individuo B)
 
 
 
-/*---------------------------------------------------------------------*/
-/*--------------- QUICKSORT PARA PLANES RECOMENDADOS ------------------*/
-/*---------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------*/
+/*--------------- QUICKSORT PARA PLANES RECOMENDADOS - GRADO DE REPETICION ------------------*/
+/*-------------------------------------------------------------------------------------------*/
 
 void MainWindowMenuPlan::quickSortGradoRep(std::vector<individuo> &pob, int first, int last)
 {
@@ -124,4 +124,42 @@ int MainWindowMenuPlan::pivotGradoRep(std::vector<individuo> &pob, int first, in
 bool MainWindowMenuPlan::sortBestIndGR(individuo A, individuo B)
 {
     return ((A.get_objGradoRepeticion() < B.get_objGradoRepeticion()) || ((A.get_objGradoRepeticion() == B.get_objGradoRepeticion()) && (A.get_planAdecuado() && !B.get_planAdecuado())));
+}
+
+
+/*------------------------------------------------------------------------------*/
+/*--------------- QUICKSORT PARA PLANES RECOMENDADOS - PRECIO ------------------*/
+/*------------------------------------------------------------------------------*/
+
+void MainWindowMenuPlan::quickSortPrecio(std::vector<individuo> &pob, int first, int last)
+{
+    int pivotElement;
+
+    if(first < last)
+    {
+        pivotElement = pivotPrecio(pob, first, last);
+        quickSortPrecio(pob, first, pivotElement-1);
+        quickSortPrecio(pob, pivotElement+1, last);
+    }
+}
+
+int MainWindowMenuPlan::pivotPrecio(std::vector<individuo> &pob, int first, int last)
+{
+    int  p = first;
+
+    for(int i = first+1; i <= last; i++)
+    {
+        if(sortBestIndP(pob[i], pob[first]))
+        {
+            p++;
+            std::swap(pob[i], pob[p]);
+        }
+    }
+    std::swap(pob[p], pob[first]);
+    return p;
+}
+
+bool MainWindowMenuPlan::sortBestIndP(individuo A, individuo B)
+{
+    return ((A.get_objPrecio() < B.get_objPrecio()) || ((A.get_objPrecio() == B.get_objPrecio()) && (A.get_planAdecuado() && !B.get_planAdecuado())));
 }
